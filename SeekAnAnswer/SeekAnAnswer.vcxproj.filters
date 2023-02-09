@@ -1,0 +1,126 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <Filter Include="源文件">
+      <UniqueIdentifier>{4FC737F1-C7A5-4376-A066-2A32D752A2FF}</UniqueIdentifier>
+      <Extensions>cpp;c;cc;cxx;c++;cppm;ixx;def;odl;idl;hpj;bat;asm;asmx</Extensions>
+    </Filter>
+    <Filter Include="头文件">
+      <UniqueIdentifier>{93995380-89BD-4b04-88EB-625FBE52EBFB}</UniqueIdentifier>
+      <Extensions>h;hh;hpp;hxx;h++;hm;inl;inc;ipp;xsd</Extensions>
+    </Filter>
+    <Filter Include="资源文件">
+      <UniqueIdentifier>{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}</UniqueIdentifier>
+      <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav;mfcribbon-ms</Extensions>
+    </Filter>
+    <Filter Include="头文件\SeekAnAnswer">
+      <UniqueIdentifier>{184e066b-7c3f-41bf-867d-3eddbe4f088b}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="头文件\SeekAnAnswer\misinttypes">
+      <UniqueIdentifier>{f9fbb398-2d4d-4655-ba85-a1d305fc9296}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="源文件\SeekAnAnswer">
+      <UniqueIdentifier>{fa214c6a-beaa-47c8-8706-26894b776b1a}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="头文件\High">
+      <UniqueIdentifier>{5d378730-df9d-4282-a71b-3c6c2d3c665b}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="源文件\High">
+      <UniqueIdentifier>{cba31e4b-e7de-43ed-9322-0817c1115e75}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="源文件\test">
+      <UniqueIdentifier>{f858daa6-3f79-43ef-91e1-b5bfe111bc3c}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="头文件\SeekAnAnswer\Polynomials Math Calculator">
+      <UniqueIdentifier>{92ba5fc8-7c26-4d52-be3a-a893be0395c5}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="头文件\SeekAnAnswer\Polynomials Math Calculator\kernel">
+      <UniqueIdentifier>{a613942b-dfd7-49f1-b08e-04041ed409f5}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="源文件\SeekAnAnswer\Polynomials Math Calculator">
+      <UniqueIdentifier>{1e7a5dee-7632-451c-a3bb-335732b42db3}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="头文件\SeekAnAnswer\Solve Equations">
+      <UniqueIdentifier>{ff41ae4f-cf83-4e2e-910b-0b1d5d3d0965}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="源文件\SeekAnAnswer\Solve Equations">
+      <UniqueIdentifier>{9e188c84-ac72-4095-9888-da8b2fa2926a}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="SeekAnAnswer\misinttypes\saint.h">
+      <Filter>头文件\SeekAnAnswer\misinttypes</Filter>
+    </ClInclude>
+    <ClInclude Include="SeekAnAnswer\kernel\fraction.h">
+      <Filter>头文件\SeekAnAnswer\Polynomials Math Calculator\kernel</Filter>
+    </ClInclude>
+    <ClInclude Include="SeekAnAnswer\kernel\monomial.h">
+      <Filter>头文件\SeekAnAnswer\Polynomials Math Calculator\kernel</Filter>
+    </ClInclude>
+    <ClInclude Include="SeekAnAnswer\kernel\polynomial.h">
+      <Filter>头文件\SeekAnAnswer\Polynomials Math Calculator\kernel</Filter>
+    </ClInclude>
+    <ClInclude Include="High\Public\High_float.h">
+      <Filter>头文件\High</Filter>
+    </ClInclude>
+    <ClInclude Include="High\Public\High_int.h">
+      <Filter>头文件\High</Filter>
+    </ClInclude>
+    <ClInclude Include="High\Public\High_io.h">
+      <Filter>头文件\High</Filter>
+    </ClInclude>
+    <ClInclude Include="High\Public\High_math.h">
+      <Filter>头文件\High</Filter>
+    </ClInclude>
+    <ClInclude Include="SeekAnAnswer\kernel\equation.h">
+      <Filter>头文件\SeekAnAnswer\Solve Equations</Filter>
+    </ClInclude>
+    <ClInclude Include="SeekAnAnswer\kernel\polynomial_exponential.h">
+      <Filter>头文件\SeekAnAnswer\Polynomials Math Calculator\kernel</Filter>
+    </ClInclude>
+    <ClInclude Include="SeekAnAnswer\kernel\Fraction_PES.h">
+      <Filter>头文件\SeekAnAnswer\Polynomials Math Calculator\kernel</Filter>
+    </ClInclude>
+    <ClInclude Include="SeekAnAnswer\kernel\polynomial_exponential_sum.h">
+      <Filter>头文件\SeekAnAnswer\Polynomials Math Calculator\kernel</Filter>
+    </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="SeekAnAnswer\kernel\polynomial.cpp">
+      <Filter>源文件\SeekAnAnswer\Polynomials Math Calculator</Filter>
+    </ClCompile>
+    <ClCompile Include="High\Private\High_float.cpp">
+      <Filter>源文件\High</Filter>
+    </ClCompile>
+    <ClCompile Include="High\Private\High_int.cpp">
+      <Filter>源文件\High</Filter>
+    </ClCompile>
+    <ClCompile Include="SeekAnAnswer\kernel\monomial.cpp">
+      <Filter>源文件\SeekAnAnswer\Polynomials Math Calculator</Filter>
+    </ClCompile>
+    <ClCompile Include="SeekAnAnswer\kernel\equation.cpp">
+      <Filter>源文件\SeekAnAnswer\Solve Equations</Filter>
+    </ClCompile>
+    <ClCompile Include="SeekAnAnswer\kernel\polynomial_exponential.cpp">
+      <Filter>源文件\SeekAnAnswer\Polynomials Math Calculator</Filter>
+    </ClCompile>
+    <ClCompile Include="test_Fraction.cpp">
+      <Filter>源文件\test</Filter>
+    </ClCompile>
+    <ClCompile Include="test_Monomial.cpp">
+      <Filter>源文件\test</Filter>
+    </ClCompile>
+    <ClCompile Include="test_Polynomial.cpp">
+      <Filter>源文件\test</Filter>
+    </ClCompile>
+    <ClCompile Include="test_Polynomial_Exponential.cpp">
+      <Filter>源文件\test</Filter>
+    </ClCompile>
+    <ClCompile Include="test_equation.cpp">
+      <Filter>源文件\test</Filter>
+    </ClCompile>
+    <ClCompile Include="SeekAnAnswer\kernel\polynomial_exponential_sum.cpp">
+      <Filter>源文件\SeekAnAnswer\Polynomials Math Calculator</Filter>
+    </ClCompile>
+  </ItemGroup>
+</Project>
