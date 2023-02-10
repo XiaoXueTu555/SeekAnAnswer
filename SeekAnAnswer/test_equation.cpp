@@ -6,7 +6,7 @@ using namespace std;
 int main()
 {
 	Equation E;
-	E.Input("(a+b)X^2 + bX + 2 = 0");
+	E.Input("aX^2 + bX + c = 0");
 	cout << "方程：" << E.GetValue() << endl;
 	cout << "方程：" << E.Out() << endl;
 	vector<Fraction<Polynomial_Exponential_Sum>> result =  E.quadratic_equation_in_one_unknown();
