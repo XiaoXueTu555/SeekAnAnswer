@@ -28,9 +28,6 @@
     <Filter Include="源文件\High">
       <UniqueIdentifier>{cba31e4b-e7de-43ed-9322-0817c1115e75}</UniqueIdentifier>
     </Filter>
-    <Filter Include="源文件\test">
-      <UniqueIdentifier>{f858daa6-3f79-43ef-91e1-b5bfe111bc3c}</UniqueIdentifier>
-    </Filter>
     <Filter Include="头文件\SeekAnAnswer\Polynomials Math Calculator">
       <UniqueIdentifier>{92ba5fc8-7c26-4d52-be3a-a893be0395c5}</UniqueIdentifier>
     </Filter>
@@ -104,23 +101,11 @@
     <ClCompile Include="SeekAnAnswer\kernel\polynomial_exponential.cpp">
       <Filter>源文件\SeekAnAnswer\Polynomials Math Calculator</Filter>
     </ClCompile>
-    <ClCompile Include="test_Fraction.cpp">
-      <Filter>源文件\test</Filter>
-    </ClCompile>
-    <ClCompile Include="test_Monomial.cpp">
-      <Filter>源文件\test</Filter>
-    </ClCompile>
-    <ClCompile Include="test_Polynomial.cpp">
-      <Filter>源文件\test</Filter>
-    </ClCompile>
-    <ClCompile Include="test_Polynomial_Exponential.cpp">
-      <Filter>源文件\test</Filter>
-    </ClCompile>
-    <ClCompile Include="test_equation.cpp">
-      <Filter>源文件\test</Filter>
-    </ClCompile>
     <ClCompile Include="SeekAnAnswer\kernel\polynomial_exponential_sum.cpp">
       <Filter>源文件\SeekAnAnswer\Polynomials Math Calculator</Filter>
+    </ClCompile>
+    <ClCompile Include="test.cpp">
+      <Filter>源文件</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

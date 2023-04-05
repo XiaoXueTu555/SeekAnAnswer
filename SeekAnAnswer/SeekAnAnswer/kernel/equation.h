@@ -36,3 +36,6 @@ public:
 	//求解一元二次方程
 	std::vector<Fraction<Polynomial_Exponential_Sum>> quadratic_equation_in_one_unknown();
 };
+
+//将Fraction<Polynomial>类型转换成字符串
+std::string Out(Fraction<Polynomial> val);

@@ -79,6 +79,11 @@ void Monomial::SetValue(std::string std_value)
 	sint8 letter = 0; //字母系数(临时容器)
 	suint64 i = 0;
 
+	/*清空自身的数据*/
+	this->coefficient.a = 0;
+	this->coefficient.b = 0;
+	this->Clear_factor();
+
 	//读取数字系数部分
 	while (std_value.at(++i) != ')')
 	{

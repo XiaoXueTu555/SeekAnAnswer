@@ -1,0 +1,152 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <Filter Include="源文件">
+      <UniqueIdentifier>{4FC737F1-C7A5-4376-A066-2A32D752A2FF}</UniqueIdentifier>
+      <Extensions>cpp;c;cc;cxx;c++;cppm;ixx;def;odl;idl;hpj;bat;asm;asmx</Extensions>
+    </Filter>
+    <Filter Include="头文件">
+      <UniqueIdentifier>{93995380-89BD-4b04-88EB-625FBE52EBFB}</UniqueIdentifier>
+      <Extensions>h;hh;hpp;hxx;h++;hm;inl;inc;ipp;xsd</Extensions>
+    </Filter>
+    <Filter Include="资源文件">
+      <UniqueIdentifier>{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}</UniqueIdentifier>
+      <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav;mfcribbon-ms</Extensions>
+    </Filter>
+    <Filter Include="High">
+      <UniqueIdentifier>{5940920d-ffde-4287-829b-40b2a4761e67}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="High\public">
+      <UniqueIdentifier>{b5c4734f-1036-45d2-9b11-f3ff992f4628}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="High\private">
+      <UniqueIdentifier>{83e6f549-7a0d-444c-a9fd-25761f946cea}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="SeekAnAnswer">
+      <UniqueIdentifier>{6d4e3920-6aec-4684-a598-2ee866152c7b}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="SeekAnAnswer\kernel">
+      <UniqueIdentifier>{f14a91e0-9174-4a95-b6b1-ab2d55f6889a}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="SeekAnAnswer\misinttypes">
+      <UniqueIdentifier>{adfbfd97-64c0-4065-814e-347c8ad2efd1}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ImGui">
+      <UniqueIdentifier>{5b21266d-8e75-4124-9825-0fff33375bd4}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="..\..\SeekAnAnswer\High\Public\High_float.h">
+      <Filter>High\public</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\SeekAnAnswer\High\Public\High_int.h">
+      <Filter>High\public</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\SeekAnAnswer\High\Public\High_io.h">
+      <Filter>High\public</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\SeekAnAnswer\High\Public\High_math.h">
+      <Filter>High\public</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\SeekAnAnswer\SeekAnAnswer\kernel\equation.h">
+      <Filter>SeekAnAnswer\kernel</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\SeekAnAnswer\SeekAnAnswer\kernel\fraction.h">
+      <Filter>SeekAnAnswer\kernel</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\SeekAnAnswer\SeekAnAnswer\kernel\Fraction_PES.h">
+      <Filter>SeekAnAnswer\kernel</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\SeekAnAnswer\SeekAnAnswer\kernel\monomial.h">
+      <Filter>SeekAnAnswer\kernel</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\SeekAnAnswer\SeekAnAnswer\kernel\polynomial.h">
+      <Filter>SeekAnAnswer\kernel</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\SeekAnAnswer\SeekAnAnswer\kernel\polynomial_exponential.h">
+      <Filter>SeekAnAnswer\kernel</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\SeekAnAnswer\SeekAnAnswer\kernel\polynomial_exponential_sum.h">
+      <Filter>SeekAnAnswer\kernel</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\SeekAnAnswer\SeekAnAnswer\misinttypes\saint.h">
+      <Filter>SeekAnAnswer\misinttypes</Filter>
+    </ClInclude>
+    <ClInclude Include="ImGUI\imconfig.h">
+      <Filter>ImGui</Filter>
+    </ClInclude>
+    <ClInclude Include="ImGUI\imgui.h">
+      <Filter>ImGui</Filter>
+    </ClInclude>
+    <ClInclude Include="ImGUI\imgui_impl_dx9.h">
+      <Filter>ImGui</Filter>
+    </ClInclude>
+    <ClInclude Include="ImGUI\imgui_impl_win32.h">
+      <Filter>ImGui</Filter>
+    </ClInclude>
+    <ClInclude Include="ImGUI\imgui_internal.h">
+      <Filter>ImGui</Filter>
+    </ClInclude>
+    <ClInclude Include="ImGUI\imstb_rectpack.h">
+      <Filter>ImGui</Filter>
+    </ClInclude>
+    <ClInclude Include="ImGUI\imstb_textedit.h">
+      <Filter>ImGui</Filter>
+    </ClInclude>
+    <ClInclude Include="ImGUI\imstb_truetype.h">
+      <Filter>ImGui</Filter>
+    </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="..\..\SeekAnAnswer\High\Private\High_float.cpp">
+      <Filter>High\private</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\SeekAnAnswer\High\Private\High_int.cpp">
+      <Filter>High\private</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\SeekAnAnswer\SeekAnAnswer\kernel\equation.cpp">
+      <Filter>SeekAnAnswer\kernel</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\SeekAnAnswer\SeekAnAnswer\kernel\monomial.cpp">
+      <Filter>SeekAnAnswer\kernel</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\SeekAnAnswer\SeekAnAnswer\kernel\polynomial.cpp">
+      <Filter>SeekAnAnswer\kernel</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\SeekAnAnswer\SeekAnAnswer\kernel\polynomial_exponential.cpp">
+      <Filter>SeekAnAnswer\kernel</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\SeekAnAnswer\SeekAnAnswer\kernel\polynomial_exponential_sum.cpp">
+      <Filter>SeekAnAnswer\kernel</Filter>
+    </ClCompile>
+    <ClCompile Include="ImGUI\imgui.cpp">
+      <Filter>ImGui</Filter>
+    </ClCompile>
+    <ClCompile Include="ImGUI\imgui_demo.cpp">
+      <Filter>ImGui</Filter>
+    </ClCompile>
+    <ClCompile Include="ImGUI\imgui_draw.cpp">
+      <Filter>ImGui</Filter>
+    </ClCompile>
+    <ClCompile Include="ImGUI\imgui_impl_dx9.cpp">
+      <Filter>ImGui</Filter>
+    </ClCompile>
+    <ClCompile Include="ImGUI\imgui_impl_win32.cpp">
+      <Filter>ImGui</Filter>
+    </ClCompile>
+    <ClCompile Include="ImGUI\imgui_tables.cpp">
+      <Filter>ImGui</Filter>
+    </ClCompile>
+    <ClCompile Include="ImGUI\imgui_widgets.cpp">
+      <Filter>ImGui</Filter>
+    </ClCompile>
+    <ClCompile Include="main.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="ImGUI\imgui.ini">
+      <Filter>ImGui</Filter>
+    </None>
+  </ItemGroup>
+</Project>

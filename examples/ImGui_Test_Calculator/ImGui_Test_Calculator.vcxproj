@@ -21,8 +21,8 @@
   <PropertyGroup Label="Globals">
     <VCProjectVersion>16.0</VCProjectVersion>
     <Keyword>Win32Proj</Keyword>
-    <ProjectGuid>{6e96a016-e29e-4074-a8e6-8e37b908c15b}</ProjectGuid>
-    <RootNamespace>SeekAnAnswer</RootNamespace>
+    <ProjectGuid>{63c52f91-76f5-4103-b022-933af0681d9a}</ProjectGuid>
+    <RootNamespace>ImGuiTestCalculator</RootNamespace>
     <WindowsTargetPlatformVersion>10.0</WindowsTargetPlatformVersion>
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
@@ -70,17 +70,8 @@
     <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
   </ImportGroup>
   <PropertyGroup Label="UserMacros" />
-  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
-    <LinkIncremental>true</LinkIncremental>
-  </PropertyGroup>
-  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
-    <LinkIncremental>false</LinkIncremental>
-  </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
-    <LinkIncremental>true</LinkIncremental>
-  </PropertyGroup>
-  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
-    <LinkIncremental>false</LinkIncremental>
+    <IncludePath>D:\project\vs2019\SeekAnAnswer\examples\ImGui_Test_Calculator\ImGui;D:\project\vs2019\SeekAnAnswer\SeekAnAnswer;$(IncludePath)</IncludePath>
   </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <ClCompile>
@@ -116,11 +107,11 @@
       <SDLCheck>true</SDLCheck>
       <PreprocessorDefinitions>_DEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
-      <LanguageStandard>stdcpp20</LanguageStandard>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
       <GenerateDebugInformation>true</GenerateDebugInformation>
+      <NoEntryPoint>false</NoEntryPoint>
     </Link>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
@@ -140,42 +131,46 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClInclude Include="High\Public\High_float.h" />
-    <ClInclude Include="High\Public\High_int.h" />
-    <ClInclude Include="High\Public\High_io.h" />
-    <ClInclude Include="High\Public\High_math.h" />
-    <ClInclude Include="SeekAnAnswer\kernel\equation.h">
-      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">false</ExcludedFromBuild>
-    </ClInclude>
-    <ClInclude Include="SeekAnAnswer\kernel\fraction.h" />
-    <ClInclude Include="SeekAnAnswer\kernel\Fraction_PES.h">
-      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">false</ExcludedFromBuild>
-    </ClInclude>
-    <ClInclude Include="SeekAnAnswer\kernel\monomial.h" />
-    <ClInclude Include="SeekAnAnswer\kernel\polynomial.h" />
-    <ClInclude Include="SeekAnAnswer\kernel\polynomial_exponential.h">
-      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">false</ExcludedFromBuild>
-    </ClInclude>
-    <ClInclude Include="SeekAnAnswer\kernel\polynomial_exponential_sum.h">
-      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">false</ExcludedFromBuild>
-    </ClInclude>
-    <ClInclude Include="SeekAnAnswer\misinttypes\saint.h" />
+    <ClInclude Include="..\..\SeekAnAnswer\High\Public\High_float.h" />
+    <ClInclude Include="..\..\SeekAnAnswer\High\Public\High_int.h" />
+    <ClInclude Include="..\..\SeekAnAnswer\High\Public\High_io.h" />
+    <ClInclude Include="..\..\SeekAnAnswer\High\Public\High_math.h" />
+    <ClInclude Include="..\..\SeekAnAnswer\SeekAnAnswer\kernel\equation.h" />
+    <ClInclude Include="..\..\SeekAnAnswer\SeekAnAnswer\kernel\fraction.h" />
+    <ClInclude Include="..\..\SeekAnAnswer\SeekAnAnswer\kernel\Fraction_PES.h" />
+    <ClInclude Include="..\..\SeekAnAnswer\SeekAnAnswer\kernel\monomial.h" />
+    <ClInclude Include="..\..\SeekAnAnswer\SeekAnAnswer\kernel\polynomial.h" />
+    <ClInclude Include="..\..\SeekAnAnswer\SeekAnAnswer\kernel\polynomial_exponential.h" />
+    <ClInclude Include="..\..\SeekAnAnswer\SeekAnAnswer\kernel\polynomial_exponential_sum.h" />
+    <ClInclude Include="..\..\SeekAnAnswer\SeekAnAnswer\misinttypes\saint.h" />
+    <ClInclude Include="ImGUI\imconfig.h" />
+    <ClInclude Include="ImGUI\imgui.h" />
+    <ClInclude Include="ImGUI\imgui_impl_dx9.h" />
+    <ClInclude Include="ImGUI\imgui_impl_win32.h" />
+    <ClInclude Include="ImGUI\imgui_internal.h" />
+    <ClInclude Include="ImGUI\imstb_rectpack.h" />
+    <ClInclude Include="ImGUI\imstb_textedit.h" />
+    <ClInclude Include="ImGUI\imstb_truetype.h" />
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="High\Private\High_float.cpp" />
-    <ClCompile Include="High\Private\High_int.cpp" />
-    <ClCompile Include="SeekAnAnswer\kernel\equation.cpp">
-      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">false</ExcludedFromBuild>
-    </ClCompile>
-    <ClCompile Include="SeekAnAnswer\kernel\monomial.cpp" />
-    <ClCompile Include="SeekAnAnswer\kernel\polynomial.cpp" />
-    <ClCompile Include="SeekAnAnswer\kernel\polynomial_exponential.cpp">
-      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">false</ExcludedFromBuild>
-    </ClCompile>
-    <ClCompile Include="SeekAnAnswer\kernel\polynomial_exponential_sum.cpp">
-      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">false</ExcludedFromBuild>
-    </ClCompile>
-    <ClCompile Include="test.cpp" />
+    <ClCompile Include="..\..\SeekAnAnswer\High\Private\High_float.cpp" />
+    <ClCompile Include="..\..\SeekAnAnswer\High\Private\High_int.cpp" />
+    <ClCompile Include="..\..\SeekAnAnswer\SeekAnAnswer\kernel\equation.cpp" />
+    <ClCompile Include="..\..\SeekAnAnswer\SeekAnAnswer\kernel\monomial.cpp" />
+    <ClCompile Include="..\..\SeekAnAnswer\SeekAnAnswer\kernel\polynomial.cpp" />
+    <ClCompile Include="..\..\SeekAnAnswer\SeekAnAnswer\kernel\polynomial_exponential.cpp" />
+    <ClCompile Include="..\..\SeekAnAnswer\SeekAnAnswer\kernel\polynomial_exponential_sum.cpp" />
+    <ClCompile Include="ImGUI\imgui.cpp" />
+    <ClCompile Include="ImGUI\imgui_demo.cpp" />
+    <ClCompile Include="ImGUI\imgui_draw.cpp" />
+    <ClCompile Include="ImGUI\imgui_impl_dx9.cpp" />
+    <ClCompile Include="ImGUI\imgui_impl_win32.cpp" />
+    <ClCompile Include="ImGUI\imgui_tables.cpp" />
+    <ClCompile Include="ImGUI\imgui_widgets.cpp" />
+    <ClCompile Include="main.cpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="ImGUI\imgui.ini" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

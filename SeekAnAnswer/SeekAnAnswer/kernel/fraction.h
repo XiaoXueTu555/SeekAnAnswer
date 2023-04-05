@@ -14,7 +14,7 @@ public:
 	{
 		this->a = b.a;
 		this->b = b.b;
-
+		return *this;
 	}
 public:
 	Fraction<T> operator+(Fraction<T> b)

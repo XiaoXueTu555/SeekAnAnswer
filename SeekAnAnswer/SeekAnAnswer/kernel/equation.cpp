@@ -667,3 +667,18 @@ std::vector<Fraction<Polynomial_Exponential_Sum>> Equation::quadratic_equation_i
 
 	return result;
 }
+
+std::string Out(Fraction<Polynomial> val)
+{
+	std::string value;
+	value += val.a.Out();
+
+	if (val.a.list.size() == 1 && val.a.list.at(0) == Monomial()) return value;
+
+	if (val.b != Polynomial(Monomial("1/1")))
+	{
+		value.push_back('/');
+		value += val.b.Out();
+	}
+	return value;
+}

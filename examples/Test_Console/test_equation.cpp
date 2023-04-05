@@ -2,6 +2,7 @@
 #ifdef DEBUG
 
 #include "SeekAnAnswer/kernel/equation.h"
+#include <Windows.h>
 using namespace std;
 int main()
 {

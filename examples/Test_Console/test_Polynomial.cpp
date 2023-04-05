@@ -7,8 +7,8 @@ using namespace std;
 int main()
 {
 	Polynomial a, b, c;
-	a.Input("a^7 + 3a^6 + 4a + 3");
-	b.Input("a + b");
+	a.Input("15ia + 15a + 16i -8");
+	b.Input("-15ib + 12b -16i -5");
 	c = a * b;
 	cout << "标准字符串输出：" << a.GetValue() << "\n";
 	cout << "非标准字符串输出：" << a.Out() << "\n";
