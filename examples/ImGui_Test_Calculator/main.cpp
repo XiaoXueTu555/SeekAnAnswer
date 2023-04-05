@@ -437,12 +437,18 @@ int main(int, char**)
                     ImGui::InputText("SetValue", SetValueText, IM_ARRAYSIZE(SetValueText));
                     ImGui::SameLine();
                     if (ImGui::Button("update1"))
+                    {
                         result.SetValue((std::string)SetValueText);
+                        result.ShiftItem();
+                    }
 
                     ImGui::InputText("Input", InputText, IM_ARRAYSIZE(InputText));
                     ImGui::SameLine();
                     if (ImGui::Button("update2"))
+                    {
                         result.Input((std::string)InputText);
+                        result.ShiftItem();
+                    }
 
                     ImGui::Text("--Out--");
                     ImGui::Text("GetValue: %s", result.GetValue().c_str());

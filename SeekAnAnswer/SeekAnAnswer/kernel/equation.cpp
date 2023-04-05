@@ -573,6 +573,7 @@ Fraction<Polynomial> Equation::linear_equation_with_one_unknown()
 
 std::vector<Fraction<Polynomial_Exponential_Sum>> Equation::quadratic_equation_in_one_unknown()
 {
+	this->ShiftItem();
 	std::vector<Fraction<Polynomial_Exponential_Sum>> result;
 	Polynomial a, b, c;
 
@@ -654,7 +655,7 @@ std::vector<Fraction<Polynomial_Exponential_Sum>> Equation::quadratic_equation_i
 		else if (result.at(i).a.IsPolynomial_Exponential()
 			&& result.at(i).b.IsPolynomial_Exponential())
 		{
-			if (!(result.at(i).a.list.at(i) / result.at(i).b.list.at(i)).Error())
+			if (!(result.at(i).a.list.at(0) / result.at(i).b.list.at(0)).Error())
 			{
 				result.at(i).a = (Polynomial_Exponential_Sum)
 					(result.at(i).a.list.at(i) / result.at(i).b.list.at(i));

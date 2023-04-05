@@ -142,8 +142,15 @@ std::string Polynomial_Exponential::Out()
 		if (this->exponential != Fraction<sint64>(1, 1))
 		{
 			value.push_back('^');
-			value.push_back('\40');
+			if (this->exponential.b != 1)
+			{
+				value += "(";
+			}
 			value += this->exponential.Out();
+			if (this->exponential.b != 1)
+			{
+				value += ")";
+			}
 		}
 	}
 	else

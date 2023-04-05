@@ -38,8 +38,9 @@ public:
 				value.push_back(')');
 			}
 
-
+			value.push_back('\40');
 			value.push_back('/');
+			value.push_back('\40');
 			if (this->b.list.size() > 1)
 			{
 				value.push_back('(');
