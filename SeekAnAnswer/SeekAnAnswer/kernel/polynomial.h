@@ -82,6 +82,8 @@ public:
 public:
 	//判断是否为单项式
 	bool IsMonomial();
+	//判断是否为纯数字
+	bool IsNumber();
 public:
 	bool IsError();
 private:

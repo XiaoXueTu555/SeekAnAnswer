@@ -447,6 +447,15 @@ bool Polynomial::IsMonomial()
 	return false;
 }
 
+bool Polynomial::IsNumber()
+{
+	if (!this->IsMonomial()) 
+		return false;
+	else if (this->list.at(0).IsNumber()) 
+		return true;
+	return false;
+}
+
 bool Polynomial::IsError()
 {
 	for (suint64 i = 0; i < this->list.size(); i++)

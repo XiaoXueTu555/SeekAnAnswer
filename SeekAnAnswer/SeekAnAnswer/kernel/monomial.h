@@ -54,6 +54,8 @@ public:
 	Monomial operator-(Monomial b);
 	Monomial operator*(Monomial b);
 	Monomial operator/(Monomial b);
+public:
+	operator Fraction<sint64>();
 private:
 	//ÊÇ·ñ´¦ÓÚ´íÎó×´Ì¬
 	bool error;

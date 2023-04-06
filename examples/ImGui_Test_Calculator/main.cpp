@@ -480,9 +480,31 @@ int main(int, char**)
                         }
                         else if (a.GetTheHighestDegreeTermOfTheUnknown() == Fraction<sint64>(2, 1))
                         {
-                            result2 = a.quadratic_equation_in_one_unknown();
-                            result_text1 = result2.at(0).Out();
-                            result_text2 = result2.at(1).Out();
+                            //如果该方程是纯数字方程
+                            if (a.IsPurelyNumericalEquation())
+                            {
+                                if (a.NumberOfRoot() > 0)
+                                {
+                                    result2 = a.quadratic_equation_in_one_unknown();
+                                    result_text1 = result2.at(0).Out();
+                                    result_text2 = result2.at(1).Out();
+                                }
+                                else
+                                {
+                                    result_text1 = result_text2 = "This equation has no real roots";
+                                }
+                            }
+                            else
+                            {
+                                result2 = a.quadratic_equation_in_one_unknown();
+                                result_text1 = result2.at(0).Out();
+                                result_text2 = result2.at(1).Out();
+                            }
+                        }
+                        else
+                        {
+                            result_text1 = result_text2 =
+                                "This equation cannot be solved using the SeekAnAnswer module";
                         }
                     }
 

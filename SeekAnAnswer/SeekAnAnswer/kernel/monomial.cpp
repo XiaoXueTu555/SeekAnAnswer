@@ -487,6 +487,14 @@ Monomial Monomial::operator/(Monomial b)
 	return result;
 }
 
+Monomial::operator Fraction<sint64>()
+{
+	Fraction<sint64> result;
+	result.a = this->coefficient.a;
+	result.b = this->coefficient.b;
+	return result;
+}
+
 /*判断该单项式是否处于错误状态，
 如果当前处于错误状态，则返回true，
 否则返回false*/

@@ -83,6 +83,7 @@ void Equation::SetValue(std::string value)
 	}
 
 	this->DeleteZero();
+	this->ShiftItem();
 	this->Unite_like_terms();
 }
 
@@ -313,6 +314,10 @@ void Equation::Input(std::string value)
 		temp_val.clear();
 		temp.Clear();
 	}
+
+	this->DeleteZero();
+	this->ShiftItem();
+	this->Unite_like_terms();
 }
 
 std::string Equation::GetValue()
@@ -511,7 +516,7 @@ void Equation::DeleteZero()
 			this->coefficient_right.at(i).list.at(0).GetCoefficient().a == 0)
 		{
 			this->coefficient_right.erase(this->coefficient_right.begin() + i);
-			this->coefficient_right.erase(this->coefficient_right.begin() + i);
+			this->exponent_right.erase(this->exponent_right.begin() + i);
 		}
 	}
 }
@@ -547,14 +552,76 @@ void Equation::Unite_like_terms()
 				this->coefficient_left.at(i) += this->coefficient_left.at(j);
 
 				this->coefficient_left.erase(this->coefficient_left.begin() + j);
+				this->exponent_left.erase(this->exponent_left.begin() + j);
 			}
 		}
 	}
 }
 
+bool Equation::IsPurelyNumericalEquation()
+{
+	for (suint64 i = 0; i < this->coefficient_left.size(); i++)
+	{
+		if (!this->coefficient_left.at(i).IsNumber())
+			return false;
+	}
+	return true;
+}
+
+sint64 Equation::NumberOfRoot()
+{
+	if (this->GetTheHighestDegreeTermOfTheUnknown() == Fraction<sint64>(1, 1))
+	{
+		return 1;
+	}
+
+	if (this->GetTheHighestDegreeTermOfTheUnknown() == Fraction<sint64>(2, 1))
+	{
+		this->Unite_like_terms();
+		this->ShiftItem();
+		Polynomial a, b, c;
+
+		//如果没找到常数项，则c等于0
+		if (this->FindDegree(Fraction<sint64>(0, 1)) != -1)
+		{
+			c = this->coefficient_left.at(this->FindDegree(Fraction<sint64>(0, 1)));
+		}
+
+		//如果没找到一次项，则b等于0
+		if (this->FindDegree(Fraction<sint64>(1, 1)) != -1)
+		{
+			b = this->coefficient_left.at(this->FindDegree(Fraction<sint64>(1, 1)));
+		}
+
+		//二次项作为最大的一项，所以肯定存在
+		a = this->coefficient_left.at(this->FindDegree(Fraction<sint64>(2, 1)));
+
+		Polynomial temp = (b * b) - (Polynomial(Monomial("(4/1)")) * a * c);
+
+		if (!temp.IsNumber()) 
+			return -1; //该方程可解，但不是纯数字方程
+
+		//如果判别式大于0
+		if ((Fraction<sint64>)(Monomial)temp > Fraction<sint64>(0, 1))
+		{
+			return 2;
+		}
+		else if ((Fraction<sint64>)(Monomial)temp == Fraction<sint64>(0, 1))
+		{
+			return 1;
+		}
+		else if ((Fraction<sint64>)(Monomial)temp < Fraction<sint64>(0, 1))
+		{
+			return 0;
+		}
+	}
+
+	return -2; //该方程无法使用SeekAnAnswer求解
+}
+
 Fraction<Polynomial> Equation::linear_equation_with_one_unknown()
 {
-	const Monomial Negative = (std::string)"-1/1";
+	Monomial Negative("(-1/1)");
 	Fraction<Polynomial> result;
 	Fraction<sint64> degree; //0
 	if (this->FindDegree(degree) == -1)
@@ -573,6 +640,7 @@ Fraction<Polynomial> Equation::linear_equation_with_one_unknown()
 
 std::vector<Fraction<Polynomial_Exponential_Sum>> Equation::quadratic_equation_in_one_unknown()
 {
+	this->Unite_like_terms();
 	this->ShiftItem();
 	std::vector<Fraction<Polynomial_Exponential_Sum>> result;
 	Polynomial a, b, c;
@@ -676,7 +744,7 @@ std::string Out(Fraction<Polynomial> val)
 
 	if (val.a.list.size() == 1 && val.a.list.at(0) == Monomial()) return value;
 
-	if (val.b != Polynomial(Monomial("1/1")))
+	if (val.b != Polynomial(Monomial("(1/1)")))
 	{
 		value.push_back('/');
 		value += val.b.Out();

@@ -31,6 +31,11 @@ public:
 	//合并同类项
 	void Unite_like_terms();
 public:
+	//是否为纯数字方程（未知数系数为纯数字）
+	bool IsPurelyNumericalEquation();
+	//该方程根的数量
+	sint64 NumberOfRoot();
+public:
 	//求解一元一次方程
 	Fraction<Polynomial> linear_equation_with_one_unknown();
 	//求解一元二次方程
