@@ -176,6 +176,26 @@ bool Polynomial_Exponential::IsPolynomial()
 	}
 }
 
+//这里的Number指纯数字，不是特指可转化为Fraction<sint64>类型
+bool Polynomial_Exponential::IsNumber()
+{
+	//如果指数是1/2
+	if (this->exponential == Fraction<sint64>(1, 2))
+	{
+		//当且仅当底数是纯数字的时候，整个类型是纯数字
+		if (this->number.IsNumber()) return true;
+		return false;
+	}
+	if (this->IsPolynomial())
+	{
+		if (((Polynomial)(*this)).IsNumber())
+		{
+			return true;
+		}
+	}
+	return false;
+}
+
 Polynomial_Exponential::operator Polynomial()
 {
 	Polynomial result = this->number;

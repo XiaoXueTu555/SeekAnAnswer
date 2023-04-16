@@ -195,9 +195,37 @@ public:
 	//化简
 	void Simplification()
 	{
+		//如果分子和分母都是负数，则化简
+		if (this->a < 0 && this->b < 0)
+		{
+			this->a = 0 - this->a;
+			this->b = 0 - this->b;
+		}
+		//如果a与b其中一个为负数，则统一为a为负数，b为正数
+		if (this->a * this->b < 0)
+		{
+			if (this->a > 0) this->a = 0 - this->a;
+			this->b = abs(this->b);
+		}
+
+		//经过上述处理之后，b必定为正数，因此只需要记录a的正负
+		sint64 a_sign = this->a > 0 ? 1 : -1;
+
+		this->a = abs(this->a);
+
 		sint64 temp = this->gcd(this->a, this->b);
+
 		this->a /= temp;
 		this->b /= temp;
+
+		this->a *= a_sign;
+	}
+public:
+	bool IsInteger()
+	{
+		this->Simplification();
+		if (this->b == 1) return true;
+		return false;
 	}
 
 /*字符串输入*/

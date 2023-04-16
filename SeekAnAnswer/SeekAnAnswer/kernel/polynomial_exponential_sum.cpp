@@ -93,6 +93,18 @@ bool Polynomial_Exponential_Sum::IsPolynomial()
 	return true;
 }
 
+bool Polynomial_Exponential_Sum::IsNumber()
+{
+	if (this->IsPolynomial())
+	{
+		if (((Polynomial)*this).IsNumber())
+		{
+			return true;
+		}
+	}
+	return false;
+}
+
 bool Polynomial_Exponential_Sum::IsPolynomial_Exponential()
 {
 	this->Unite_like_terms();

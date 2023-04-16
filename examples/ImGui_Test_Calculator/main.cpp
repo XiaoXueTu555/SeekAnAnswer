@@ -474,8 +474,8 @@ int main(int, char**)
                         a.Input(InputText1);
                         if (a.GetTheHighestDegreeTermOfTheUnknown() == Fraction<sint64>(1, 1))
                         {
-                            result1 = a.linear_equation_with_one_unknown();
-                            result_text1 = Out(result1);
+                            a.linear_equation_with_one_unknown();
+                            result_text1 = Out(a.root1);
                             result_text2 = "There is only one result to this equation";
                         }
                         else if (a.GetTheHighestDegreeTermOfTheUnknown() == Fraction<sint64>(2, 1))
@@ -485,9 +485,9 @@ int main(int, char**)
                             {
                                 if (a.NumberOfRoot() > 0)
                                 {
-                                    result2 = a.quadratic_equation_in_one_unknown();
-                                    result_text1 = result2.at(0).Out();
-                                    result_text2 = result2.at(1).Out();
+                                    a.quadratic_equation_in_one_unknown();
+                                    result_text1 = a.root2.at(0).Out();
+                                    result_text2 = a.root2.at(1).Out();
                                 }
                                 else
                                 {
@@ -496,9 +496,9 @@ int main(int, char**)
                             }
                             else
                             {
-                                result2 = a.quadratic_equation_in_one_unknown();
-                                result_text1 = result2.at(0).Out();
-                                result_text2 = result2.at(1).Out();
+                                a.quadratic_equation_in_one_unknown();
+                                result_text1 = a.root2.at(0).Out();
+                                result_text2 = a.root2.at(1).Out();
                             }
                         }
                         else

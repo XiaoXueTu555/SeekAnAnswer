@@ -619,42 +619,44 @@ sint64 Equation::NumberOfRoot()
 	return -2; //该方程无法使用SeekAnAnswer求解
 }
 
-Fraction<Polynomial> Equation::linear_equation_with_one_unknown()
+void Equation::linear_equation_with_one_unknown()
 {
 	Monomial Negative("(-1/1)");
-	Fraction<Polynomial> result;
 	Fraction<sint64> degree; //0
+
+	this->root1.a.Clear();
+	this->root1.b.Clear();
+
 	if (this->FindDegree(degree) == -1)
 	{
-		result.a.Push(Monomial("0/1"));
-		result.b.Push(Monomial("1/1"));
-		return result;
+		this->root1.a.Push(Monomial("0/1"));
+		this->root1.b.Push(Monomial("1/1"));
 	}
-	result.a = (this->coefficient_left.at(this->FindDegree(degree)) * Negative);
+	this->root1.a = (this->coefficient_left.at(this->FindDegree(degree)) * Negative);
 
 	degree.a = 1; degree.b = 1;
 
-	result.b = this->coefficient_left.at(this->FindDegree(degree));
-	return result;
+	this->root1.b = this->coefficient_left.at(this->FindDegree(degree));
 }
 
-std::vector<Fraction<Polynomial_Exponential_Sum>> Equation::quadratic_equation_in_one_unknown()
+void Equation::quadratic_equation_in_one_unknown()
 {
-	this->Unite_like_terms();
-	this->ShiftItem();
-	std::vector<Fraction<Polynomial_Exponential_Sum>> result;
 	Polynomial a, b, c;
 
-	result.push_back(Fraction<Polynomial_Exponential_Sum>()); //X1
-	result.push_back(Fraction<Polynomial_Exponential_Sum>()); //X2
+	this->Unite_like_terms();
+	this->ShiftItem();
 
-	//如果没找到常数项，则c等于0
+	this->root2.clear();
+	this->root2.push_back(Fraction<Polynomial_Exponential_Sum>()); //X1
+	this->root2.push_back(Fraction<Polynomial_Exponential_Sum>()); //X2
+
+	//如果找到了常数项，则赋值 //没找到常数项，则c = 0
 	if (this->FindDegree(Fraction<sint64>(0, 1)) != -1)
 	{
 		c = this->coefficient_left.at(this->FindDegree(Fraction<sint64>(0, 1)));
 	}
 
-	//如果没找到一次项，则b等于0
+	//如果找到了一次项，则赋值 //如果没找到一次项，则b等于0
 	if (this->FindDegree(Fraction<sint64>(1, 1)) != -1)
 	{
 		b = this->coefficient_left.at(this->FindDegree(Fraction<sint64>(1, 1)));
@@ -665,76 +667,76 @@ std::vector<Fraction<Polynomial_Exponential_Sum>> Equation::quadratic_equation_i
 
 	/*计算X1*/
 	//-b
-	result.at(0).a.Push(Polynomial_Exponential(
+	this->root2.at(0).a.Push(Polynomial_Exponential(
 		(Polynomial_Exponential)(Polynomial("(-1/1)") * b)
 	));
 
-	//根号判别式
-	result.at(0).a.Push(Polynomial_Exponential(
+	//根号判别式 化简判别式
+	this->root2.at(0).a.Push(
+		Simplest_radical(Polynomial_Exponential(
 		Fraction<sint64>(1, 1),
 		(b * b) + (Polynomial("(-4/1)") * a * c),
-		Fraction<sint64>(1, 2)
+		Fraction<sint64>(1, 2))
 	));
 
 	//2a
-	result.at(0).b.Push(Polynomial_Exponential(
+	this->root2.at(0).b.Push(Polynomial_Exponential(
 		Polynomial("(2/1)") * a
 	));
 
-	result.at(0).a.DeleteZero();
+	this->root2.at(0).a.DeleteZero();
 
 	//////////////////////////////////////////////
 	/*计算X2*/
 	//-b
-	result.at(1).a.Push(Polynomial_Exponential(
+	this->root2.at(1).a.Push(Polynomial_Exponential(
 		(Polynomial_Exponential)(Polynomial("(-1/1)") * b)
 	));
 
-	//负根号判别式
-	result.at(1).a.Push(Polynomial_Exponential(
+	//负根号判别式 化简判别式
+	this->root2.at(1).a.Push(Simplest_radical(Polynomial_Exponential(
 		Fraction<sint64>(-1, 1),
 		(b * b) + (Polynomial("(-4/1)") * a * c),
-		Fraction<sint64>(1, 2)
+		Fraction<sint64>(1, 2))
 	));
 
 	//2a
-	result.at(1).b.Push(Polynomial_Exponential(
+	this->root2.at(1).b.Push(Polynomial_Exponential(
 		Polynomial("(2/1)") * a
 	));
 
-	result.at(1).a.DeleteZero();
+	this->root2.at(1).a.DeleteZero();
 
 	for (suint64 i = 0; i < 2; i++)
 	{
-		if (result.at(i).a.IsPolynomial()
-			&& result.at(i).b.IsPolynomial())
+		if (this->root2.at(i).a.IsPolynomial()
+			&& this->root2.at(i).b.IsPolynomial())
 		{
-			//如果余数相除余数等于0，则进行化简运算
-			if (((Polynomial)result.at(i).a % (Polynomial)result.at(i).b) == Polynomial())
+			//如果分母能整除分子，则进行化简运算
+			if (((Polynomial)this->root2.at(i).a % (Polynomial)this->root2.at(i).b) == Polynomial())
 			{
-				result.at(i).a = (Polynomial_Exponential_Sum)
+				this->root2.at(i).a = (Polynomial_Exponential_Sum)
 					(Polynomial_Exponential)
-					((Polynomial)result.at(i).a / (Polynomial)result.at(i).b);
+					((Polynomial)this->root2.at(i).a / (Polynomial)this->root2.at(i).b);
 
-				result.at(i).b = Polynomial_Exponential_Sum(Polynomial_Exponential(Fraction<sint64>(1, 1),
+				this->root2.at(i).b = Polynomial_Exponential_Sum(Polynomial_Exponential(Fraction<sint64>(1, 1),
 					Polynomial(Monomial("(1/1)")), Fraction<sint64>(1, 1)));
 			}
 		}
-		else if (result.at(i).a.IsPolynomial_Exponential()
-			&& result.at(i).b.IsPolynomial_Exponential())
+		else if (this->root2.at(i).a.IsPolynomial_Exponential()
+			&& this->root2.at(i).b.IsPolynomial_Exponential())
 		{
-			if (!(result.at(i).a.list.at(0) / result.at(i).b.list.at(0)).Error())
+			if (!(this->root2.at(i).a.list.at(0) / this->root2.at(i).b.list.at(0)).Error())
 			{
-				result.at(i).a = (Polynomial_Exponential_Sum)
-					(result.at(i).a.list.at(i) / result.at(i).b.list.at(i));
+				this->root2.at(i).a = (Polynomial_Exponential_Sum)
+					(this->root2.at(i).a.list.at(i) / this->root2.at(i).b.list.at(i));
 
-				result.at(i).b = Polynomial_Exponential_Sum(Polynomial_Exponential(Fraction<sint64>(1, 1),
+				this->root2.at(i).b = Polynomial_Exponential_Sum(Polynomial_Exponential(Fraction<sint64>(1, 1),
 					Polynomial(Monomial("(1/1)")), Fraction<sint64>(1, 1)));
 			}
 		}
 	}
-
-	return result;
+	return;
 }
 
 std::string Out(Fraction<Polynomial> val)
@@ -750,4 +752,145 @@ std::string Out(Fraction<Polynomial> val)
 		value += val.b.Out();
 	}
 	return value;
+}
+
+Polynomial_Exponential Simplest_radical_AnBo(Polynomial_Exponential val)
+{
+	Polynomial_Exponential result;
+	sint64 a = 0; //自然数
+	sint64 aj = 0; //待分解的剩余因子
+	std::vector<sint64> k; //分解出的k因子序列
+	Prime ki; //用于分解的k素数
+	sint64 g = 1; //所有不相等的k因子的乘积
+	//如果a不是自然数
+	if (!(val.number.IsNumber() && val.number.list.at(0).GetCoefficient().IsInteger()
+		&& val.number.list.at(0).GetCoefficient().a >= 0))
+	{
+		result.error = true;
+		return result;
+	}
+
+	//如果指数不是1/2
+	if (val.exponential != Fraction<sint64>(1, 2))
+	{
+		result.error = true;
+		return result;
+	}
+
+	/*开始化简*/
+	//赋值
+	a = ((Monomial)(val.number)).GetCoefficient().a;
+
+	//如果a = 0
+	if (a == 0)
+	{
+		return result;
+	}
+
+	//如果a = 1
+	if (a == 1)
+	{
+		result.number.list.at(0).SetCoefficient(a, 1);
+		return result;
+	}
+
+	//如果a是素数
+	if (IsPrime(a))
+	{
+		result.coefficient = val.coefficient;
+		result.number.list.at(0).SetValue(Fraction<sint64>(a, 1));
+		result.exponential.b = 2;
+		return result;
+	}
+
+	aj = a;
+	while (!IsPrime(aj))
+	{
+		if (aj % ki.n != 0) ki.Next();
+		else
+		{
+			k.push_back(ki.n); //记录分解因子
+			aj /= ki.n; //分解出新的aj
+		}
+	}
+
+	//将剩余的aj插入进k因子序列
+	for (suint64 i = 0; i < k.size(); i++)
+	{
+		if (aj == k.at(i)) 
+		{
+			k.insert(k.begin() + i, aj);
+			aj = 0;
+			break;
+		}
+	}
+	if (aj != 0)
+	{
+		k.push_back(aj);
+	}
+
+	result.coefficient.a = 1;
+
+	//处理k因子序列
+	while (k.size() >= 1)
+	{
+		if (k.size() == 1)
+		{
+			g *= k.at(0);
+			k.erase(k.begin());
+		}
+		else if (k.at(0) == k.at(1))
+		{
+			result.coefficient.a *= k.at(0);
+			k.erase(k.begin());
+			k.erase(k.begin());
+		}
+		else
+		{
+			g *= k.at(0);
+			k.erase(k.begin());
+		}
+	}
+
+	result.coefficient *= val.coefficient;
+	//如果g=1，说明化简结果为整数
+	if (g == 1)
+	{
+		result.number.list.at(0).SetCoefficientA(1);
+		return result;
+	}
+	result.number.list.at(0).SetCoefficientA(g);
+	result.exponential.b = 2;
+	return result;
+}
+
+Polynomial_Exponential Simplest_radical(Polynomial_Exponential val)
+{
+	Polynomial_Exponential result;
+	Fraction<sint64> a;
+	//如果val不是纯数字，则无法化简
+	if (!val.IsNumber())
+	{
+		return val;
+	}
+
+	//赋值（提取）a
+	a = ((Monomial)val.number).GetCoefficient();
+
+	//如果a小于0，则无法做化简操作
+	if (a < Fraction<sint64>(0, 1))
+	{
+		return val;
+	}
+
+	//如果a是整数，则直接化简
+	if (a.IsInteger())
+	{
+		return Simplest_radical_AnBo(val);
+	}
+
+	result.coefficient = val.coefficient * Fraction<sint64>(1, a.b);
+	result.number = Fraction<sint64>(a.a * a.b, 1);
+	result.exponential.b = 2;
+	return Simplest_radical_AnBo(result);
 }

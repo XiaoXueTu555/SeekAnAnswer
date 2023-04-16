@@ -26,6 +26,7 @@ public:
 
 public:
 	bool IsPolynomial();
+	bool IsNumber();
 	bool IsPolynomial_Exponential();
 public:
 	operator Polynomial();

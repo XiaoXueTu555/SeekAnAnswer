@@ -10,9 +10,9 @@ int main()
 	E.Input("X^2 = 1");
 	cout << "方程：" << E.GetValue() << endl;
 	cout << "方程：" << E.Out() << endl;
-	vector<Fraction<Polynomial_Exponential_Sum>> result =  E.quadratic_equation_in_one_unknown();
-	cout << "X1 = " << result.at(0).Out() << endl;
-	cout << "X2 = " << result.at(1).Out() << endl;
+	E.quadratic_equation_in_one_unknown();
+	cout << "X1 = " << E.root2.at(0).Out() << endl;
+	cout << "X2 = " << E.root2.at(1).Out() << endl;
 }
 
 #endif // DEBUG

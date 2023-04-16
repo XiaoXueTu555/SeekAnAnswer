@@ -14,7 +14,8 @@ private:
 public: //构造函数
 	Monomial();
 	Monomial(std::string std_value);
-	Monomial(Fraction<sint64> coefficient, std::map<sint8, Fraction<sint64>> factor);
+	Monomial(Fraction<sint64> coefficient,
+		std::map<sint8, Fraction<sint64>> factor = std::map<sint8, Fraction<sint64>>());
 public:
 	Fraction<sint64> GetDegree(); //获得此单项式的次数
 	Fraction<sint64> GetCoefficient(); //获得此单项式的系数

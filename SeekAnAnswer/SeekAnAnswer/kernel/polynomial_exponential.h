@@ -10,7 +10,7 @@ public:
 	Polynomial number;
 	//指数
 	Fraction<sint64> exponential;
-private:
+public:
 	bool error;
 public:
 	Polynomial_Exponential();
@@ -37,6 +37,7 @@ public:
 public:
 	//判断是否可以转成polynomial类型
 	bool IsPolynomial();
+	bool IsNumber();
 public:
 	operator Polynomial();
 public:
