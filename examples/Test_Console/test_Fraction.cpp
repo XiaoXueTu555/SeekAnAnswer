@@ -1,8 +1,9 @@
-//#define DEBUG
+#define DEBUG
 
 #ifdef DEBUG
 
 #include "SeekAnAnswer/kernel/fraction.h"
+#include "SeekAnAnswer/kernel/monomial.h"
 using namespace std;
 int main()
 {

@@ -48,25 +48,7 @@
     <ClInclude Include="..\..\SeekAnAnswer\High\Public\High_math.h">
       <Filter>High\public</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\SeekAnAnswer\SeekAnAnswer\kernel\equation.h">
-      <Filter>SeekAnAnswer\kernel</Filter>
-    </ClInclude>
     <ClInclude Include="..\..\SeekAnAnswer\SeekAnAnswer\kernel\fraction.h">
-      <Filter>SeekAnAnswer\kernel</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\SeekAnAnswer\SeekAnAnswer\kernel\Fraction_PES.h">
-      <Filter>SeekAnAnswer\kernel</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\SeekAnAnswer\SeekAnAnswer\kernel\monomial.h">
-      <Filter>SeekAnAnswer\kernel</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\SeekAnAnswer\SeekAnAnswer\kernel\polynomial.h">
-      <Filter>SeekAnAnswer\kernel</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\SeekAnAnswer\SeekAnAnswer\kernel\polynomial_exponential.h">
-      <Filter>SeekAnAnswer\kernel</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\SeekAnAnswer\SeekAnAnswer\kernel\polynomial_exponential_sum.h">
       <Filter>SeekAnAnswer\kernel</Filter>
     </ClInclude>
     <ClInclude Include="..\..\SeekAnAnswer\SeekAnAnswer\misinttypes\saint.h">
@@ -96,6 +78,24 @@
     <ClInclude Include="ImGUI\imstb_truetype.h">
       <Filter>ImGui</Filter>
     </ClInclude>
+    <ClInclude Include="..\..\SeekAnAnswer\SeekAnAnswer\kernel\equation.h">
+      <Filter>SeekAnAnswer\kernel</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\SeekAnAnswer\SeekAnAnswer\kernel\Fraction_PES.h">
+      <Filter>SeekAnAnswer\kernel</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\SeekAnAnswer\SeekAnAnswer\kernel\monomial.h">
+      <Filter>SeekAnAnswer\kernel</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\SeekAnAnswer\SeekAnAnswer\kernel\polynomial.h">
+      <Filter>SeekAnAnswer\kernel</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\SeekAnAnswer\SeekAnAnswer\kernel\polynomial_exponential.h">
+      <Filter>SeekAnAnswer\kernel</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\SeekAnAnswer\SeekAnAnswer\kernel\polynomial_exponential_sum.h">
+      <Filter>SeekAnAnswer\kernel</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\..\SeekAnAnswer\High\Private\High_float.cpp">
@@ -103,21 +103,6 @@
     </ClCompile>
     <ClCompile Include="..\..\SeekAnAnswer\High\Private\High_int.cpp">
       <Filter>High\private</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\SeekAnAnswer\SeekAnAnswer\kernel\equation.cpp">
-      <Filter>SeekAnAnswer\kernel</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\SeekAnAnswer\SeekAnAnswer\kernel\monomial.cpp">
-      <Filter>SeekAnAnswer\kernel</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\SeekAnAnswer\SeekAnAnswer\kernel\polynomial.cpp">
-      <Filter>SeekAnAnswer\kernel</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\SeekAnAnswer\SeekAnAnswer\kernel\polynomial_exponential.cpp">
-      <Filter>SeekAnAnswer\kernel</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\SeekAnAnswer\SeekAnAnswer\kernel\polynomial_exponential_sum.cpp">
-      <Filter>SeekAnAnswer\kernel</Filter>
     </ClCompile>
     <ClCompile Include="ImGUI\imgui.cpp">
       <Filter>ImGui</Filter>
@@ -142,6 +127,21 @@
     </ClCompile>
     <ClCompile Include="main.cpp">
       <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\SeekAnAnswer\SeekAnAnswer\kernel\equation.cpp">
+      <Filter>SeekAnAnswer\kernel</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\SeekAnAnswer\SeekAnAnswer\kernel\monomial.cpp">
+      <Filter>SeekAnAnswer\kernel</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\SeekAnAnswer\SeekAnAnswer\kernel\polynomial.cpp">
+      <Filter>SeekAnAnswer\kernel</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\SeekAnAnswer\SeekAnAnswer\kernel\polynomial_exponential.cpp">
+      <Filter>SeekAnAnswer\kernel</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\SeekAnAnswer\SeekAnAnswer\kernel\polynomial_exponential_sum.cpp">
+      <Filter>SeekAnAnswer\kernel</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

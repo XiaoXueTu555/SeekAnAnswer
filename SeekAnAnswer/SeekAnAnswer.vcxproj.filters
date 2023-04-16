@@ -51,12 +51,6 @@
     <ClInclude Include="SeekAnAnswer\kernel\fraction.h">
       <Filter>头文件\SeekAnAnswer\Polynomials Math Calculator\kernel</Filter>
     </ClInclude>
-    <ClInclude Include="SeekAnAnswer\kernel\monomial.h">
-      <Filter>头文件\SeekAnAnswer\Polynomials Math Calculator\kernel</Filter>
-    </ClInclude>
-    <ClInclude Include="SeekAnAnswer\kernel\polynomial.h">
-      <Filter>头文件\SeekAnAnswer\Polynomials Math Calculator\kernel</Filter>
-    </ClInclude>
     <ClInclude Include="High\Public\High_float.h">
       <Filter>头文件\High</Filter>
     </ClInclude>
@@ -69,34 +63,40 @@
     <ClInclude Include="High\Public\High_math.h">
       <Filter>头文件\High</Filter>
     </ClInclude>
-    <ClInclude Include="SeekAnAnswer\kernel\equation.h">
-      <Filter>头文件\SeekAnAnswer\Solve Equations</Filter>
-    </ClInclude>
-    <ClInclude Include="SeekAnAnswer\kernel\polynomial_exponential.h">
+    <ClInclude Include="SeekAnAnswer\kernel\Fraction_PES.h">
       <Filter>头文件\SeekAnAnswer\Polynomials Math Calculator\kernel</Filter>
     </ClInclude>
-    <ClInclude Include="SeekAnAnswer\kernel\Fraction_PES.h">
+    <ClInclude Include="SeekAnAnswer\kernel\monomial.h">
+      <Filter>头文件\SeekAnAnswer\Polynomials Math Calculator\kernel</Filter>
+    </ClInclude>
+    <ClInclude Include="SeekAnAnswer\kernel\polynomial.h">
+      <Filter>头文件\SeekAnAnswer\Polynomials Math Calculator\kernel</Filter>
+    </ClInclude>
+    <ClInclude Include="SeekAnAnswer\kernel\polynomial_exponential.h">
       <Filter>头文件\SeekAnAnswer\Polynomials Math Calculator\kernel</Filter>
     </ClInclude>
     <ClInclude Include="SeekAnAnswer\kernel\polynomial_exponential_sum.h">
       <Filter>头文件\SeekAnAnswer\Polynomials Math Calculator\kernel</Filter>
     </ClInclude>
+    <ClInclude Include="SeekAnAnswer\kernel\equation.h">
+      <Filter>头文件\SeekAnAnswer\Solve Equations</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="SeekAnAnswer\kernel\polynomial.cpp">
-      <Filter>源文件\SeekAnAnswer\Polynomials Math Calculator</Filter>
-    </ClCompile>
     <ClCompile Include="High\Private\High_float.cpp">
       <Filter>源文件\High</Filter>
     </ClCompile>
     <ClCompile Include="High\Private\High_int.cpp">
       <Filter>源文件\High</Filter>
     </ClCompile>
+    <ClCompile Include="test.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
     <ClCompile Include="SeekAnAnswer\kernel\monomial.cpp">
       <Filter>源文件\SeekAnAnswer\Polynomials Math Calculator</Filter>
     </ClCompile>
-    <ClCompile Include="SeekAnAnswer\kernel\equation.cpp">
-      <Filter>源文件\SeekAnAnswer\Solve Equations</Filter>
+    <ClCompile Include="SeekAnAnswer\kernel\polynomial.cpp">
+      <Filter>源文件\SeekAnAnswer\Polynomials Math Calculator</Filter>
     </ClCompile>
     <ClCompile Include="SeekAnAnswer\kernel\polynomial_exponential.cpp">
       <Filter>源文件\SeekAnAnswer\Polynomials Math Calculator</Filter>
@@ -104,8 +104,8 @@
     <ClCompile Include="SeekAnAnswer\kernel\polynomial_exponential_sum.cpp">
       <Filter>源文件\SeekAnAnswer\Polynomials Math Calculator</Filter>
     </ClCompile>
-    <ClCompile Include="test.cpp">
-      <Filter>源文件</Filter>
+    <ClCompile Include="SeekAnAnswer\kernel\equation.cpp">
+      <Filter>源文件\SeekAnAnswer\Solve Equations</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

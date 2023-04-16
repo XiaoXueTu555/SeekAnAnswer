@@ -142,7 +142,9 @@
     <ClInclude Include="..\..\SeekAnAnswer\High\Public\High_io.h" />
     <ClInclude Include="..\..\SeekAnAnswer\High\Public\High_math.h" />
     <ClInclude Include="..\..\SeekAnAnswer\SeekAnAnswer\kernel\equation.h" />
-    <ClInclude Include="..\..\SeekAnAnswer\SeekAnAnswer\kernel\fraction.h" />
+    <ClInclude Include="..\..\SeekAnAnswer\SeekAnAnswer\kernel\fraction.h">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">false</ExcludedFromBuild>
+    </ClInclude>
     <ClInclude Include="..\..\SeekAnAnswer\SeekAnAnswer\kernel\Fraction_PES.h" />
     <ClInclude Include="..\..\SeekAnAnswer\SeekAnAnswer\kernel\monomial.h" />
     <ClInclude Include="..\..\SeekAnAnswer\SeekAnAnswer\kernel\polynomial.h" />

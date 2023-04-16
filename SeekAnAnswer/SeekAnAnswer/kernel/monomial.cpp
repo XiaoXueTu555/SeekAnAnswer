@@ -435,7 +435,7 @@ Monomial Monomial::operator*(Monomial b)
 		//未查询到该字母因数
 		if (result.factor.find(i->first) == result.factor.end())
 		{
-			result.factor.insert(std::pair<sint64, Fraction<sint64>>(i->first, i->second));
+			result.factor.insert(std::pair<sint8, Fraction<sint64>>(i->first, i->second));
 		}
 		else
 		{
@@ -472,7 +472,7 @@ Monomial Monomial::operator/(Monomial b)
 		//未查询到该字母因数
 		if (result.factor.find(i->first) == result.factor.end())
 		{
-			result.factor.insert(std::pair<sint64, Fraction<sint64>>(i->first, Fraction<sint64>(0 - i->second.a, i->second.b)));
+			result.factor.insert(std::pair<sint8, Fraction<sint64>>(i->first, Fraction<sint64>(0 - i->second.a, i->second.b)));
 		}
 		else
 		{
@@ -489,10 +489,7 @@ Monomial Monomial::operator/(Monomial b)
 
 Monomial::operator Fraction<sint64>()
 {
-	Fraction<sint64> result;
-	result.a = this->coefficient.a;
-	result.b = this->coefficient.b;
-	return result;
+	return this->coefficient;
 }
 
 /*判断该单项式是否处于错误状态，

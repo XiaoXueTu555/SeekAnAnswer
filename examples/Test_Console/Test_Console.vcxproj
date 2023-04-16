@@ -73,6 +73,9 @@
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
     <IncludePath>D:\project\vs2019\SeekAnAnswer\SeekAnAnswer;$(IncludePath)</IncludePath>
   </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
+    <IncludePath>D:\project\vs2019\SeekAnAnswer\SeekAnAnswer;$(IncludePath)</IncludePath>
+  </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <ClCompile>
       <WarningLevel>Level3</WarningLevel>
@@ -132,29 +135,16 @@
   <ItemGroup>
     <ClCompile Include="..\..\SeekAnAnswer\High\Private\High_float.cpp" />
     <ClCompile Include="..\..\SeekAnAnswer\High\Private\High_int.cpp" />
-    <ClCompile Include="..\..\SeekAnAnswer\SeekAnAnswer\kernel\equation.cpp" />
     <ClCompile Include="..\..\SeekAnAnswer\SeekAnAnswer\kernel\monomial.cpp" />
-    <ClCompile Include="..\..\SeekAnAnswer\SeekAnAnswer\kernel\polynomial.cpp" />
-    <ClCompile Include="..\..\SeekAnAnswer\SeekAnAnswer\kernel\polynomial_exponential.cpp" />
-    <ClCompile Include="..\..\SeekAnAnswer\SeekAnAnswer\kernel\polynomial_exponential_sum.cpp" />
-    <ClCompile Include="test_equation.cpp" />
     <ClCompile Include="test_Fraction.cpp" />
-    <ClCompile Include="test_Monomial.cpp" />
-    <ClCompile Include="test_Polynomial.cpp" />
-    <ClCompile Include="test_Polynomial_Exponential.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\..\SeekAnAnswer\High\Public\High_float.h" />
     <ClInclude Include="..\..\SeekAnAnswer\High\Public\High_int.h" />
     <ClInclude Include="..\..\SeekAnAnswer\High\Public\High_io.h" />
     <ClInclude Include="..\..\SeekAnAnswer\High\Public\High_math.h" />
-    <ClInclude Include="..\..\SeekAnAnswer\SeekAnAnswer\kernel\equation.h" />
     <ClInclude Include="..\..\SeekAnAnswer\SeekAnAnswer\kernel\fraction.h" />
-    <ClInclude Include="..\..\SeekAnAnswer\SeekAnAnswer\kernel\Fraction_PES.h" />
     <ClInclude Include="..\..\SeekAnAnswer\SeekAnAnswer\kernel\monomial.h" />
-    <ClInclude Include="..\..\SeekAnAnswer\SeekAnAnswer\kernel\polynomial.h" />
-    <ClInclude Include="..\..\SeekAnAnswer\SeekAnAnswer\kernel\polynomial_exponential.h" />
-    <ClInclude Include="..\..\SeekAnAnswer\SeekAnAnswer\kernel\polynomial_exponential_sum.h" />
     <ClInclude Include="..\..\SeekAnAnswer\SeekAnAnswer\misinttypes\saint.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
