@@ -261,7 +261,8 @@ void Monomial::Input(std::string value)
 
 	for (i; i < value.size(); i++)
 	{
-		if (value.at(i) >= 'a' && value.at(i) <= 'z')
+		if ((value.at(i) >= 'a' && value.at(i) <= 'z') ||
+			(value.at(i) >= 'A' && value.at(i) <= 'Z'))
 		{
 			//保存字母
 			letter = value.at(i);
@@ -355,7 +356,17 @@ std::string Monomial::Out()
 	//如果数字系数不等于1
 	else if (this->coefficient != Fraction<sint64>(1, 1))
 	{
+		if (this->coefficient.b != 1)
+		{
+			result.push_back('(');
+		}
+
 		result += this->coefficient.Out();
+
+		if (this->coefficient.b != 1)
+		{
+			result.push_back(')');
+		}
 	}
 
 	for (FACTOR i = this->factor.begin(); i != this->factor.end(); i++)
@@ -427,6 +438,17 @@ Monomial Monomial::operator*(Monomial b)
 {
 	Monomial result;
 	result.coefficient = this->coefficient * b.coefficient;
+
+	//如果乘积后的系数为0则将0作为结果
+	if (result.coefficient.a == 0)
+	{
+		/*这样做的目的是，可能存在0与任何数做乘积运算后，
+		结果中存在某一个非零多项式的字母系数，后续其他地方
+		在做判断0操作或者判断是否为纯数字的时候可能会失效，
+		所以这里直接返回结果*/
+		return result;
+	}
+
 	result.factor = this->factor;
 
 	FACTOR pos;

@@ -105,13 +105,23 @@ void Equation::Input(std::string value)
 		if (value.at(i) == '\40') continue;
 		if (value.at(i) == '+') continue;
 
+		if (value.at(i) == '+') ++i;
+
 		suint64 node_location =
-			((value.find('X', i) != std::string::npos)
-				&& (value.find('+', value.find('X', i)) != std::string::npos)
-				&& (value.find('+', value.find('X', i)) < value.find('=')))
-			? value.find('+', value.find("X", i)) //如果有X，且后面有“+”则返回该符号下标
-			: (value.find('X', i) != std::string::npos) ? value.find('=') //有X后面没有“+”则返回“=”下标
-			: (value.find('+', i) != std::string::npos) ? value.find('+', i) : value.find('=');
+			((value.find('X', i) != std::string::npos) //在当前位置后存在X
+				&& (value.find('X', i) < value.find('=')) //存在的X在等号之前
+				&& ((value.find('+', i)) == std::string::npos //不存在加号
+					|| value.find('+', i) > value.find('X', i))//或者存在加号，但是在X之后
+				)
+			//若上述条件成立（该项存在未知数）
+			? (((value.find('+', value.find('X', i)) != std::string::npos)
+				&& value.find('+', value.find('X', i)) < value.find("="))//存在加号在X之后
+				? (value.find('+', value.find('X', i)))
+				: value.find('='))
+			//若上述条件不成立（该项不存在未知数）
+			: ((value.find('+', i) < value.find('='))//存在加号在该项后
+				? value.find('+', i)
+				: value.find('='));
 
 		//读取这一项
 		for (i; i < node_location; i++)
@@ -195,7 +205,7 @@ void Equation::Input(std::string value)
 		//指定指数大小
 		else
 		{
-			for (suint64 i = container.find('^') + 1; i < container.size(); i++)
+			for (suint64 i = container.rfind('^') + 1; i < container.size(); i++)
 				temp_val.push_back(container.at(i));
 			this->exponent_left.push_back(Fraction<sint64>(temp_val));
 		}
@@ -216,12 +226,23 @@ void Equation::Input(std::string value)
 		if (value.at(i) == '\40') continue;
 		if (value.at(i) == '+') continue;
 
+		if (value.at(i) == '+') ++i;
+
 		suint64 node_location =
-			((value.find('X', i) != std::string::npos)
-				&& (value.find('+', value.find('X', i)) != std::string::npos))
-			? value.find('+', value.find("X", i)) //如果有X，且后面有“+”则返回该符号下标
-			: (value.find('X', i) != std::string::npos) ? value.size() //有X后面没有“+”则返回结尾
-			: (value.find('+', i) != std::string::npos) ? value.find('+', i) : value.size();
+			((value.find('X', i) != std::string::npos) //在当前位置后存在X
+				&& (value.find('X', i) < value.size()) //存在的X在结束之前
+				&& ((value.find('+', i)) == std::string::npos //不存在加号
+					|| value.find('+', i) > value.find('X', i))//或者存在加号，但是在X之后
+				)
+			//若上述条件成立（该项存在未知数）
+			? (((value.find('+', value.find('X', i)) != std::string::npos)
+				&& value.find('+', value.find('X', i)) < value.size())//存在加号在X之后
+				? (value.find('+', value.find('X', i)))
+				: value.size())
+			//若上述条件不成立（该项不存在未知数）
+			: ((value.find('+', i) < value.size())//存在加号在该项后
+				? value.find('+', i)
+				: value.size());
 
 		//读取这一项
 		for (i; i < node_location; i++)
@@ -305,7 +326,7 @@ void Equation::Input(std::string value)
 		//指定指数大小
 		else
 		{
-			for (suint64 i = container.find('^') + 1; i < container.size(); i++)
+			for (suint64 i = container.rfind('^') + 1; i < container.size(); i++)
 				temp_val.push_back(container.at(i));
 			this->exponent_right.push_back(Fraction<sint64>(temp_val));
 		}
@@ -635,8 +656,28 @@ void Equation::linear_equation_with_one_unknown()
 	this->root1.a = (this->coefficient_left.at(this->FindDegree(degree)) * Negative);
 
 	degree.a = 1; degree.b = 1;
-
+	
 	this->root1.b = this->coefficient_left.at(this->FindDegree(degree));
+
+	//如果分母是整数，则化简
+	if (root1.b.IsNumber() && root1.b.list.at(0).GetCoefficient().b == 1)
+	{
+		root1.a *= (Monomial)(Fraction<sint64>(1, root1.b.list.at(0).GetCoefficient().a));
+		this->root1.b.list.at(0).SetCoefficientA(1);
+	}
+
+	//如果分母是纯数字分式，则化简
+	else if (root1.b.IsNumber() && root1.b.list.at(0).GetCoefficient().b != 1)
+	{
+		root1.a *= (Monomial)(Fraction<sint64>(root1.b.list.at(0).GetCoefficient().b, 1));
+		this->root1.b.list.at(0).SetCoefficientB(1);
+	}
+	//如果分母的分式的分子是-1，则化简
+	if (root1.b.IsNumber() && root1.b.list.at(0).GetCoefficient().a == -1)
+	{
+		root1.a *= Monomial("(-1/1)");
+		this->root1.b.list.at(0).SetCoefficientA(1);
+	}
 }
 
 void Equation::quadratic_equation_in_one_unknown()
@@ -742,14 +783,53 @@ void Equation::quadratic_equation_in_one_unknown()
 std::string Out(Fraction<Polynomial> val)
 {
 	std::string value;
+
+	//如果val的值为0
+	if (val.a.list.size() == 1 && val.a.list.at(0) == Monomial())
+	{
+		value += val.a.Out();
+		return value;
+	}
+
+	//如果分子是多项式并且b不等于1
+	if (val.a.list.size() > 1 && 
+		!(val.b.IsNumber() && val.b.list.at(0).GetCoefficient().a == 1 && 
+			val.b.list.at(0).GetCoefficient().b == 1)
+		)
+	{
+		value.push_back('(');
+	}
+
 	value += val.a.Out();
 
-	if (val.a.list.size() == 1 && val.a.list.at(0) == Monomial()) return value;
+	//如果分子是多项式并且b不等于1
+	if (val.a.list.size() > 1 &&
+		!(val.b.IsNumber() && val.b.list.at(0).GetCoefficient().a == 1 &&
+			val.b.list.at(0).GetCoefficient().b == 1)
+		)
+	{
+		value.push_back(')');
+	}
 
 	if (val.b != Polynomial(Monomial("(1/1)")))
 	{
+		value.push_back('\40');
 		value.push_back('/');
+		value.push_back('\40');
+
+		//如果分母是多项式
+		if (val.b.list.size() > 1)
+		{
+			value.push_back('(');
+		}
+
 		value += val.b.Out();
+
+		//如果分母是多项式
+		if (val.b.list.size() > 1)
+		{
+			value.push_back(')');
+		}
 	}
 	return value;
 }
@@ -784,13 +864,16 @@ Polynomial_Exponential Simplest_radical_AnBo(Polynomial_Exponential val)
 	//如果a = 0
 	if (a == 0)
 	{
+		result.exponential.b = 1;
+		result.number.list.at(0).SetCoefficient(0, 1);
 		return result;
 	}
 
 	//如果a = 1
 	if (a == 1)
 	{
-		result.number.list.at(0).SetCoefficient(a, 1);
+		result.exponential.b = 1;
+		result.number.list.at(0).SetCoefficient(1, 1);
 		return result;
 	}
 
@@ -824,6 +907,7 @@ Polynomial_Exponential Simplest_radical_AnBo(Polynomial_Exponential val)
 			break;
 		}
 	}
+
 	if (aj != 0)
 	{
 		k.push_back(aj);

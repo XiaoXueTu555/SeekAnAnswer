@@ -67,17 +67,6 @@ void Polynomial::Input(std::string value)
 			this->Push(temp);
 			container.clear();
 		}
-		else if (value.at(i) == '-')
-		{
-			if (!container.empty())
-			{
-				temp.Input(container);
-				this->Push(temp);
-				container.clear();
-			}
-
-			container.push_back('-');
-		}
 		else if (value.at(i) == 32) {}
 		else
 		{
@@ -122,6 +111,11 @@ void Polynomial::DeleteZero()
 		{
 			this->list.erase(this->list.begin() + i);
 		}
+	}
+
+	if (this->list.size() == 0)
+	{
+		this->Push(Monomial());
 	}
 }
 

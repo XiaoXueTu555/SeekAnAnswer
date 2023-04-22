@@ -136,7 +136,11 @@
     <ClCompile Include="..\..\SeekAnAnswer\High\Private\High_float.cpp" />
     <ClCompile Include="..\..\SeekAnAnswer\High\Private\High_int.cpp" />
     <ClCompile Include="..\..\SeekAnAnswer\SeekAnAnswer\kernel\monomial.cpp" />
+    <ClCompile Include="test_equation.cpp" />
     <ClCompile Include="test_Fraction.cpp" />
+    <ClCompile Include="test_Monomial.cpp" />
+    <ClCompile Include="test_Polynomial.cpp" />
+    <ClCompile Include="test_Polynomial_Exponential.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\..\SeekAnAnswer\High\Public\High_float.h" />

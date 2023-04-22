@@ -45,6 +45,18 @@
     <ClCompile Include="..\..\SeekAnAnswer\SeekAnAnswer\kernel\monomial.cpp">
       <Filter>SeekAnAnswer\kernel</Filter>
     </ClCompile>
+    <ClCompile Include="test_equation.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="test_Monomial.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="test_Polynomial.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="test_Polynomial_Exponential.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\..\SeekAnAnswer\High\Public\High_float.h">

@@ -1,4 +1,4 @@
-//#define DEBUG
+#define DEBUG
 #ifdef DEBUG
 
 #include "SeekAnAnswer/kernel/monomial.h"

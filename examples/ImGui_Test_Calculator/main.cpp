@@ -460,7 +460,7 @@ int main(int, char**)
                     ImGui::Begin("Test solution equation ", &Show_Solution_equation);
                     ImGui::Text("--Input--");
 
-                    static char InputText1[128] = "aX^2 + bX +c = 0";
+                    static char InputText1[128] = "aX^2 + bX + c = 0";
                     static std::string result_text1;
                     static std::string result_text2;
                     static Equation a;
