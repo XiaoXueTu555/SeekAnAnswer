@@ -57,6 +57,8 @@ void Polynomial::Input(std::string value)
 {
 	this->list.clear();
 
+	value = DeleteCircumjacentParentheses(value);
+
 	std::string container; //容器
 	Monomial temp; //临时变量
 	for (suint64 i = 0; i < value.size(); i++)
@@ -448,6 +450,37 @@ bool Polynomial::IsNumber()
 	else if (this->list.at(0).IsNumber()) 
 		return true;
 	return false;
+}
+
+bool Polynomial::IsValid(std::string val)
+{
+	//如果字符串不满足括号语法规则
+	if (!ParenthesisSyntax(val)) return false;
+	//删除val外围的括号
+	val = DeleteCircumjacentParentheses(val);
+
+	if (val.size() == 0) return false;
+
+	std::string container; //容器
+	for (suint64 i = 0; i < val.size(); i++)
+	{
+		if (val.at(i) == '\40') continue;
+		if (val.at(i) == '+')
+		{
+			//如果这一项不是单项式则整体不满足多项式
+			if (!Monomial::IsValid(container))
+				return false;
+			container.clear();
+			continue;
+		}
+
+		container.push_back(val.at(i));
+	}
+
+	//如果这一项不是单项式则整体不满足多项式
+	if (!Monomial::IsValid(container))
+		return false;
+	return true;
 }
 
 bool Polynomial::IsError()

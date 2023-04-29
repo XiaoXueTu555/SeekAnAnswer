@@ -1,6 +1,7 @@
 #pragma once
 #include "..\misinttypes\saint.h"
 #include "..\..\High\Public\High_int.h"
+#include "mathematical_expression.h"
 #include <iostream>
 /*分式*/
 template <class T>
@@ -221,11 +222,59 @@ public:
 		this->a *= a_sign;
 	}
 public:
+	//该分式是否为整数
 	bool IsInteger()
 	{
 		this->Simplification();
 		if (this->b == 1) return true;
 		return false;
+	}
+	//正确格式检查
+	static bool IsValid(std::string val)
+	{
+		//如果字符串不满足括号语法规则
+		if (!ParenthesisSyntax(val)) return false;
+		//删除val外围的括号
+		val = DeleteCircumjacentParentheses(val);
+
+		if (val.size() == 0) return false;
+
+		//如果存在‘/’
+		if (val.find('/') != std::string::npos)
+		{
+			//遍历'/'之前的所有字符
+			for (suint64 i = 0; i < val.find('/'); i++)
+			{
+				//如果其中一个不是数字字符
+				if (!(val.at(i) >= '0' && val.at(i) <= '9') && val.at(i) != '-')
+				{
+					return false;
+				}
+			}
+
+			//遍历'/'之前的所有字符
+			for (suint64 i = val.find('/') + 1; i < val.size(); i++)
+			{
+				//如果其中一个不是数字字符
+				if (!(val.at(i) >= '0' && val.at(i) <= '9') && val.at(i) != '-')
+				{
+					return false;
+				}
+			}
+			return true;
+		}
+		
+		//说明没有'/'
+		//遍历整个字符串
+		for (suint64 i = 0; i < val.size(); i++)
+		{
+			//如果其中一个不是数字字符
+			if (!(val.at(i) >= '0' && val.at(i) <= '9') && val.at(i) != '-')
+			{
+				return false;
+			}
+		}
+		return true;
 	}
 
 /*字符串输入*/

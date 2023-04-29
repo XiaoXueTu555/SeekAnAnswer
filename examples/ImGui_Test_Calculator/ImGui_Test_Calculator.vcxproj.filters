@@ -96,6 +96,9 @@
     <ClInclude Include="..\..\SeekAnAnswer\SeekAnAnswer\kernel\polynomial_exponential_sum.h">
       <Filter>SeekAnAnswer\kernel</Filter>
     </ClInclude>
+    <ClInclude Include="..\..\SeekAnAnswer\SeekAnAnswer\kernel\mathematical_expression.h">
+      <Filter>SeekAnAnswer\kernel</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\..\SeekAnAnswer\High\Private\High_float.cpp">

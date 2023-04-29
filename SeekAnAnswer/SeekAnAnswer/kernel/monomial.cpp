@@ -200,12 +200,96 @@ bool Monomial::IsNumber()
 	return false;
 }
 
+bool Monomial::IsValid(std::string val)
+{
+	//如果字符串不满足括号语法规则
+	if (!ParenthesisSyntax(val)) return false;
+	//删除val外围的括号
+	val = DeleteCircumjacentParentheses(val);
+
+	if (val.size() == 0) return false;
+
+	std::string container; //容器
+
+	//如果第一项不是字母因数则判断数字系数部分
+	if (!(val.at(0) >= 'a' && val.at(0) <= 'z' ||
+		val.at(0) >= 'A' && val.at(0) <= 'Z'))
+	{
+		while (val.size() > 0)
+		{
+			if (!(val.at(0) >= 'a' && val.at(0) <= 'z' ||
+				val.at(0) >= 'A' && val.at(0) <= 'Z'))
+			{
+				container.push_back(val.at(0));
+				val.erase(val.begin());
+			}
+		}
+		if (!Fraction<sint64>::IsValid(container)) return false;
+		container.clear();
+	}
+
+	//遍历检查字母因数部分
+	for (suint64 i = 0; i < val.size(); i++)
+	{
+		//检查点
+		if ((val.at(i) >= 'a' && val.at(i) <= 'z' ||
+			val.at(i) >= 'A' && val.at(i) <= 'Z') && container.size() > 0)
+		{
+			container.erase(container.begin());
+			if (container.size() == 0)
+			{
+				container.push_back(val.at(i));
+				continue;
+			}
+			else if (container.size() > 0)
+			{
+				//第一个元素不是"^"，如果后面依然有元素，则不满足单项式
+				if (container.at(0) != '^' && container.size() > 1) return false;
+				//如果第一个元素是“^”则删除
+				else if (container.at(0) == '^')
+				{
+					container.erase(container.begin());;
+				}
+				//剩下的项就是分式，如果不是分式则不满足单项式
+				if (!Fraction<sint64>::IsValid(container)) return false;
+				container.clear();
+			}
+		}
+
+		container.push_back(val.at(i));
+	}
+
+	{
+		container.erase(container.begin());
+		if (container.size() == 0)
+		{
+			return true;
+		}
+		else if (container.size() > 0)
+		{
+			//第一个元素不是"^"，如果后面依然有元素，则不满足单项式
+			if (container.at(0) != '^' && container.size() >= 1) return false;
+			//如果第一个元素是“^”则删除
+			else if (container.at(0) == '^')
+			{
+				container.erase(container.begin());;
+			}
+			//剩下的项就是分式，如果不是分式则不满足单项式
+			if (!Fraction<sint64>::IsValid(container)) return false;
+		}
+	}
+
+	return true;
+}
+
 void Monomial::Input(std::string value)
 {
 	this->Clear_factor();
 	this->coefficient.SetValue("0/1");
 
 	if (value.empty()) return;
+
+	value = DeleteCircumjacentParentheses(value);
 
 	std::string container; //容器
 	Fraction<sint64> exponent; //指数(临时容器)

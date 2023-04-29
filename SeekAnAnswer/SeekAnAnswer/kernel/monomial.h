@@ -30,6 +30,7 @@ public:
 public:
 	bool SimilarItems(Monomial b); //判断是否为同类项
 	bool IsNumber(); //判断是否为“纯数字”
+	static bool IsValid(std::string val); //判断字符串是否满足单项式语法
 
 /*标准输入*/
 public:

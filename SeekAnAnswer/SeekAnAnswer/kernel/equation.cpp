@@ -105,8 +105,6 @@ void Equation::Input(std::string value)
 		if (value.at(i) == '\40') continue;
 		if (value.at(i) == '+') continue;
 
-		if (value.at(i) == '+') ++i;
-
 		suint64 node_location =
 			((value.find('X', i) != std::string::npos) //在当前位置后存在X
 				&& (value.find('X', i) < value.find('=')) //存在的X在等号之前
@@ -225,8 +223,6 @@ void Equation::Input(std::string value)
 	{
 		if (value.at(i) == '\40') continue;
 		if (value.at(i) == '+') continue;
-
-		if (value.at(i) == '+') ++i;
 
 		suint64 node_location =
 			((value.find('X', i) != std::string::npos) //在当前位置后存在X
@@ -778,6 +774,107 @@ void Equation::quadratic_equation_in_one_unknown()
 		}
 	}
 	return;
+}
+
+bool Equation::IsValid(std::string val)
+{
+	if (val.find('=') == std::string::npos) return false;
+
+	std::string left, right;
+
+	//从当前遍历到等号之前
+	for (suint64 i = 0; i < val.find('='); i++)
+	{
+		if (val.at(i) == '\40') continue;
+		left.push_back(val.at(i));
+	}
+
+	//从等号遍历到最后
+	for (suint64 i = val.find('=') + 1; i < val.size(); i++)
+	{
+		if (val.at(i) == '\40') continue;
+		right.push_back(val.at(i));
+	}
+	val.clear();
+
+	std::string container; //容器
+
+	here:
+
+	for (suint64 i = 0; i < left.size(); i++)
+	{
+		if (left.at(i) == '\40') continue;
+		if (left.at(i) == '+') continue;
+
+		val.clear();
+		container.clear();
+
+		suint64 node_location =
+			((left.find('X', i) != std::string::npos) //在当前位置后存在X
+				&& (left.find('X', i) < left.size()) //存在的X在结束之前
+				&& ((left.find('+', i)) == std::string::npos //不存在加号
+					|| left.find('+', i) > left.find('X', i))//或者存在加号，但是在X之后
+				)
+			//若上述条件成立（该项存在未知数）
+			? (((left.find('+', left.find('X', i)) != std::string::npos)
+				&& left.find('+', left.find('X', i)) < left.size())//存在加号在X之后
+				? (left.find('+', left.find('X', i)))
+				: left.size())
+			//若上述条件不成立（该项不存在未知数）
+			: ((left.find('+', i) < left.size())//存在加号在该项后
+				? left.find('+', i)
+				: left.size());
+
+		//读取这一项
+		for (i; i < node_location; i++)
+		{
+			if (left.at(i) == '\40') continue;
+
+			container.push_back(left.at(i));
+		}
+
+		//分离这一项
+
+		//如果没找到X标志，说明这是一个常数项
+		if (container.find('X') == std::string::npos)
+		{
+			if (!Polynomial::IsValid(container))
+				return false;
+			continue;
+		}
+
+		//提取多项式a
+		for (suint64 j = 0;
+			j < ((container.find('*') != std::string::npos)
+				? container.find('*')
+				: container.find('X'));
+			j++)
+		{
+			val.push_back(container.at(j));
+		}
+
+		if (!Polynomial::IsValid(val)) return false;
+
+		val.clear();
+
+		//提取未知数
+		for (suint64 j = container.find('X'); j < container.size(); j++)
+		{
+			val.push_back(container.at(j));
+		}
+
+		if (!Monomial::IsValid(val)) return false;
+	}
+
+	container.clear();
+
+	if (left != right)
+	{
+		left = right;
+		goto here;
+	}
+
+	return true;
 }
 
 std::string Out(Fraction<Polynomial> val)

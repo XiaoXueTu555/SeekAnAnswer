@@ -84,6 +84,8 @@ public:
 	bool IsMonomial();
 	//判断是否为纯数字
 	bool IsNumber();
+	//判断字符串是否满足多项式语法
+	static bool IsValid(std::string val); 
 public:
 	bool IsError();
 private:

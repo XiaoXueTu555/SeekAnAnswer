@@ -44,6 +44,8 @@ public:
 	void linear_equation_with_one_unknown();
 	//求解一元二次方程
 	void quadratic_equation_in_one_unknown();
+public:
+	bool IsValid(std::string val);
 };
 
 //判断整数n是否为素数
@@ -93,15 +95,13 @@ public:
 			return;
 		}
 
-		++n; //递增该数，使其接近下一个质数
-
-		while (!IsPrime(n))
+		do
 		{
 			/*由于质数的分布，可能存在无穷对孪生素数，
-			所以只能两个两个递增，上面已经递增1了，所以这里只递增1
+			所以只能两个两个数字递增，使其接近下一个质数
 			具体可以了解孪生素数猜想*/
-			n += 1;
-		}
+			n += 2;
+		} while (!IsPrime(n));
 		return;
 	}
 };

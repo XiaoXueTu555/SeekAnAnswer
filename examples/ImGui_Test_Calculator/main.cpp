@@ -157,20 +157,41 @@ int main(int, char**)
                     static char SetValueText[128] = "(1/1)a^(1/1)";
                     static char InputText[128] = "a";
                     static Monomial result("(1/1)a^(1/1)");
+                    static std::string Out1, Out2;
 
                     ImGui::InputText("SetValue", SetValueText, IM_ARRAYSIZE(SetValueText));
                     ImGui::SameLine();
                     if (ImGui::Button("update1"))
-                        result.SetValue((std::string)SetValueText);
+                    {
+                        if (result.IsValid((std::string)SetValueText))
+                        {
+                            result.SetValue((std::string)SetValueText);
+                            Out1 = result.GetValue();
+                        }
+                        else
+                        {
+                            Out1 = "The input is error!";
+                        }
+                    }
 
                     ImGui::InputText("Input", InputText, IM_ARRAYSIZE(InputText));
                     ImGui::SameLine();
                     if (ImGui::Button("update2"))
-                        result.Input((std::string)InputText);
+                    {
+                        if (result.IsValid((std::string)InputText))
+                        {
+                            result.Input((std::string)InputText);
+                            Out2 = result.Out();
+                        }
+                        else
+                        {
+                            Out2 = "The input is error!";
+                        }
+                    }
 
                     ImGui::Text("--Out--");
-                    ImGui::Text("GetValue: %s", result.GetValue().c_str());
-                    ImGui::Text("Out: %s", result.Out().c_str());
+                    ImGui::Text("GetValue: %s", Out1.c_str());
+                    ImGui::Text("Out: %s", Out2.c_str());
                     ImGui::End();
                 }
                 if (Show_SimilarItems)
@@ -278,20 +299,41 @@ int main(int, char**)
                     static char SetValueText[128] = "(1/1)a^(1/1)";
                     static char InputText[128] = "a";
                     static Polynomial result("(1/1)a^(1/1)");
+                    static std::string Out1, Out2;
 
                     ImGui::InputText("SetValue", SetValueText, IM_ARRAYSIZE(SetValueText));
                     ImGui::SameLine();
                     if (ImGui::Button("update1"))
-                        result.SetValue((std::string)SetValueText);
+                    {
+                        if (result.IsValid((std::string)SetValueText))
+                        {
+                            result.SetValue((std::string)SetValueText);
+                            Out1 = result.GetValue();
+                        }
+                        else
+                        {
+                            Out1 = "The input is error!";
+                        }
+                    }
 
                     ImGui::InputText("Input", InputText, IM_ARRAYSIZE(InputText));
                     ImGui::SameLine();
                     if (ImGui::Button("update2"))
-                        result.Input((std::string)InputText);
+                    {
+                        if (result.IsValid((std::string)InputText))
+                        {
+                            result.Input((std::string)InputText);
+                            Out2 = result.Out();
+                        }
+                        else
+                        {
+                            Out2 = "The input is error!";
+                        }
+                    }
 
                     ImGui::Text("--Out--");
-                    ImGui::Text("GetValue: %s", result.GetValue().c_str());
-                    ImGui::Text("Out: %s", result.Out().c_str());
+                    ImGui::Text("GetValue: %s", Out1.c_str());
+                    ImGui::Text("Out: %s", Out2.c_str());
                     ImGui::End();
                 }
                 if (Show_unite_like_terms)
@@ -431,28 +473,45 @@ int main(int, char**)
                     ImGui::Text("--Input--");
 
                     static char SetValueText[128] = "((1/1)a^(1/1))*X^(1/1)=((1/1))*X^(0/1)";
-                    static char InputText[128] = "aX=1";
+                    static char InputText[128] = "aX = 1";
                     static Equation result;
+                    static std::string Out1, Out2;
 
                     ImGui::InputText("SetValue", SetValueText, IM_ARRAYSIZE(SetValueText));
                     ImGui::SameLine();
                     if (ImGui::Button("update1"))
                     {
-                        result.SetValue((std::string)SetValueText);
-                        result.ShiftItem();
+                        if (result.IsValid((std::string)SetValueText))
+                        {
+                            result.SetValue((std::string)SetValueText);
+                            result.ShiftItem();
+                            Out1 = result.GetValue();
+                        }
+                        else
+                        {
+                            Out1 = "the input is error!";
+                        }
                     }
 
                     ImGui::InputText("Input", InputText, IM_ARRAYSIZE(InputText));
                     ImGui::SameLine();
                     if (ImGui::Button("update2"))
                     {
-                        result.Input((std::string)InputText);
-                        result.ShiftItem();
+                        if (result.IsValid((std::string)InputText))
+                        {
+                            result.Input((std::string)InputText);
+                            result.ShiftItem();
+                            Out2 = result.Out();
+                        }
+                        else
+                        {
+                            Out2 = "the input is error!";
+                        }
                     }
 
                     ImGui::Text("--Out--");
-                    ImGui::Text("GetValue: %s", result.GetValue().c_str());
-                    ImGui::Text("Out: %s", result.Out().c_str());
+                    ImGui::Text("GetValue: %s", Out1.c_str());
+                    ImGui::Text("Out: %s", Out2.c_str());
                     ImGui::End();
                 }
                 if (Show_Solution_equation)
@@ -471,7 +530,17 @@ int main(int, char**)
                     ImGui::InputText("Input the Equation", InputText1, IM_ARRAYSIZE(InputText1));
                     if (ImGui::Button("result..."))
                     {
-                        a.Input(InputText1);
+                        //如果方程输入有效则赋值
+                        if (a.IsValid(InputText1))
+                        {
+                            a.Input(InputText1);
+                        }
+                        //如果方程输入无效
+                        else
+                        {
+                            result_text1 = result_text2 = "The input is error!";
+                            goto out; //跳转到显示错误结果
+                        }
                         if (a.GetTheHighestDegreeTermOfTheUnknown() == Fraction<sint64>(1, 1))
                         {
                             a.linear_equation_with_one_unknown();
@@ -508,6 +577,7 @@ int main(int, char**)
                         }
                     }
 
+                    out:
                     ImGui::Text("--Result--");
                     ImGui::Text("result 1 = %s", result_text1.c_str());
                     ImGui::Text("result 2 = %s", result_text2.c_str());

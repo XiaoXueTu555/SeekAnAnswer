@@ -146,6 +146,7 @@
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">false</ExcludedFromBuild>
     </ClInclude>
     <ClInclude Include="..\..\SeekAnAnswer\SeekAnAnswer\kernel\Fraction_PES.h" />
+    <ClInclude Include="..\..\SeekAnAnswer\SeekAnAnswer\kernel\mathematical_expression.h" />
     <ClInclude Include="..\..\SeekAnAnswer\SeekAnAnswer\kernel\monomial.h" />
     <ClInclude Include="..\..\SeekAnAnswer\SeekAnAnswer\kernel\polynomial.h" />
     <ClInclude Include="..\..\SeekAnAnswer\SeekAnAnswer\kernel\polynomial_exponential.h" />
