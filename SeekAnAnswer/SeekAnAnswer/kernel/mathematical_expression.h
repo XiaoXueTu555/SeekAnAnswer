@@ -10,6 +10,17 @@ inline bool ParenthesisSyntax(std::string val);
 //删除外围的括号
 inline std::string DeleteCircumjacentParentheses(std::string val);
 
+//删除字符串中的空格
+inline std::string DeleteTheBlank(std::string val);
+
+/// <summary>
+/// 判断该字符是否在括号里
+/// </summary>
+/// <param name="val"> 字符所在字符串 </param>
+/// <param name="i"> 字符所在字符串的下标 </param>
+/// <returns> bool 当在括号里时返回true，否则返回false </returns>
+inline bool CharacterInParentheses(std::string val, suint64 i);
+
 
 bool ParenthesisSyntax(std::string val)
 {
@@ -104,4 +115,82 @@ std::string DeleteCircumjacentParentheses(std::string val)
 		}
 	}
 	return val;
+}
+
+std::string DeleteTheBlank(std::string val)
+{
+	for (suint64 i = 0; i < val.size();)
+	{
+		if (val.at(i) == '\40')
+		{
+			val.erase(val.begin() + i);
+		}
+		else
+		{
+			++i;
+		}
+	}
+	return val;
+}
+
+bool CharacterInParentheses(std::string val, suint64 i)
+{
+	sint8 temp_char = 0;
+
+	if(val.size() == 0)
+		return false;
+
+	//字符串里不存在该元素
+	if (val.size() <= i)
+		return false;
+
+	//当从右向左寻找到i字符时停止寻找
+	while (val.rfind(val.at(i)) != i)
+	{
+		//删除这一项
+		val.erase(val.begin() + val.rfind(val.at(i)));
+	}
+
+	//经过上述处理之后，指定的i字符必定在所有的i字符的最右侧
+	//因为下面的操作会改变i字符的位置，所以此处记录字符
+	temp_char = val.at(i);
+
+	//当从左向右寻找到i字符时停止寻找
+	while (val.find(temp_char) != val.rfind(temp_char))
+	{
+		//删除这一项
+		val.erase(val.begin() + val.find(temp_char));
+	}
+
+	//遍历整个字符串，删除所有无关字符
+	for(suint64 j = 0; j < val.size();)
+	{
+		if (!(val.at(j) == '(' || val.at(j) == ')' || val.at(j) == temp_char))
+		{
+			val.erase(val.begin() + j);
+		}
+		else
+		{
+			++j;
+		}
+	}
+
+	//如果不满三个字符则必定在括号外
+	if (val.size() <= 2)
+		return false;
+
+	//在第一位肯定是在括号外
+	if (val.find(temp_char) == 0)
+		return false;
+
+	//在最后一位肯定是在括号外
+	if (val.find(temp_char) == val.size() - 1)
+		return false;
+
+	//如果该字符的外围有括号，则是在括号内
+	if (val.at(val.find(temp_char) - 1) == '(' &&
+		val.at(val.find(temp_char) + 1) == ')')
+		return true;
+
+	return false;
 }

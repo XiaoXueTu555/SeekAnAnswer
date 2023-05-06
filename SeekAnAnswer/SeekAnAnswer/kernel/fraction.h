@@ -236,6 +236,8 @@ public:
 		if (!ParenthesisSyntax(val)) return false;
 		//删除val外围的括号
 		val = DeleteCircumjacentParentheses(val);
+		//删除val中的所有空格
+		val = DeleteTheBlank(val);
 
 		if (val.size() == 0) return false;
 
@@ -245,8 +247,10 @@ public:
 			//遍历'/'之前的所有字符
 			for (suint64 i = 0; i < val.find('/'); i++)
 			{
+				if (val.at(i) == '-' && i != 0) return false;
+				else if (val.at(i) == '-') continue;
 				//如果其中一个不是数字字符
-				if (!(val.at(i) >= '0' && val.at(i) <= '9') && val.at(i) != '-')
+				else if (!(val.at(i) >= '0' && val.at(i) <= '9'))
 				{
 					return false;
 				}
@@ -255,8 +259,10 @@ public:
 			//遍历'/'之前的所有字符
 			for (suint64 i = val.find('/') + 1; i < val.size(); i++)
 			{
+				if (val.at(i) == '-' && i != val.find('/') + 1) return false;
+				else if (val.at(i) == '-') continue;
 				//如果其中一个不是数字字符
-				if (!(val.at(i) >= '0' && val.at(i) <= '9') && val.at(i) != '-')
+				else if (!(val.at(i) >= '0' && val.at(i) <= '9'))
 				{
 					return false;
 				}
@@ -268,8 +274,10 @@ public:
 		//遍历整个字符串
 		for (suint64 i = 0; i < val.size(); i++)
 		{
+			if (val.at(i) == '-' && i != 0) return false;
+			else if (val.at(i) == '-') continue;
 			//如果其中一个不是数字字符
-			if (!(val.at(i) >= '0' && val.at(i) <= '9') && val.at(i) != '-')
+			else if (!(val.at(i) >= '0' && val.at(i) <= '9'))
 			{
 				return false;
 			}

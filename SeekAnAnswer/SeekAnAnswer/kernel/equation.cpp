@@ -98,6 +98,7 @@ void Equation::Input(std::string value)
 	std::string temp_val;
 	Polynomial temp;
 	suint64 i = 0;
+	suint64 start = 0; //记录分离每一项的起始位置
 
 	//从当前位置遍历到等号之前
 	for (i; i < value.find('='); i++)
@@ -106,20 +107,24 @@ void Equation::Input(std::string value)
 		if (value.at(i) == '+') continue;
 
 		suint64 node_location =
-			((value.find('X', i) != std::string::npos) //在当前位置后存在X
-				&& (value.find('X', i) < value.find('=')) //存在的X在等号之前
-				&& ((value.find('+', i)) == std::string::npos //不存在加号
-					|| value.find('+', i) > value.find('X', i))//或者存在加号，但是在X之后
-				)
-			//若上述条件成立（该项存在未知数）
-			? (((value.find('+', value.find('X', i)) != std::string::npos)
-				&& value.find('+', value.find('X', i)) < value.find("="))//存在加号在X之后
-				? (value.find('+', value.find('X', i)))
-				: value.find('='))
-			//若上述条件不成立（该项不存在未知数）
-			: ((value.find('+', i) < value.find('='))//存在加号在该项后
-				? value.find('+', i)
-				: value.find('='));
+			//判断是否存在加号在等号之前
+			(value.find('+', i) != std::string::npos &&
+				value.find('+', i) < value.find('='))
+			//如果存在则返回该项的位置，否则返回等号的位置
+			? value.find('+', i) : value.find('=');
+
+		//安全性判断
+		if (node_location < value.size())
+		{
+			//如果节点外围存在括号则不是有效节点
+			if (CharacterInParentheses(value, node_location))
+				continue;
+		}
+
+		//获取起始位置
+		i = start;
+		//记录下一项的起始位置
+		start = node_location + 1;
 
 		//读取这一项
 		for (i; i < node_location; i++)
@@ -217,6 +222,7 @@ void Equation::Input(std::string value)
 	temp_val.clear();
 	temp.Clear();
 	i = value.find('=') + 1;
+	start = value.find('=') + 1; //归零起始位置
 
 	//从当前位置遍历到最后
 	for (i; i < value.size(); i++)
@@ -225,20 +231,23 @@ void Equation::Input(std::string value)
 		if (value.at(i) == '+') continue;
 
 		suint64 node_location =
-			((value.find('X', i) != std::string::npos) //在当前位置后存在X
-				&& (value.find('X', i) < value.size()) //存在的X在结束之前
-				&& ((value.find('+', i)) == std::string::npos //不存在加号
-					|| value.find('+', i) > value.find('X', i))//或者存在加号，但是在X之后
-				)
-			//若上述条件成立（该项存在未知数）
-			? (((value.find('+', value.find('X', i)) != std::string::npos)
-				&& value.find('+', value.find('X', i)) < value.size())//存在加号在X之后
-				? (value.find('+', value.find('X', i)))
-				: value.size())
-			//若上述条件不成立（该项不存在未知数）
-			: ((value.find('+', i) < value.size())//存在加号在该项后
-				? value.find('+', i)
-				: value.size());
+			//判断是否存在加号在结尾之前
+			(value.find('+', i) != std::string::npos)
+			//如果存在则返回该项的位置，否则返回等号的位置
+			? value.find('+', i) : value.size();
+
+		//安全性判断
+		if (node_location < value.size())
+		{
+			//如果节点外围存在括号则不是有效节点
+			if (CharacterInParentheses(value, node_location))
+				continue;
+		}
+
+		//获取起始位置
+		i = start;
+		//记录下一项的起始位置
+		start = node_location + 1;
 
 		//读取这一项
 		for (i; i < node_location; i++)
@@ -678,7 +687,8 @@ void Equation::linear_equation_with_one_unknown()
 
 void Equation::quadratic_equation_in_one_unknown()
 {
-	Polynomial a, b, c;
+	Polynomial a, b, c; //未知数的系数
+	Polynomial_Exponential Discriminant; //根的判别式
 
 	this->Unite_like_terms();
 	this->ShiftItem();
@@ -702,19 +712,21 @@ void Equation::quadratic_equation_in_one_unknown()
 	//二次项作为最大的一项，所以肯定存在
 	a = this->coefficient_left.at(this->FindDegree(Fraction<sint64>(2, 1)));
 
+	//计算根的判别式 并在可化简时化简
+	Discriminant = Simplest_radical(Polynomial_Exponential(
+		Fraction<sint64>(1, 1),
+		(b * b) + (Polynomial("(-4/1)") * a * c),
+		Fraction<sint64>(1, 2))
+	);
+
 	/*计算X1*/
 	//-b
 	this->root2.at(0).a.Push(Polynomial_Exponential(
 		(Polynomial_Exponential)(Polynomial("(-1/1)") * b)
 	));
 
-	//根号判别式 化简判别式
-	this->root2.at(0).a.Push(
-		Simplest_radical(Polynomial_Exponential(
-		Fraction<sint64>(1, 1),
-		(b * b) + (Polynomial("(-4/1)") * a * c),
-		Fraction<sint64>(1, 2))
-	));
+	//根的判别式
+	this->root2.at(0).a.Push(Discriminant);
 
 	//2a
 	this->root2.at(0).b.Push(Polynomial_Exponential(
@@ -730,12 +742,11 @@ void Equation::quadratic_equation_in_one_unknown()
 		(Polynomial_Exponential)(Polynomial("(-1/1)") * b)
 	));
 
+	//根的判别式的相反数
+	Discriminant.coefficient.a = 0 - Discriminant.coefficient.a;
+
 	//负根号判别式 化简判别式
-	this->root2.at(1).a.Push(Simplest_radical(Polynomial_Exponential(
-		Fraction<sint64>(-1, 1),
-		(b * b) + (Polynomial("(-4/1)") * a * c),
-		Fraction<sint64>(1, 2))
-	));
+	this->root2.at(1).a.Push(Discriminant);
 
 	//2a
 	this->root2.at(1).b.Push(Polynomial_Exponential(
@@ -781,6 +792,7 @@ bool Equation::IsValid(std::string val)
 	if (val.find('=') == std::string::npos) return false;
 
 	std::string left, right;
+	suint64 start = 0; //记录分离每一项的起始位置
 
 	//从当前遍历到等号之前
 	for (suint64 i = 0; i < val.find('='); i++)
@@ -801,6 +813,8 @@ bool Equation::IsValid(std::string val)
 
 	here:
 
+	start = 0; //归零起始位置
+
 	for (suint64 i = 0; i < left.size(); i++)
 	{
 		if (left.at(i) == '\40') continue;
@@ -810,20 +824,23 @@ bool Equation::IsValid(std::string val)
 		container.clear();
 
 		suint64 node_location =
-			((left.find('X', i) != std::string::npos) //在当前位置后存在X
-				&& (left.find('X', i) < left.size()) //存在的X在结束之前
-				&& ((left.find('+', i)) == std::string::npos //不存在加号
-					|| left.find('+', i) > left.find('X', i))//或者存在加号，但是在X之后
-				)
-			//若上述条件成立（该项存在未知数）
-			? (((left.find('+', left.find('X', i)) != std::string::npos)
-				&& left.find('+', left.find('X', i)) < left.size())//存在加号在X之后
-				? (left.find('+', left.find('X', i)))
-				: left.size())
-			//若上述条件不成立（该项不存在未知数）
-			: ((left.find('+', i) < left.size())//存在加号在该项后
-				? left.find('+', i)
-				: left.size());
+			//判断是否存在加号在结尾之前
+			(left.find('+', i) != std::string::npos)
+			//如果存在则返回该项的位置，否则返回等号的位置
+			? left.find('+', i) : left.size();
+
+		//安全性判断
+		if (node_location < left.size())
+		{
+			//如果节点外围存在括号则不是有效节点
+			if (CharacterInParentheses(left, node_location))
+				continue;
+		}
+
+		//获取起始位置
+		i = start; 
+		//记录下一项的起始位置
+		start = node_location + 1;
 
 		//读取这一项
 		for (i; i < node_location; i++)
@@ -853,7 +870,7 @@ bool Equation::IsValid(std::string val)
 			val.push_back(container.at(j));
 		}
 
-		if (!Polynomial::IsValid(val)) return false;
+		if (!Polynomial::IsValid(val) && val.size() > 0) return false;
 
 		val.clear();
 
@@ -969,6 +986,8 @@ Polynomial_Exponential Simplest_radical_AnBo(Polynomial_Exponential val)
 	//如果a = 1
 	if (a == 1)
 	{
+		result.coefficient.a = 1;
+		result.coefficient.b = 1;
 		result.exponential.b = 1;
 		result.number.list.at(0).SetCoefficient(1, 1);
 		return result;

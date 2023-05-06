@@ -209,74 +209,71 @@ bool Monomial::IsValid(std::string val)
 
 	if (val.size() == 0) return false;
 
+	//排除不满足该字符集合的字符串
+	for (suint64 i = 0; i < val.size(); i++)
+	{
+		if (!(val.at(i) >= '0' && val.at(i) <= '9' ||
+			val.at(i) >= 'a' && val.at(i) <= 'z' ||
+			val.at(i) >= 'A' && val.at(i) <= 'Z' ||
+			val.at(i) == '^' ||
+			val.at(i) == '(' || val.at(i) == ')' ||
+			val.at(i) == '/' || val.at(i) == '-'))
+		{
+			return false;
+		}
+	}
+
 	std::string container; //容器
 
-	//如果第一项不是字母因数则判断数字系数部分
-	if (!(val.at(0) >= 'a' && val.at(0) <= 'z' ||
+	//获取数字系数部分
+	while (!(val.at(0) >= 'a' && val.at(0) <= 'z' ||
 		val.at(0) >= 'A' && val.at(0) <= 'Z'))
 	{
-		while (val.size() > 0)
+		container.push_back(val.at(0));
+		val.erase(val.begin());
+		if (val.size() == 0) break;
+	}
+
+	/*经过上述判断，若container的元素数量为0，则必定存在字母因数
+	若不为0，可能存在字母因数，也可能不存在*/
+
+	//如果不存在数字系数或者数字系数满足条件则通过，否则不满足单项式
+	if (!(container.size() == 0 || Fraction<sint64>::IsValid(container)))
+		return false;
+
+	//如果val的元素数量为0，说明不存在字母因数，满足单项式
+	if (val.size() == 0) return true;
+
+	container.clear();
+
+	//执行到此处说明存在字母因数
+
+	//遍历检查字母因数部分
+	while(val.size() > 0)
+	{
+		container.push_back(val.at(0));
+		val.erase(val.begin());
+		//如果存在下一个元素，而且下一个元素不是字母因数
+		if (val.size() > 0)
 		{
 			if (!(val.at(0) >= 'a' && val.at(0) <= 'z' ||
 				val.at(0) >= 'A' && val.at(0) <= 'Z'))
-			{
-				container.push_back(val.at(0));
-				val.erase(val.begin());
-			}
-		}
-		if (!Fraction<sint64>::IsValid(container)) return false;
-		container.clear();
-	}
-
-	//遍历检查字母因数部分
-	for (suint64 i = 0; i < val.size(); i++)
-	{
-		//检查点
-		if ((val.at(i) >= 'a' && val.at(i) <= 'z' ||
-			val.at(i) >= 'A' && val.at(i) <= 'Z') && container.size() > 0)
-		{
-			container.erase(container.begin());
-			if (container.size() == 0)
-			{
-				container.push_back(val.at(i));
 				continue;
-			}
-			else if (container.size() > 0)
-			{
-				//第一个元素不是"^"，如果后面依然有元素，则不满足单项式
-				if (container.at(0) != '^' && container.size() > 1) return false;
-				//如果第一个元素是“^”则删除
-				else if (container.at(0) == '^')
-				{
-					container.erase(container.begin());;
-				}
-				//剩下的项就是分式，如果不是分式则不满足单项式
-				if (!Fraction<sint64>::IsValid(container)) return false;
-				container.clear();
-			}
 		}
 
-		container.push_back(val.at(i));
-	}
-
-	{
+		//检查点 说明此处val.at(0)是一个字母
 		container.erase(container.begin());
-		if (container.size() == 0)
-		{
-			return true;
-		}
-		else if (container.size() > 0)
-		{
-			//第一个元素不是"^"，如果后面依然有元素，则不满足单项式
-			if (container.at(0) != '^' && container.size() >= 1) return false;
-			//如果第一个元素是“^”则删除
-			else if (container.at(0) == '^')
-			{
-				container.erase(container.begin());;
-			}
-			//剩下的项就是分式，如果不是分式则不满足单项式
-			if (!Fraction<sint64>::IsValid(container)) return false;
-		}
+		//如果删除字母元素后的长度为0,则该项没问题
+		if (container.size() == 0) continue;
+		//如果删除字母元素后，存在其他元素，若第一项不是次方符号则不符合单项式
+		if (container.at(0) != '^') return false;
+		
+		//此时剩下的肯定是存在次方符号的情况
+		container.erase(container.begin());
+		//若删除次方符号后没有元素，则不满足单项式
+		if (container.size() == 0) return false;
+		//若剩下的项不是数字，则不满足单项式
+		if (!(Fraction<sint64>::IsValid(container))) return false;
 	}
 
 	return true;

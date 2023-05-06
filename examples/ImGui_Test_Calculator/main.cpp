@@ -81,6 +81,10 @@ int main(int, char**)
     //ImFont* font = io.Fonts->AddFontFromFileTTF("c:\\Windows\\Fonts\\ArialUni.ttf", 18.0f, NULL, io.Fonts->GetGlyphRangesJapanese());
     //IM_ASSERT(font != NULL);
 
+    io.FontGlobalScale = 1.0f;
+    io.FontAllowUserScaling = true;
+
+
     // Our state
     bool Show_SeekAnAnswer_test = false;
 
@@ -167,10 +171,11 @@ int main(int, char**)
                         {
                             result.SetValue((std::string)SetValueText);
                             Out1 = result.GetValue();
+                            Out2 = result.Out();
                         }
                         else
                         {
-                            Out1 = "The input is error!";
+                            Out1 = Out2 = "The input is error!";
                         }
                     }
 
@@ -181,11 +186,12 @@ int main(int, char**)
                         if (result.IsValid((std::string)InputText))
                         {
                             result.Input((std::string)InputText);
+                            Out1 = result.GetValue();
                             Out2 = result.Out();
                         }
                         else
                         {
-                            Out2 = "The input is error!";
+                            Out1 = Out2 = "The input is error!";
                         }
                     }
 
@@ -309,10 +315,11 @@ int main(int, char**)
                         {
                             result.SetValue((std::string)SetValueText);
                             Out1 = result.GetValue();
+                            Out2 = result.Out();
                         }
                         else
                         {
-                            Out1 = "The input is error!";
+                            Out1 = Out2 = "The input is error!";
                         }
                     }
 
@@ -323,11 +330,12 @@ int main(int, char**)
                         if (result.IsValid((std::string)InputText))
                         {
                             result.Input((std::string)InputText);
+                            Out1 = result.GetValue();
                             Out2 = result.Out();
                         }
                         else
                         {
-                            Out2 = "The input is error!";
+                            Out1 = Out2 = "The input is error!";
                         }
                     }
 
@@ -486,10 +494,11 @@ int main(int, char**)
                             result.SetValue((std::string)SetValueText);
                             result.ShiftItem();
                             Out1 = result.GetValue();
+                            Out2 = result.Out();
                         }
                         else
                         {
-                            Out1 = "the input is error!";
+                            Out1 = Out2 = "the input is error!";
                         }
                     }
 
@@ -501,11 +510,12 @@ int main(int, char**)
                         {
                             result.Input((std::string)InputText);
                             result.ShiftItem();
+                            Out1 = result.GetValue();
                             Out2 = result.Out();
                         }
                         else
                         {
-                            Out2 = "the input is error!";
+                            Out1 = Out2 = "the input is error!";
                         }
                     }
 
