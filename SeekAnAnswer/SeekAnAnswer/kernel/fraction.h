@@ -181,8 +181,9 @@ public:
 	}
 public:
 	/*欧几里得算法*/
-	sint64 gcd(sint64 a, sint64 b)
+	static sint64 gcd(sint64 a, sint64 b)
 	{
+		a = abs(a); b = abs(b);
 		sint64 mod = a % b;
 		while (mod != 0)
 		{
@@ -191,6 +192,14 @@ public:
 			mod = a % b;
 		}
 		return b;
+	}
+	static sint64 gcds(std::vector<sint64> a)
+	{
+		sint64 tem = a.at(0);
+		for (suint64 i = 1; i < a.size(); i++) {
+			tem = gcd(tem, a.at(i));
+		}
+		return tem;
 	}
 public:
 	//化简

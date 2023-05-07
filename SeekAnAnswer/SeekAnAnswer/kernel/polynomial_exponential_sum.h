@@ -12,6 +12,9 @@ public:
 	//合并同类项
 	void Unite_like_terms();
 public:
+	void Split();
+	void Merge();
+public:
 	//去除多项式中的0
 	void DeleteZero();
 public:

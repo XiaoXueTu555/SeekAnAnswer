@@ -17,7 +17,10 @@ public:
 	Polynomial_Exponential(Polynomial value);
 	Polynomial_Exponential(Fraction<sint64> coefficient, Polynomial number, Fraction<sint64> exponential);
 public:
+	//化简，将底数中的系数提到数字系数中
 	void simplify();
+	//合并，将系数合并到底数中
+	void merge();
 
 /*标准输入*/
 public:

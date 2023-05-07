@@ -45,8 +45,17 @@ public:
 public:
 	//返回最高次项的单项式
 	Monomial GetDegree();
+	//返回最高次项的次数
+	Fraction<sint64> GetTheDegree();
 	//返回最高次数的单项式在list表中的下标
 	suint64 GetLocationOfDegree();
+	//返回特定字符的最小次数
+	Fraction<sint64> GetDegreeOfMixOfchar(sint8 a);
+public:
+	//求与val多项式的公因式
+	Monomial CommonFactor(Polynomial val);
+	//求与val多项式的最小公倍数
+	Fraction<sint64> LeastCommonMultiple_of_coe(Polynomial val);
 public:
 	//将最高的单项式的次数的单项式移动到首位
 	void Move();

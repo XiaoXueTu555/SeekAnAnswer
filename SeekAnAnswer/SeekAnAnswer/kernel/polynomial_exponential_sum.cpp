@@ -36,6 +36,23 @@ void Polynomial_Exponential_Sum::Unite_like_terms()
 	return;
 }
 
+void Polynomial_Exponential_Sum::Split()
+{
+	//每一项都提出系数
+	for (suint64 i = 0; i < this->list.size(); i++)
+	{
+		this->list.at(i).simplify();
+	}
+}
+
+void Polynomial_Exponential_Sum::Merge()
+{
+	for (suint64 i = 0; i < this->list.size(); i++)
+	{
+		this->list.at(i).merge();
+	}
+}
+
 void Polynomial_Exponential_Sum::DeleteZero()
 {
 	if (this->list.size() == 1)

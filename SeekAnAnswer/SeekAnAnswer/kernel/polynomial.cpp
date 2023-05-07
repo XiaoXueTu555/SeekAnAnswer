@@ -1,8 +1,20 @@
 #include "polynomial.h"
 #include <iostream>
+#include <math.h>
 
 //字母因数的迭代器
 typedef std::map<sint8, Fraction<sint64>>::iterator FACTOR;
+
+std::set<sint8> S_set_intersection(std::set<sint8> a, std::set<sint8> b)
+{
+	std::set<sint8> intersection;
+	for (std::set<sint8>::iterator i = a.begin(); i != a.end(); i++)
+	{
+		if (b.find(*i) != b.end())
+			intersection.insert(*i);
+	}
+	return intersection;
+}
 
 Polynomial::Polynomial(std::string std_value)
 {
@@ -143,19 +155,169 @@ Monomial Polynomial::GetDegree()
 	return this->list.at(GetLocationOfDegree());
 }
 
+Fraction<sint64> Polynomial::GetTheDegree()
+{
+	Fraction<sint64> degree;
+	Monomial MAX_degree = this->GetDegree();
+	for (FACTOR it = MAX_degree.GetFactor().begin(); it != MAX_degree.GetFactor().end(); it++)
+	{
+		degree += it->second;
+	}
+	return degree;
+}
+
 suint64 Polynomial::GetLocationOfDegree()
 {
 	Fraction<sint64> degree(0, 1);
 	suint64 count = 0;
 	for (suint64 i = 0; i < this->list.size(); i++)
 	{
-		if (this->list.at(i).GetDegree() > degree)
+		if ((this->list.at(i).GetDegree()) > degree)
 		{
-			degree = this->list.at(i).GetDegree();
+			degree = (this->list.at(i)).GetDegree();
 			count = i;
 		}
 	}
 	return count;
+}
+
+Fraction<sint64> Polynomial::GetDegreeOfMixOfchar(sint8 a)
+{
+	//GetTheDegree返回的是该多项式最大的次数，因此不存在某个单项式的字母的次数大于该次数
+	//所以下面遍历判断比这个小的字母的次数就是最小的
+	Fraction<sint64> degree = this->GetTheDegree();
+	for (suint64 i = 0; i < this->list.size(); i++)
+	{
+		//如果在这一项单项式中找到该元素
+		if ((this->list.at(i).GetFactor().find(a)) != (this->list.at(i).GetFactor().end()))
+		{
+			if ((this->list.at(i).GetFactor().find(a))->second < degree)
+			{
+				degree = (this->list.at(i).GetFactor().find(a))->second;
+			}
+		}
+	}
+	return degree;
+}
+
+Monomial Polynomial::CommonFactor(Polynomial val)
+{
+	Monomial common_factor;
+
+	std::vector<sint64> facs;
+	//取出val的每一项系数
+	for (suint64 i = 0; i < val.list.size(); i++)
+	{
+		facs.push_back(val.list.at(i).GetCoefficient().a);
+	}
+	for (suint64 i = 0; i < this->list.size(); i++)
+	{
+		facs.push_back(this->list.at(i).GetCoefficient().a);
+	}
+	sint64 common_number = Fraction<sint64>::gcds(facs);
+
+	common_factor.SetCoefficient(common_number, 1);
+
+	std::set<sint8> a_set_intersection;
+	std::set<sint8> last_set; //上一个单项式的字母集合
+	std::set<sint8> set; //这个单项式的字母集合
+	std::set<sint8> set_intersection; //相邻两个单项式的交集
+
+	//获取初始的集合，否则下面求交集时结果始终为空集
+	for (FACTOR j = this->list.at(0).GetFactor().begin(); j != this->list.at(0).GetFactor().end(); j++)
+	{	
+		set.insert(j->first);
+	}
+
+	//遍历多项式a，获取字母集合
+	for (suint64 i = 0; i < this->list.size(); i++)
+	{
+		//获取单项式的字母集合
+		for (FACTOR j = this->list.at(i).GetFactor().begin(); j != this->list.at(i).GetFactor().end(); j++)
+		{
+			if (i % 2 == 0) last_set.insert(j->first);
+			else
+			{
+				set.insert(j->first);
+			}
+		}
+
+		if (i % 2 == 1)
+		{
+			set_intersection = S_set_intersection(
+				S_set_intersection(last_set, set),
+				set_intersection
+			);
+
+			last_set.clear();
+		}
+	}
+	a_set_intersection = set_intersection;
+
+	last_set.clear(); set.clear(); set_intersection.clear(); //初始化
+
+	//获取初始的集合，否则下面求交集时结果始终为空集
+	for (FACTOR j = val.list.at(0).GetFactor().begin(); j != val.list.at(0).GetFactor().end(); j++)
+	{
+		set.insert(j->first);
+	}
+
+	//遍历多项式a，获取字母集合
+	for (suint64 i = 0; i < val.list.size(); i++)
+	{
+		//获取单项式的字母集合
+		for (FACTOR j = val.list.at(i).GetFactor().begin(); j != val.list.at(i).GetFactor().end(); j++)
+		{
+			if (i % 2 == 0) last_set.insert(j->first);
+			else
+			{
+				set.insert(j->first);
+			}
+		}
+
+		if (i % 2 == 1)
+		{
+			set_intersection = S_set_intersection(
+				S_set_intersection(last_set, set),
+				set_intersection
+			);
+
+			last_set.clear();
+		}
+	}
+	//计算两个多项式的字母交集
+	set_intersection = S_set_intersection(a_set_intersection, set_intersection);
+
+	for (std::set<sint8>::iterator it = set_intersection.begin(); it != set_intersection.end(); it++)
+	{
+		common_factor.Push(*it, //添加一个字母因数，次数为两个多项式间最小的次数
+			(this->GetDegreeOfMixOfchar(*it) < val.GetDegreeOfMixOfchar(*it)
+				? this->GetDegreeOfMixOfchar(*it) : val.GetDegreeOfMixOfchar(*it)));
+	}
+
+	return common_factor;
+}
+
+Fraction<sint64> Polynomial::LeastCommonMultiple_of_coe(Polynomial val)
+{
+	std::vector<sint64> a;
+	for (suint64 i = 0; i < this->list.size(); i++)
+	{
+		a.push_back(this->list.at(i).GetCoefficient().b);
+	}
+	for (suint64 i = 0; i < val.list.size(); i++)
+	{
+		a.push_back(val.list.at(i).GetCoefficient().b);
+	}
+
+	sint64 common_number = Fraction<sint64>::gcds(a);
+
+	sint64 temp = 1;
+	for (suint64 i = 0; i < a.size(); i++)
+	{
+		temp *= a.at(i);
+	}
+	return Fraction<sint64>(temp / common_number, 1);
 }
 
 void Polynomial::Clear()
@@ -365,6 +527,14 @@ Polynomial Polynomial::operator/(Polynomial val)
 					location_of_sonPolynomial = i;
 					break;
 				}
+			}
+
+			if (location_of_sonPolynomial == -1)
+			{
+				if (result.list.size() == 0)
+					result.list.push_back(Monomial());
+
+				return result;
 			}
 
 			//计算商式

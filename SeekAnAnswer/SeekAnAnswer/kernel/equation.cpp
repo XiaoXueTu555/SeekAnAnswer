@@ -664,19 +664,25 @@ void Equation::linear_equation_with_one_unknown()
 	
 	this->root1.b = this->coefficient_left.at(this->FindDegree(degree));
 
-	//如果分母是整数，则化简
-	if (root1.b.IsNumber() && root1.b.list.at(0).GetCoefficient().b == 1)
+	if (this->root1.a.IsNumber() && this->root1.a == Polynomial("(0/1)"))
 	{
-		root1.a *= (Monomial)(Fraction<sint64>(1, root1.b.list.at(0).GetCoefficient().a));
-		this->root1.b.list.at(0).SetCoefficientA(1);
+		this->root1.b = Polynomial("(1/1)");
+		return;
 	}
 
-	//如果分母是纯数字分式，则化简
-	else if (root1.b.IsNumber() && root1.b.list.at(0).GetCoefficient().b != 1)
-	{
-		root1.a *= (Monomial)(Fraction<sint64>(root1.b.list.at(0).GetCoefficient().b, 1));
-		this->root1.b.list.at(0).SetCoefficientB(1);
-	}
+	//最小公倍数
+	Fraction<sint64> least_common_multiple = 
+		this->root1.a.LeastCommonMultiple_of_coe(this->root1.b);
+
+	this->root1.a *= Monomial(least_common_multiple);
+	this->root1.b *= Monomial(least_common_multiple);
+
+	//求分子与分母的公因式
+	Monomial common_factor = this->root1.a.CommonFactor(this->root1.b);
+	//分别除以公因式以化简
+	this->root1.a /= common_factor;
+	this->root1.b /= common_factor;
+
 	//如果分母的分式的分子是-1，则化简
 	if (root1.b.IsNumber() && root1.b.list.at(0).GetCoefficient().a == -1)
 	{
@@ -770,6 +776,26 @@ void Equation::quadratic_equation_in_one_unknown()
 				this->root2.at(i).b = Polynomial_Exponential_Sum(Polynomial_Exponential(Fraction<sint64>(1, 1),
 					Polynomial(Monomial("(1/1)")), Fraction<sint64>(1, 1)));
 			}
+			//如果分子不为0，则约分
+			if ((Polynomial)this->root2.at(i).a != Polynomial("(0/1)"))
+			{
+				//求最小公倍数
+				Fraction<sint64> LeastCommonMultiple =
+					((Polynomial)this->root2.at(i).a).LeastCommonMultiple_of_coe((Polynomial)this->root2.at(i).b);
+
+				this->root2.at(i).a = 
+					(Polynomial_Exponential)(((Polynomial)this->root2.at(i).a) * Monomial(LeastCommonMultiple));
+
+				this->root2.at(i).b =
+					(Polynomial_Exponential)(((Polynomial)this->root2.at(i).b) * Monomial(LeastCommonMultiple));
+
+				//求最大公约数
+				Monomial common_factor =
+					((Polynomial)this->root2.at(i).a).CommonFactor((Polynomial)this->root2.at(i).b);
+
+				this->root2.at(i).a = (Polynomial_Exponential)(((Polynomial)this->root2.at(i).a) / common_factor);
+				this->root2.at(i).b = (Polynomial_Exponential)(((Polynomial)this->root2.at(i).b) / common_factor);
+			}
 		}
 		else if (this->root2.at(i).a.IsPolynomial_Exponential()
 			&& this->root2.at(i).b.IsPolynomial_Exponential())
@@ -783,6 +809,75 @@ void Equation::quadratic_equation_in_one_unknown()
 					Polynomial(Monomial("(1/1)")), Fraction<sint64>(1, 1)));
 			}
 		}
+
+		//提出系数，为下面化简做准备
+		this->root2.at(i).a.Split();
+		this->root2.at(i).b.Split();
+
+		//如果系数不为0
+		if (this->root2.at(i).a.list.at(0).coefficient != Fraction<sint64>(0, 1))
+		{
+			std::vector<sint64> a; Fraction<sint64> temp_a(1, 1);
+			std::vector<sint64> b;
+			//获取公倍数
+			for (suint64 j = 0; j < this->root2.at(i).a.list.size(); j++)
+			{
+				a.push_back(this->root2.at(i).a.list.at(j).coefficient.b);
+				temp_a.a *= a.at(a.size() - 1);
+			}
+			for (suint64 j = 0; j < this->root2.at(i).b.list.size(); j++)
+			{
+				a.push_back(this->root2.at(i).b.list.at(j).coefficient.b);
+				temp_a.a *= a.at(a.size() - 1);
+			}
+
+			//乘以最小公倍数
+			for (suint64 j = 0; j < this->root2.at(i).a.list.size(); j++)
+			{
+				//分子乘以公倍数
+				this->root2.at(i).a.list.at(j).coefficient =
+					this->root2.at(i).a.list.at(j).coefficient * 
+					(temp_a / Fraction<sint64>(Fraction<sint64>::gcds(a), 1));
+			}
+			for (suint64 j = 0; j < this->root2.at(i).b.list.size(); j++)
+			{
+				//分母乘以公倍数
+				this->root2.at(i).b.list.at(j).coefficient =
+					this->root2.at(i).b.list.at(j).coefficient * 
+					(temp_a / Fraction<sint64>(Fraction<sint64>::gcds(a), 1));
+			}
+
+
+			//获取公因数
+			for (suint64 j = 0; j < this->root2.at(i).a.list.size(); j++)
+			{
+				b.push_back(this->root2.at(i).a.list.at(j).coefficient.a);
+			}
+			for (suint64 j = 0; j < this->root2.at(i).b.list.size(); j++)
+			{
+				b.push_back(this->root2.at(i).b.list.at(j).coefficient.a);
+			}
+
+			//除以最大公约数
+			for (suint64 j = 0; j < this->root2.at(i).a.list.size(); j++)
+			{
+				//分子除以公约数
+				this->root2.at(i).a.list.at(j).coefficient =
+					this->root2.at(i).a.list.at(j).coefficient /
+					Fraction<sint64>(Fraction<sint64>::gcds(b), 1);
+			}
+			for (suint64 j = 0; j < this->root2.at(i).b.list.size(); j++)
+			{
+				//分母除以公约数
+				this->root2.at(i).b.list.at(j).coefficient =
+					this->root2.at(i).b.list.at(j).coefficient /
+					Fraction<sint64>(Fraction<sint64>::gcds(b), 1);
+			}
+		}
+
+		//将系数合并回底数
+		this->root2.at(i).a.Merge();
+		this->root2.at(i).b.Merge();
 	}
 	return;
 }

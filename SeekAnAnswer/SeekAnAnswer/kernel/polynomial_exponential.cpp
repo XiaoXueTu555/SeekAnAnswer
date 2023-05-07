@@ -28,6 +28,28 @@ void Polynomial_Exponential::simplify()
 	{
 		this->exponential = Fraction<sint64>(1, 1);
 	}
+
+	//如果指数为1，则将底数的系数部分提到前面
+	if (this->exponential == Fraction<sint64>(1, 1))
+	{
+		std::vector<sint64> a;
+		for (suint64 i = 0; i < this->number.list.size(); i++)
+		{
+			a.push_back(this->number.list.at(i).GetCoefficient().a);
+		}
+		this->number /= Monomial(Fraction<sint64>(Fraction<sint64>::gcds(a), 1));
+		this->coefficient *= Fraction<sint64>(Fraction<sint64>::gcds(a), 1);
+	}
+}
+
+void Polynomial_Exponential::merge()
+{
+	if(this->exponential == Fraction<sint64>(1,1))
+	{
+		this->number *= Monomial(this->coefficient);
+		this->coefficient.a = 1;
+		this->coefficient.b = 1;
+	}
 }
 
 void Polynomial_Exponential::SetValue(std::string std_value)
