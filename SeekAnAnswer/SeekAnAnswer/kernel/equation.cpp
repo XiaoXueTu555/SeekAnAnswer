@@ -921,7 +921,7 @@ bool Equation::IsValid(std::string val)
 		suint64 node_location =
 			//判断是否存在加号在结尾之前
 			(left.find('+', i) != std::string::npos)
-			//如果存在则返回该项的位置，否则返回等号的位置
+			//如果存在则返回该项的位置，否则返回结尾的位置
 			? left.find('+', i) : left.size();
 
 		//安全性判断

@@ -95,6 +95,8 @@ bool ParenthesisSyntax(std::string val)
 
 std::string DeleteCircumjacentParentheses(std::string val)
 {
+	val = DeleteTheBlank(val);
+
 	//如果不符合括号语法则不去括号
 	if (!ParenthesisSyntax(val))
 		return val;
@@ -173,6 +175,23 @@ bool CharacterInParentheses(std::string val, suint64 i)
 		{
 			++j;
 		}
+	}
+
+	for (suint64 j = 0; j < val.size();)
+	{
+		if (j + 1 < val.size())
+		{
+			if (val.at(j) == '(' && val.at(j + 1) == ')')
+			{
+				val.erase(val.begin() + j);
+				val.erase(val.begin() + j);
+				j = 0;
+			}
+			else
+				++j;
+		}
+		else
+			break;
 	}
 
 	//如果不满三个字符则必定在括号外

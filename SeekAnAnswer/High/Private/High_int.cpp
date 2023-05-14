@@ -172,8 +172,7 @@ High_int High_int::operator+(High_int b)
 	{
 		result = *this;
 		result.sign = true;
-		result -= b;
-		result.sign = false;
+		result = b - result;
 		return result;
 	}
 	else if (*this < High_int_NULL && b < High_int_NULL)

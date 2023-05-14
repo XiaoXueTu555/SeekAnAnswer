@@ -52,6 +52,72 @@ void Polynomial_Exponential::merge()
 	}
 }
 
+bool Polynomial_Exponential::IsValid(std::string value)
+{
+	std::string container;
+	suint64 start = 0;
+
+	//如果字符串不满足括号语法规则
+	if (!ParenthesisSyntax(value)) return false;
+	//删除val外围的括号
+	value = DeleteCircumjacentParentheses(value);
+
+	//字符串中存在乘号
+	if (value.find('*') != std::string::npos)
+	{
+		start = value.find('*');
+		//获取系数
+		for (suint64 i = 0; i < start; i++)
+			container.push_back(value.at(i));
+
+		if (!Fraction<sint64>::IsValid(container))
+			return false;
+
+		value.clear();
+		++start; //递增一位
+
+		//如果乘号是最后一位
+		if (start == value.size()) 
+			return false;
+	}
+
+	//若字符串中存在次方符号
+	if (value.find('^') != std::string::npos)
+	{
+		//获取底数
+		for (suint64 i = start; i < value.find('^'); i++)
+			container.push_back(value.at(i));
+		//如果底数不满足多项式
+		if (!Polynomial::IsValid(container))
+			return false;
+
+		container.clear();
+		start = value.find('^') + 1;
+
+		//说明这里^符号在结尾
+		if (start >= value.size())
+			return false;
+
+		//获取次数
+		for (suint64 i = start; i < value.size(); i++)
+			container.push_back(value.at(i));
+		//如果次数部分不是分式
+		if (!Fraction<sint64>::IsValid(container))
+			return false;
+		else
+			return true;
+	}
+
+	//获取底数
+	for (suint64 i = start; i < value.size(); i++)
+		container.push_back(value.at(i));
+	//如果底数部分不满足多项式
+	if (!Polynomial::IsValid(container))
+		return false;
+
+	return true;
+}
+
 void Polynomial_Exponential::SetValue(std::string std_value)
 {
 	std::string container; //容器
@@ -100,6 +166,61 @@ void Polynomial_Exponential::SetValue(Polynomial value)
 	this->number = value;
 	this->exponential = Fraction<sint64>(1, 1);;
 	this->error = false;
+}
+
+void Polynomial_Exponential::Input(std::string value)
+{
+	value = DeleteCircumjacentParentheses(value);
+
+	this->coefficient.Input("1/1");
+	this->number.Input("0");
+	this->exponential.Input("1/1");
+
+	std::string container;
+	suint64 start = 0;
+	//字符串中存在乘号
+	if (value.find('*') != std::string::npos)
+	{
+		start = value.find('*');
+		//获取系数
+		for (suint64 i = 0; i < start; i++)
+			container.push_back(value.at(i));
+
+		this->coefficient.Input(container);
+
+		container.clear();
+		++start; //递增一位
+	}
+
+	//若字符串中存在次方符号
+	if (value.find('^') != std::string::npos)
+	{
+		//获取底数
+		for (suint64 i = start; i < value.find('^'); i++)
+			container.push_back(value.at(i));
+		this->number.Input(container);
+
+		container.clear();
+		start = value.find('^') + 1;
+
+		//获取次数
+		for (suint64 i = start; i < value.size(); i++)
+			container.push_back(value.at(i));
+		this->exponential.Input(container);
+
+		//如果可以转成多项式则转换
+		if (this->IsPolynomial())
+		{
+			*this = (Polynomial)*this;
+		}
+
+		return;
+	}
+
+	//获取底数
+	for (suint64 i = start; i < value.size(); i++)
+		container.push_back(value.at(i));
+	this->number.Input(container);
 }
 
 std::string Polynomial_Exponential::GetValue()
@@ -188,7 +309,7 @@ std::string Polynomial_Exponential::Out()
 
 bool Polynomial_Exponential::IsPolynomial()
 {
-	if (this->exponential.b == 1)
+	if (this->exponential.IsInteger())
 	{
 		return true;
 	}
@@ -201,20 +322,10 @@ bool Polynomial_Exponential::IsPolynomial()
 //这里的Number指纯数字，不是特指可转化为Fraction<sint64>类型
 bool Polynomial_Exponential::IsNumber()
 {
-	//如果指数是1/2
-	if (this->exponential == Fraction<sint64>(1, 2))
-	{
-		//当且仅当底数是纯数字的时候，整个类型是纯数字
-		if (this->number.IsNumber()) return true;
-		return false;
-	}
-	if (this->IsPolynomial())
-	{
-		if (((Polynomial)(*this)).IsNumber())
-		{
-			return true;
-		}
-	}
+	//当且仅当底数是纯数字的时候，整个类型是纯数字
+	if (this->number.IsNumber()) 
+		return true;
+
 	return false;
 }
 
@@ -249,8 +360,10 @@ Polynomial_Exponential Polynomial_Exponential::operator+(Polynomial_Exponential 
 		result.coefficient = this->coefficient + val.coefficient;
 		result.number = this->number;
 		result.exponential = this->exponential;
+		return result;
 	}
 
+	result.error = true;
 	return result;
 }
 
@@ -270,8 +383,10 @@ Polynomial_Exponential Polynomial_Exponential::operator-(Polynomial_Exponential 
 		result.coefficient = this->coefficient - val.coefficient;
 		result.number = this->number;
 		result.exponential = this->exponential;
+		return result;
 	}
 
+	result.error = true;
 	return result;
 }
 
@@ -292,8 +407,10 @@ Polynomial_Exponential Polynomial_Exponential::operator*(Polynomial_Exponential 
 		result.coefficient = this->coefficient * val.coefficient;
 		result.number = this->number;
 		result.exponential = this->exponential + val.exponential;
+		return result;
 	}
 
+	result.error = true;
 	return result;
 }
 
@@ -308,7 +425,7 @@ Polynomial_Exponential Polynomial_Exponential::operator/(Polynomial_Exponential 
 		return result;
 	}
 
-	//底数相等可以相乘
+	//底数相等可以相除
 	if (this->number == val.number)
 	{
 		result.coefficient = this->coefficient / val.coefficient;

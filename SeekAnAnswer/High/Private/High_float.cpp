@@ -9,6 +9,8 @@
 #define High_float_NULL (High_float)0.0
 #define High_int_NULL (High_int)0
 
+#define MAX(a,b) (a > b) ? a : b
+
 /*构造函数*/
 High_float::High_float()
 {
@@ -16,19 +18,20 @@ High_float::High_float()
 	this->integer = 0;
 	this->decimals = 0;
 	this->decimals_leading_zero = 0;
-	this->precision = 16;
+	this->precision = PRECISION;
 	return;
 }
 
 High_float::High_float(High_int data)
 {
 	*this = data;
+	this->precision = PRECISION;
 }
 
 High_float::High_float(long double data)
 {
 	*this = data;
-	this->precision = 16;
+	this->precision = PRECISION;
 }
 
 /*析构函数*/
@@ -222,20 +225,22 @@ High_float High_float::operator+(High_float b)
 		this->sign = true;
 		b.sign = true;
 		result = *this + b;
-		result.sign = false;
 		this->sign = false;
 		return result;
 	}
 	this->AlignToSuitableSize(b);
 	result.integer += this->integer + b.integer;
 	result.decimals += this->decimals + b.decimals;
-	if (result.decimals.Data().size() > this->decimals_leading_zero + this->decimals.Data().size())
+	if (result.decimals.Data().size() > 
+		(MAX(this->decimals_leading_zero + this->decimals.Data().size(),
+			b.decimals_leading_zero + b.decimals.Data().size())))
 	{
 		++result.integer;
 		result.decimals.Data().erase(result.decimals.Data().begin());
 	}
 	result.decimals_leading_zero += 
-		this->decimals_leading_zero + this->decimals.Data().size() - result.decimals.Data().size();
+		(MAX(this->decimals_leading_zero + this->decimals.Data().size(),
+			b.decimals_leading_zero + b.decimals.Data().size())) - result.decimals.Data().size();
 	this->Shrink_to_fit_of_decimals();
 	result.Shrink_to_fit_of_decimals();
 	return result;
@@ -244,6 +249,7 @@ High_float High_float::operator+(High_float b)
 High_float High_float::operator-(High_float b)
 {
 	High_float result;
+
 	result.setprecision((this->precision > b.precision) ? this->precision : b.precision);
 	if (*this >= High_float_NULL && b < High_float_NULL)
 	{
@@ -274,18 +280,33 @@ High_float High_float::operator-(High_float b)
 		return result;
 	}
 	this->AlignToSuitableSize(b);
+
 	if (b.decimals > this->decimals)
 	{
-		result.decimals = b.decimals - this->decimals;
+		High_int temp = 1;
+		//计算借位后的数值
+		for (uint64_t i = 0; i < 
+			this->decimals_leading_zero + this->decimals.Data().size(); i++)
+		{
+			temp *= 10;
+		}
+		temp += this->decimals;
+
+		result.decimals = temp - b.decimals;
+
 		--result.integer;
-		result.decimals_leading_zero = b.decimals_leading_zero;
+
+		result.decimals_leading_zero = 0;
+		result.Shrink_to_fit_of_decimals();
 	}
 	else
 	{
 		result.decimals = this->decimals - b.decimals;
-		result.decimals_leading_zero = this->decimals_leading_zero;
+		result.decimals_leading_zero =
+			this->decimals.Data().size() - 
+			result.decimals.Data().size() + this->decimals_leading_zero;
 	}
-	result.integer = this->integer - b.integer;
+	result.integer += this->integer - b.integer;
 
 	this->Shrink_to_fit_of_decimals();
 	result.Shrink_to_fit_of_decimals();
@@ -390,7 +411,9 @@ High_float High_float::operator/(High_float b)
 	if (b == High_float_NULL)
 		throw "Division by zero condition!";
 	High_float result;
-	High_float dividend_a = *this;
+	High_float dividend_a;
+	dividend_a = *this;
+
 	High_int divisor_b = b.integer;
 	result.setprecision((this->precision > b.precision) ? this->precision : b.precision);
 
@@ -406,7 +429,7 @@ High_float High_float::operator/(High_float b)
 	else if (*this < High_float_NULL && b > High_float_NULL)
 	{
 		result = *this;
-		result.Sign() = true;
+		result.sign = true;
 		result /= b;
 		if (result == High_float_NULL)
 			return result;

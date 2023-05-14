@@ -15,6 +15,7 @@
 #include "SeekAnAnswer/kernel/polynomial_exponential.h"
 #include "SeekAnAnswer/kernel/polynomial_exponential_sum.h"
 #include "SeekAnAnswer/kernel/equation.h"
+#include "SeekAnAnswer/kernel/arithmetic_expression.h"
 
 #pragma comment(lib,"d3d9.lib")
 
@@ -594,6 +595,41 @@ int main(int, char**)
                     ImGui::End();
                 }
 
+            }
+            if (ImGui::CollapsingHeader("Arithmetic"))
+            {
+                static bool show_arithmetic = false;
+                ImGui::Text("This module is used to calculate expression");
+                ImGui::Checkbox("arithmetic test", &show_arithmetic);
+
+                if (show_arithmetic)
+                {
+                    ImGui::Begin("Arithmetic test", &show_arithmetic);
+                    ImGui::Text("Please input your expression");
+
+                    static char InputText[128] = "(-1*2^(1/2)) + (2*2^(1/2))";
+                    static std::string expression_out1, expression_out2;
+                    Arithmetic_Expression expression;
+
+                    ImGui::InputText("input expression", InputText, IM_ARRAYSIZE(InputText));
+                    if (ImGui::Button("result..."))
+                    {
+                        if (expression.IsValid((std::string)InputText))
+                        {
+                            expression.Input(InputText);
+                            expression.Calculate();
+                            expression_out1 = expression.Out();
+                            expression_out2 = expression.Approximate_Out();
+                        }
+                        else
+                        {
+                            expression_out1 = expression_out2 = "The input is error!";
+                        }
+                    }
+                    ImGui::Text("result = %s", expression_out1.c_str());
+                    ImGui::Text("approximate result = %s", expression_out2.c_str());
+                    ImGui::End();
+                }
             }
             ImGui::End();
         }

@@ -1,5 +1,8 @@
 #pragma once
 #include "High_int.h"
+
+#define PRECISION 16
+
 class High_float
 {
 private:

@@ -141,6 +141,7 @@
     <ClInclude Include="..\..\SeekAnAnswer\High\Public\High_int.h" />
     <ClInclude Include="..\..\SeekAnAnswer\High\Public\High_io.h" />
     <ClInclude Include="..\..\SeekAnAnswer\High\Public\High_math.h" />
+    <ClInclude Include="..\..\SeekAnAnswer\SeekAnAnswer\kernel\arithmetic_expression.h" />
     <ClInclude Include="..\..\SeekAnAnswer\SeekAnAnswer\kernel\equation.h" />
     <ClInclude Include="..\..\SeekAnAnswer\SeekAnAnswer\kernel\fraction.h">
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">false</ExcludedFromBuild>
@@ -164,6 +165,9 @@
   <ItemGroup>
     <ClCompile Include="..\..\SeekAnAnswer\High\Private\High_float.cpp" />
     <ClCompile Include="..\..\SeekAnAnswer\High\Private\High_int.cpp" />
+    <ClCompile Include="..\..\SeekAnAnswer\High\Private\High_io.cpp" />
+    <ClCompile Include="..\..\SeekAnAnswer\High\Private\High_math.cpp" />
+    <ClCompile Include="..\..\SeekAnAnswer\SeekAnAnswer\kernel\arithmetic_expression.cpp" />
     <ClCompile Include="..\..\SeekAnAnswer\SeekAnAnswer\kernel\equation.cpp" />
     <ClCompile Include="..\..\SeekAnAnswer\SeekAnAnswer\kernel\monomial.cpp" />
     <ClCompile Include="..\..\SeekAnAnswer\SeekAnAnswer\kernel\polynomial.cpp" />

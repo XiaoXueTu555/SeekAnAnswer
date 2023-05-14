@@ -321,6 +321,8 @@ public:
 	/*非标准字符串输入*/
 	void Input(std::string value)
 	{
+		value = DeleteCircumjacentParentheses(value);
+
 		std::string container; //容器
 		suint64 i = 0; //当前读取的数据位
 

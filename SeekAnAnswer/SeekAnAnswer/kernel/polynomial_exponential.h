@@ -22,11 +22,17 @@ public:
 	//合并，将系数合并到底数中
 	void merge();
 
+public:
+	static bool IsValid(std::string value);
+
 /*标准输入*/
 public:
 	/*标准字符串输入*/
 	void SetValue(std::string std_value);
 	void SetValue(Polynomial value);
+public:
+	/*非标准字符串输入*/
+	void Input(std::string value);
 
 /*标准输出*/
 public:
