@@ -58,7 +58,8 @@ bool Polynomial_Exponential::IsValid(std::string value)
 	suint64 start = 0;
 
 	//如果字符串不满足括号语法规则
-	if (!ParenthesisSyntax(value)) return false;
+	if (!ParenthesisSyntax(value)) 
+		return false;
 	//删除val外围的括号
 	value = DeleteCircumjacentParentheses(value);
 
@@ -84,15 +85,27 @@ bool Polynomial_Exponential::IsValid(std::string value)
 	//若字符串中存在次方符号
 	if (value.find('^') != std::string::npos)
 	{
+		//说明底数外不存在次方符号
+		if (CharacterInParentheses(value, value.rfind('^')))
+		{
+			if (Polynomial::IsValid(value))
+				return true;
+			else
+				return false;
+		}
+
+		//说明底数外存在次方符号
+		//且次方符号在所有次方符号的最右侧
+		
 		//获取底数
-		for (suint64 i = start; i < value.find('^'); i++)
+		for (suint64 i = start; i < value.rfind('^'); i++)
 			container.push_back(value.at(i));
 		//如果底数不满足多项式
 		if (!Polynomial::IsValid(container))
 			return false;
 
 		container.clear();
-		start = value.find('^') + 1;
+		start = value.rfind('^') + 1;
 
 		//说明这里^符号在结尾
 		if (start >= value.size())
@@ -195,13 +208,24 @@ void Polynomial_Exponential::Input(std::string value)
 	//若字符串中存在次方符号
 	if (value.find('^') != std::string::npos)
 	{
+		//说明底数外不存在次方符号
+		if (CharacterInParentheses(value, value.rfind('^')))
+		{
+			//剩下的结构必定为底数
+			this->number.Input(value);
+			return;
+		}
+
+		//说明底数外存在次方符号
+		//且次方符号在所有次方符号的最右侧
+
 		//获取底数
-		for (suint64 i = start; i < value.find('^'); i++)
+		for (suint64 i = start; i < value.rfind('^'); i++)
 			container.push_back(value.at(i));
 		this->number.Input(container);
 
 		container.clear();
-		start = value.find('^') + 1;
+		start = value.rfind('^') + 1;
 
 		//获取次数
 		for (suint64 i = start; i < value.size(); i++)
@@ -264,14 +288,19 @@ std::string Polynomial_Exponential::Out()
 	{
 		if (this->coefficient != Fraction<sint64>(1, 1))
 		{
-			//当指数不等于0的时候显示乘号
+			//当系数不等于1的时候显示乘号
 			value.push_back('\40');
 			value.push_back('*');
 			value.push_back('\40');
 		}
 
-
-		if (this->number.list.size() > 1)
+		//如果系数不等于1，而且底数的项数大于1则外面套上括号。
+		//如果指数不等于1，而且底数的项数大于1则外面套上括号
+		//其余的情况外面不套括号
+		if (this->number.list.size() > 1 &&
+			(this->exponential != Fraction<sint64>(1, 1)
+				|| this->coefficient != Fraction<sint64>(1, 1))
+			)
 		{
 			value.push_back('(');
 			value += this->number.Out();

@@ -25,4 +25,6 @@ public:
 	std::string Out();
 	//Êä³ö½üËÆÖµ
 	std::string Approximate_Out();
+protected:
+	long double Rooting(long double a, sint64 n);
 };

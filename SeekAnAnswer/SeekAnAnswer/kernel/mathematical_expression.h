@@ -177,6 +177,7 @@ bool CharacterInParentheses(std::string val, suint64 i)
 		}
 	}
 
+	//删除无关的（多余的）括号
 	for (suint64 j = 0; j < val.size();)
 	{
 		if (j + 1 < val.size())
@@ -194,22 +195,15 @@ bool CharacterInParentheses(std::string val, suint64 i)
 			break;
 	}
 
-	//如果不满三个字符则必定在括号外
-	if (val.size() <= 2)
+	//如果不符合括号规则，则该字符不在括号里
+	if (!ParenthesisSyntax(val))
 		return false;
 
-	//在第一位肯定是在括号外
-	if (val.find(temp_char) == 0)
+	//按照上述处理后，剩下的情况只有"(^)"以及嵌套了很多层括号，或者"^"
+	//因此，如果只有一个元素则在括号外
+	if (val.size() == 1)
 		return false;
 
-	//在最后一位肯定是在括号外
-	if (val.find(temp_char) == val.size() - 1)
-		return false;
-
-	//如果该字符的外围有括号，则是在括号内
-	if (val.at(val.find(temp_char) - 1) == '(' &&
-		val.at(val.find(temp_char) + 1) == ')')
-		return true;
-
-	return false;
+	//否则在括号里
+	return true;
 }

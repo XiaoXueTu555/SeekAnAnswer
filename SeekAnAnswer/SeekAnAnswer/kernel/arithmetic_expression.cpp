@@ -269,8 +269,8 @@ void Arithmetic_Expression::Calculate()
 std::string Arithmetic_Expression::Approximate_Out()
 {
 	std::string result;
-	High_float a, b;
-	High_float temp;
+	long double a, b;
+	long double temp;
 	if (this->a.IsNumber() && this->b.IsNumber())
 	{
 		if (this->a.exponential.b % 2 == 0 
@@ -284,41 +284,41 @@ std::string Arithmetic_Expression::Approximate_Out()
 			return this->Out();
 		}
 
-		temp = (High_float)(long double)((Fraction<sint64>)(Monomial)this->a.number).a
-			/ (High_float)(long double)((Fraction<sint64>)(Monomial)this->a.number).b;
-		a = Rooting(temp, (High_int)this->a.exponential.b);
-		a = pow(a, (High_int)this->a.exponential.a);
-		temp = (High_float)(long double)this->a.coefficient.a / (High_float)(long double)this->a.coefficient.b;
+		temp = (long double)((Fraction<sint64>)(Monomial)this->a.number).a
+			/ (long double)((Fraction<sint64>)(Monomial)this->a.number).b;
+		a = this->Rooting(temp, this->a.exponential.b);
+		a = pow(a, this->a.exponential.a);
+		temp = (long double)this->a.coefficient.a / (long double)this->a.coefficient.b;
 		a *= temp;
 
 		if (this->_operator == 0)
 		{
-			result = (std::string)a;
+			result = (std::string)(High_float)a;
 			return result;
 		}
 
-		temp = (High_float)(long double)((Fraction<sint64>)(Monomial)this->b.number).a
-			/ (High_float)(long double)((Fraction<sint64>)(Monomial)this->b.number).b;
-		b = Rooting(temp, (High_int)this->b.exponential.b);
-		b = pow(b, (High_int)this->b.exponential.a);
-		temp = (High_float)(long double)this->b.coefficient.a / (High_float)(long double)this->b.coefficient.b;
+		temp = (long double)((Fraction<sint64>)(Monomial)this->b.number).a
+			/ (long double)((Fraction<sint64>)(Monomial)this->b.number).b;
+		b = Rooting(temp, this->b.exponential.b);
+		b = pow(b, this->b.exponential.a);
+		temp = (long double)this->b.coefficient.a / (long double)this->b.coefficient.b;
 		b *= temp;
 
 		switch (_operator)
 		{
 		case '+':
 		{
-			result = (std::string)(a + b);
+			result = (std::string)(High_float)(a + b);
 			break;
 		}
 		case '*':
 		{
-			result = (std::string)(a * b);
+			result = (std::string)(High_float)(a * b);
 			break;
 		}
 		case '/':
 		{
-			result = (std::string)(a / b);
+			result = (std::string)(High_float)(a / b);
 			break;
 		}
 		default:
@@ -327,3 +327,18 @@ std::string Arithmetic_Expression::Approximate_Out()
 	}
 	return result;
 }
+
+long double Arithmetic_Expression::Rooting(long double a, sint64 n)
+{
+	if (a == 0.0)
+	{
+		return 0.0f;
+	}
+	long double guess = 0.5f * a;
+	for (int64_t i = 0; i < 10; i++)
+	{
+		guess = ((a / pow(guess, n - 1)) + (n - 1) * guess) / n;
+	}
+	return guess;
+}
+
