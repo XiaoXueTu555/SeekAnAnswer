@@ -965,7 +965,8 @@ bool Equation::IsValid(std::string val)
 			val.push_back(container.at(j));
 		}
 
-		if (!Polynomial::IsValid(val) && val.size() > 0) return false;
+		if (!Polynomial::IsValid(val) && val.size() > 0) 
+			return false;
 
 		val.clear();
 
@@ -975,7 +976,8 @@ bool Equation::IsValid(std::string val)
 			val.push_back(container.at(j));
 		}
 
-		if (!Monomial::IsValid(val)) return false;
+		if (!Monomial::IsValid(val)) 
+			return false;
 	}
 
 	container.clear();

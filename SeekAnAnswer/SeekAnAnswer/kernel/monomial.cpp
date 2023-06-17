@@ -273,7 +273,9 @@ bool Monomial::IsValid(std::string val)
 		//若删除次方符号后没有元素，则不满足单项式
 		if (container.size() == 0) return false;
 		//若剩下的项不是数字，则不满足单项式
-		if (!(Fraction<sint64>::IsValid(container))) return false;
+		if (!(Fraction<sint64>::IsValid(container))) 
+			return false;
+		container.clear();
 	}
 
 	return true;
