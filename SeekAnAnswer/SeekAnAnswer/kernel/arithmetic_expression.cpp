@@ -341,4 +341,3 @@ long double Arithmetic_Expression::Rooting(long double a, sint64 n)
 	}
 	return guess;
 }
-

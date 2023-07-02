@@ -63,6 +63,8 @@ public:
 	//清空所有单项式
 	void Clear();
 public:
+	bool Substitute(sint8 character, Polynomial val);
+public:
 	bool operator==(Polynomial val);
 	bool operator!=(Polynomial val);
 public:

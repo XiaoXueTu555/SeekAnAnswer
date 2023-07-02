@@ -326,6 +326,54 @@ void Polynomial::Clear()
 	this->Push(Monomial("(0/1)"));
 }
 
+bool Polynomial::Substitute(sint8 character, Polynomial val)
+{
+	//判断该多项式是否可以代换
+	for (suint64 i = 0; i < this->list.size(); i++)
+	{
+		//先判断是否该单项式是否存在该字符，存在就进行下一步的判断
+		if (this->list.at(i).GetFactor().find(character) != this->list.at(i).GetFactor().end())
+		{
+			//如果存在代换字符的次数为非整数有理数，或者为负数，则无法代换
+			if (this->list.at(i).GetFactor().find(character)->second.b != 1 ||
+				this->list.at(i).GetFactor().find(character)->second.a < 0)
+			{
+				return false;
+			}
+		}
+	}
+
+	Polynomial result; //运算结果
+	Polynomial temp; //临时变量
+	sint64 exponent = 0;
+
+	//遍历所有单项式
+	for (suint64 i = 0; i < this->list.size(); i++)
+	{
+		//如果该项不含代换字符
+		if (this->list.at(i).GetFactor().find(character) 
+			== this->list.at(i).GetFactor().end())
+			continue;
+
+		//获取该项代换字符的次数，这里减去1是为了下面减少一次乘法运算
+		exponent = this->list.at(i).GetFactor().find(character)->second.a - 1;
+		temp = val; //赋值为val
+
+		//进行次方运算
+		for (sint64 j = 0; j < exponent; j++)
+		{
+			temp *= val;
+		}
+
+		//删除该项单项式的代换字母因数
+		this->list.at(i).GetFactor().erase(character);
+
+		result += ((Polynomial)(this->list.at(i)) * temp);
+	}
+	*this = result;
+	return true;
+}
+
 Polynomial::operator Monomial()
 {
 	return this->list.at(0);

@@ -151,6 +151,39 @@ void Monomial::Push(sint8 factor, Fraction<sint64> exponent)
 	*this = *this * temp;
 }
 
+bool Monomial::Substitute(sint8 character, Monomial val)
+{
+	//如果字符未查询到
+	if (this->factor.find(character) == this->factor.end())
+	{
+		return false;
+	}
+	//被代换字符的次数
+	Fraction<sint64> degree;
+
+	//保存该字符的次数
+	degree = this->factor.find(character)->second;
+
+	//如果次数不是整数，则无法代入
+	if (degree.b != 1)
+		return false;
+	//如果次数为负数，则无法代入
+	else if (degree.a < 0)
+		return false;
+
+	this->factor.erase(character);
+	
+	Monomial temp = val;
+	//进行次方运算
+	for (sint64 i = 1; i < degree.a; i++)
+	{
+		temp = temp * val;
+	}
+
+	*this = *this * temp;
+	return true;
+}
+
 void Monomial::DelOne()
 {
 	for (FACTOR i = this->factor.begin(); i != this->factor.end();)

@@ -76,9 +76,10 @@ int main(int, char**)
     // - Remember that in C/C++ if you want to include a backslash \ in a string literal you need to write a double backslash \\ !
     //io.Fonts->AddFontDefault();
     //io.Fonts->AddFontFromFileTTF("c:\\Windows\\Fonts\\segoeui.ttf", 18.0f);
-    //io.Fonts->AddFontFromFileTTF("../../misc/fonts/DroidSans.ttf", 16.0f);
-    //io.Fonts->AddFontFromFileTTF("../../misc/fonts/Roboto-Medium.ttf", 16.0f);
-    //io.Fonts->AddFontFromFileTTF("../../misc/fonts/Cousine-Regular.ttf", 15.0f);
+    io.Fonts->AddFontFromFileTTF("DroidSans.ttf", 24.0f);
+    //io.Fonts->AddFontFromFileTTF("ImGui/misc/fonts/DroidSans.ttf", 24.0f);
+    //io.Fonts->AddFontFromFileTTF("ImGui/misc/fonts/Roboto-Medium.ttf", 16.0f);
+    //io.Fonts->AddFontFromFileTTF("ImGui/misc/fonts/Cousine-Regular.ttf", 15.0f);
     //ImFont* font = io.Fonts->AddFontFromFileTTF("c:\\Windows\\Fonts\\ArialUni.ttf", 18.0f, NULL, io.Fonts->GetGlyphRangesJapanese());
     //IM_ASSERT(font != NULL);
 
@@ -134,7 +135,7 @@ int main(int, char**)
             if (ImGui::CollapsingHeader("Explain"))
             {
                 ImGui::Text("This is a windows that is used to test SeekAnAnswer's functionality.");
-                ImGui::Text("Here,you can easily test each feature of SeekAnAnser");
+                ImGui::Text("Here,you can easily test each feature of SeekAnAnswer");
             }
             ImGui::Text("--TEST--");
             if (ImGui::CollapsingHeader("Monomial"))
@@ -147,12 +148,15 @@ int main(int, char**)
                 static bool Show_MUL = false;
                 //除法运算测试
                 static bool Show_division = false;
+                //代入功能测试
+                static bool Show_Substitute = false;
 
-                ImGui::Text("This module is used to represent a monimial (ax^n)");
+                ImGui::Text("This module is used to represent a monomial (ax^n)");
                 ImGui::Checkbox("Input Test", &Show_Input);
                 ImGui::Checkbox("Similar Items Test", &Show_SimilarItems);
                 ImGui::Checkbox("MUL Test", &Show_MUL);
                 ImGui::Checkbox("division Test", &Show_division);
+                ImGui::Checkbox("Substitute Test", &Show_Substitute);
 
                 if(Show_Input)
                 {
@@ -252,7 +256,7 @@ int main(int, char**)
                 }
                 if (Show_division)
                 {
-                    ImGui::Begin("Test Monomial divition", &Show_division);
+                    ImGui::Begin("Test Monomial division", &Show_division);
                     ImGui::Text("--Input--");
 
                     static char InputText1[128] = "a";
@@ -275,6 +279,77 @@ int main(int, char**)
                     ImGui::Text("Out : %s", result.Out().c_str());
                     ImGui::End();
                 }
+                if (Show_Substitute)
+                {
+                    ImGui::Begin("Monomial Substitute Test", &Show_Substitute);
+                    static char the_monomial_text[128] = "a^2";
+                    static char character_text[128] = "a";
+                    static char substitute_character[128] = "3b";
+                    static Monomial result("(1/1)a^(2/1)");
+                    static Monomial substitute_monomial;
+                    static sint8 character = 'a';
+                    static std::string Out1 = "please check \"update\" ";
+
+                    ImGui::Text("please input the monomial.");
+                    ImGui::InputText("monomial", the_monomial_text, IM_ARRAYSIZE(the_monomial_text));
+
+                    ImGui::Text("please input the character.");
+                    ImGui::InputText("character", character_text, IM_ARRAYSIZE(character_text));
+
+                    ImGui::Text("please input the substitute monomial.");
+                    ImGui::InputText("substitute monomial", substitute_character, IM_ARRAYSIZE(substitute_character));
+
+                    if (ImGui::Button("update"))
+                    {
+
+                        //如果满足单项式的条件
+                        if (result.IsValid((std::string)the_monomial_text))
+                        {
+                            result.Input((std::string)the_monomial_text);
+                        }
+                        else
+                        {
+                            Out1 = "The input is error!";
+                            goto Out_The_Result;
+                        }  
+
+                        //如果代换字符输入有误，则报错
+                        if (((std::string)character_text).size() != 1)
+                        {
+                            Out1 = "The input is error!";
+                            goto Out_The_Result;
+                        }
+
+                        //输入代换字符
+                        character = character_text[0];
+
+                        //如果满足单项式的条件
+                        if (substitute_monomial.IsValid((std::string)substitute_character))
+                        {
+                            substitute_monomial.Input((std::string)substitute_character);
+                        }
+                        else
+                        {
+                            Out1 = "The input is error!";
+                            goto Out_The_Result;
+                        }
+
+                        //代换字符
+                        if (!result.Substitute(character, substitute_monomial))
+                        {
+                            Out1 = "The input is error!";
+                            goto Out_The_Result;
+                        }
+                        Out1 = result.Out();
+                    }
+                    //跳转标签，显示结果
+                Out_The_Result:
+
+                    ImGui::Text("--Out--");
+                    ImGui::Text("The result: %s", Out1.c_str());
+
+                    ImGui::End();
+                }
 
             }
             if (ImGui::CollapsingHeader("Polynomial"))
@@ -291,12 +366,15 @@ int main(int, char**)
                 static bool Show_MUL = false;
                 //除法运算测试
                 static bool Show_division = false;
+                //代换功能测试
+                static bool Show_Substitute = false;
 
                 ImGui::Text("This module is used to represent a Polynomial (ax^n + bx^m +...)");
                 ImGui::Checkbox("Input Test", &Show_Input);
                 ImGui::Checkbox("unite like terms Test", &Show_unite_like_terms);
                 ImGui::Checkbox("MUL Test", &Show_MUL);
                 ImGui::Checkbox("division Test", &Show_division);
+                ImGui::Checkbox("Substitute Test", &Show_Substitute);
 
                 if (Show_Input)
                 {
@@ -462,6 +540,77 @@ int main(int, char**)
                     ImGui::Text("--Result--");
                     ImGui::Text("GetValue : %s", result.GetValue().c_str());
                     ImGui::Text("Out : %s", result.Out().c_str());
+                    ImGui::End();
+                }
+                if (Show_Substitute)
+                {
+                    ImGui::Begin("Polynomial Substitute Test", &Show_Substitute);
+                    static char the_polynomial_text[128] = "x^2";
+                    static char character_text[128] = "x";
+                    static char substitute_character[128] = "a + b";
+                    static Polynomial result("(1/1)x^(2/1)");
+                    static Polynomial substitute_polynomial;
+                    static sint8 character = 'x';
+                    static std::string Out1 = "please check \"update\" ";
+
+                    ImGui::Text("please input the polynomial.");
+                    ImGui::InputText("polynomial", the_polynomial_text, IM_ARRAYSIZE(the_polynomial_text));
+
+                    ImGui::Text("please input the character.");
+                    ImGui::InputText("character", character_text, IM_ARRAYSIZE(character_text));
+
+                    ImGui::Text("please input the substitute polynomial.");
+                    ImGui::InputText("substitute polynomial", substitute_character, IM_ARRAYSIZE(substitute_character));
+
+                    if (ImGui::Button("update"))
+                    {
+
+                        //如果满足多项式的条件
+                        if (result.IsValid((std::string)the_polynomial_text))
+                        {
+                            result.Input((std::string)the_polynomial_text);
+                        }
+                        else
+                        {
+                            Out1 = "The input is error!";
+                            goto Polynomial_Out_The_Result;
+                        }
+
+                        //如果代换字符输入有误，则报错
+                        if (((std::string)character_text).size() != 1)
+                        {
+                            Out1 = "The input is error!";
+                            goto Polynomial_Out_The_Result;
+                        }
+
+                        //输入代换字符
+                        character = character_text[0];
+
+                        //如果满足单项式的条件
+                        if (substitute_polynomial.IsValid((std::string)substitute_character))
+                        {
+                            substitute_polynomial.Input((std::string)substitute_character);
+                        }
+                        else
+                        {
+                            Out1 = "The input is error!";
+                            goto Polynomial_Out_The_Result;
+                        }
+
+                        //代换字符
+                        if (!result.Substitute(character, substitute_polynomial))
+                        {
+                            Out1 = "The input is error!";
+                            goto Polynomial_Out_The_Result;
+                        }
+                        Out1 = result.Out();
+                    }
+                    //跳转标签，显示结果
+                Polynomial_Out_The_Result:
+
+                    ImGui::Text("--Out--");
+                    ImGui::Text("The result: %s", Out1.c_str());
+
                     ImGui::End();
                 }
 

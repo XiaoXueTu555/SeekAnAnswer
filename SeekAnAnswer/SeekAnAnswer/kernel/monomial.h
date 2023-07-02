@@ -25,6 +25,7 @@ public:
 	void SetCoefficientA(sint64 a); //设置系数a
 	void SetCoefficientB(sint64 b); //设置系数b
 	void Push(sint8 factor, Fraction<sint64> exponent); //添加字母因数
+	bool Substitute(sint8 character, Monomial val); //代入，将某个字母替换为某个单项式
 	void DelOne(); //删除多余的“1”
 	void Clear_factor();
 public:
@@ -64,4 +65,3 @@ private:
 public:
 	bool IsError(); //判断此单项式是否为错误状态
 };
-
