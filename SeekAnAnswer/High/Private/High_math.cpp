@@ -1,5 +1,4 @@
 #include "..\Public\High_math.h"
-#include "..\Public\High_io.h"
 
 #define ITERATIONS 10
 
@@ -57,13 +56,9 @@ High_float sqrt(High_float a)
         return (High_float)0;
     }
     High_float guess = (High_float)0.5 * a, constant = 2, last;
-    guess.setprecision(PRECISION);
-    constant.setprecision(PRECISION);
-    //int64_t i = 0;
     while (true)
     {
         guess = (guess * guess + a) / (constant * guess);
-        //std::cout << "第" << ++i << "次迭代: " << guess << "\n";
         if (guess == last)
         {
             break;
@@ -79,16 +74,14 @@ High_float Rooting(High_float a, High_int n)
     {
         return (High_float)0;
     }
-    High_float guess = (High_float)0.5 * a, last;
+
+    High_float guess = (High_float)0.5 * a;
     High_int one = 1;
-    guess.setprecision(PRECISION);
-    a.setprecision(PRECISION);
-    //int64_t i = 0;
+
     for (int64_t i = 0; i < ITERATIONS; i++)
     {
         guess = (a + (((High_float)(n - one)) * pow(guess, n))) 
             / ((High_float)n * pow(guess, n - one));
-        //std::cout << "第" << ++i << "次迭代: " << guess << "\n";
     }
     return guess;
 }

@@ -169,6 +169,7 @@
     <ClCompile Include="..\..\SeekAnAnswer\High\Private\High_math.cpp" />
     <ClCompile Include="..\..\SeekAnAnswer\SeekAnAnswer\kernel\arithmetic_expression.cpp" />
     <ClCompile Include="..\..\SeekAnAnswer\SeekAnAnswer\kernel\equation.cpp" />
+    <ClCompile Include="..\..\SeekAnAnswer\SeekAnAnswer\kernel\mathematical_expression.cpp" />
     <ClCompile Include="..\..\SeekAnAnswer\SeekAnAnswer\kernel\monomial.cpp" />
     <ClCompile Include="..\..\SeekAnAnswer\SeekAnAnswer\kernel\polynomial.cpp" />
     <ClCompile Include="..\..\SeekAnAnswer\SeekAnAnswer\kernel\polynomial_exponential.cpp" />

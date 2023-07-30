@@ -1,3 +1,4 @@
+#include <math.h>
 #include "arithmetic_expression.h"
 
 void Arithmetic_Expression::Input(std::string value)

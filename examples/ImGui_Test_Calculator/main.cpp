@@ -76,8 +76,8 @@ int main(int, char**)
     // - Remember that in C/C++ if you want to include a backslash \ in a string literal you need to write a double backslash \\ !
     //io.Fonts->AddFontDefault();
     //io.Fonts->AddFontFromFileTTF("c:\\Windows\\Fonts\\segoeui.ttf", 18.0f);
-    io.Fonts->AddFontFromFileTTF("DroidSans.ttf", 24.0f);
-    //io.Fonts->AddFontFromFileTTF("ImGui/misc/fonts/DroidSans.ttf", 24.0f);
+    //io.Fonts->AddFontFromFileTTF("DroidSans.ttf", 24.0f);
+    io.Fonts->AddFontFromFileTTF("ImGui/misc/fonts/DroidSans.ttf", 24.0f);
     //io.Fonts->AddFontFromFileTTF("ImGui/misc/fonts/Roboto-Medium.ttf", 16.0f);
     //io.Fonts->AddFontFromFileTTF("ImGui/misc/fonts/Cousine-Regular.ttf", 15.0f);
     //ImFont* font = io.Fonts->AddFontFromFileTTF("c:\\Windows\\Fonts\\ArialUni.ttf", 18.0f, NULL, io.Fonts->GetGlyphRangesJapanese());
@@ -586,7 +586,7 @@ int main(int, char**)
                         //输入代换字符
                         character = character_text[0];
 
-                        //如果满足单项式的条件
+                        //如果满足多项式的条件
                         if (substitute_polynomial.IsValid((std::string)substitute_character))
                         {
                             substitute_polynomial.Input((std::string)substitute_character);

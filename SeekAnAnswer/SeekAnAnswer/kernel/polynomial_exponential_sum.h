@@ -3,8 +3,11 @@
 #include "polynomial_exponential.h"
 class Polynomial_Exponential_Sum
 {
+	/*member variable*/
 public:
 	std::vector<Polynomial_Exponential> list;
+
+	/*member function*/
 public:
 	Polynomial_Exponential_Sum();
 	Polynomial_Exponential_Sum(Polynomial_Exponential val);
@@ -12,8 +15,8 @@ public:
 	//合并同类项
 	void Unite_like_terms();
 public:
-	void Split();
-	void Merge();
+	void Split(); //“提”系数
+	void Merge(); //“合并”系数
 public:
 	//去除多项式中的0
 	void DeleteZero();

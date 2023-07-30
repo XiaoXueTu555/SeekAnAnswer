@@ -3,6 +3,16 @@
 #include "polynomial_exponential.h"
 #include "../../High/Public/High_int.h"
 
+/*	初始化Prime类中的质数表
+ *	这里使用了C++11中的列表初始化，如果编译器不支持，
+	可以使用其他初始化方法代替。 */
+std::vector<sint64> Prime::nk = { 
+	2,  3,  5,  7,  11, 13, 17, 
+	19, 23, 29, 31, 37, 41, 43, 
+	47, 53, 59, 61, 67, 71, 73, 
+	79, 83, 89, 97 
+};
+
 void Equation::SetValue(std::string value)
 {
 	this->coefficient_left.clear();

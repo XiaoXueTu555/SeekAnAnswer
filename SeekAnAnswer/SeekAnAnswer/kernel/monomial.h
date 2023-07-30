@@ -6,11 +6,17 @@
 /*单项式*/
 class Monomial
 {
+	/*member variable*/
 private:
 	//数字系数
 	Fraction<sint64> coefficient;
 	//字母因数/每个字母的指数
 	std::map<sint8, Fraction<sint64>> factor;
+private:
+	//是否处于错误状态
+	bool error;
+
+	/*member function*/
 public: //构造函数
 	Monomial();
 	Monomial(std::string std_value);
@@ -58,10 +64,12 @@ public:
 	Monomial operator*(Monomial b);
 	Monomial operator/(Monomial b);
 public:
+	/*	特殊情况下可将Monomial转成sint64类型
+	 *	贴心提示：如果你看到Visual Studio 2022提示您
+	  “未找到operator Fraction<sint64>的函数定义” 
+	  请不要惊慌，这一定是Visual Studio 2022的bug~~~
+	*/
 	operator Fraction<sint64>();
-private:
-	//是否处于错误状态
-	bool error;
 public:
 	bool IsError(); //判断此单项式是否为错误状态
 };

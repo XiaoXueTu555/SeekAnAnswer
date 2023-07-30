@@ -2,15 +2,17 @@
 #include <string>
 #include "polynomial_exponential.h"
 #include "..\..\High\Public\High_float.h"
-#include "..\..\High\Public\High_math.h"
 
 //算术表达式
 class Arithmetic_Expression
 {
+	/*member variable*/
 public:
 	Polynomial_Exponential a;
 	Polynomial_Exponential b;
 	sint8 _operator;
+
+	/*member function*/
 public:
 	Arithmetic_Expression();
 public:

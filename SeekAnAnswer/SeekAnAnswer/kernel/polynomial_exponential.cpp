@@ -30,13 +30,15 @@ void Polynomial_Exponential::simplify()
 	}
 
 	//如果指数为1，则将底数的系数部分提到前面
-	if (this->exponential == Fraction<sint64>(1, 1))
+	if (this->exponential == Fraction<sint64>(1, 1) &&
+		(this->number != Polynomial()))
 	{
 		std::vector<sint64> a;
 		for (suint64 i = 0; i < this->number.list.size(); i++)
 		{
 			a.push_back(this->number.list.at(i).GetCoefficient().a);
 		}
+
 		this->number /= Monomial(Fraction<sint64>(Fraction<sint64>::gcds(a), 1));
 		this->coefficient *= Fraction<sint64>(Fraction<sint64>::gcds(a), 1);
 	}
@@ -191,6 +193,7 @@ void Polynomial_Exponential::Input(std::string value)
 
 	std::string container;
 	suint64 start = 0;
+	suint64 end = 0;
 	//字符串中存在乘号
 	if (value.find('*') != std::string::npos)
 	{
@@ -216,8 +219,19 @@ void Polynomial_Exponential::Input(std::string value)
 			return;
 		}
 
-		//说明底数外存在次方符号
-		//且次方符号在所有次方符号的最右侧
+		/*说明底数外存在次方符号，且次方符号在所有次方符号的最右侧
+		或者底数外不存在次方符号，而从start到最后整体都是底数*/
+
+		//判断从start到最后整体是否为底数
+		for (suint64 i = start; i < value.size(); i++)
+			container.push_back(value.at(i));
+		if (this->number.IsValid(container))
+		{
+			this->number.Input(container);
+			return;
+		}
+
+		container.clear();
 
 		//获取底数
 		for (suint64 i = start; i < value.rfind('^'); i++)

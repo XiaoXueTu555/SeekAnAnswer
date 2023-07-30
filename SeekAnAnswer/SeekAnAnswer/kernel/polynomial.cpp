@@ -112,12 +112,30 @@ void Polynomial::Unite_like_terms()
 			}
 		}
 	}
+	this->DeleteZero();
 	return;
 }
 
 void Polynomial::DeleteZero()
 {
-	if (this->list.size() <= 1) return;
+	/*最开始的时候下面这行被注释的代码是被添加在这个函数里的，
+	因为可以提高这个函数的执行效率，逻辑上也说得清，貌似没问题，
+	但是我最近发现了一个bug，如果一个多项式是一个单项式，而且等于0，
+	也就是这个单项式的数字系数部分等于0，但是这个单项式有可能
+	在字母系数部分携带了一些信息，这可能会带来额外的内存开销，
+	或者引出一些其他的bug，所以这里以注释的方式保留这行代码，以警戒*/
+	//if (this->list.size() <= 1) return;
+
+	/*经过上述解释，我们需要处理数字系数部分为0，但是字母系数
+	带有额外信息的情况，但是不能将单纯将上面的代码删掉，因为
+	下面的代码会用到Push函数，而Push函数会调用DeleteZero，
+	如果多项式是0的话直接递归死循环了，所以我们要加这一段代码*/
+	if (this->list.size() <= 1
+		&& this->list.at(0).GetCoefficient().a == 0)
+	{
+		this->list.at(0).Clear_factor();
+		return;
+	}
 
 	for (suint64 i = 0; i < this->list.size(); i++)
 	{
@@ -343,9 +361,10 @@ bool Polynomial::Substitute(sint8 character, Polynomial val)
 		}
 	}
 
-	Polynomial result; //运算结果
 	Polynomial temp; //临时变量
 	sint64 exponent = 0;
+
+	Fraction<sint64> coe_temp; //保存代换字符所在单项式的系数
 
 	//遍历所有单项式
 	for (suint64 i = 0; i < this->list.size(); i++)
@@ -365,12 +384,14 @@ bool Polynomial::Substitute(sint8 character, Polynomial val)
 			temp *= val;
 		}
 
-		//删除该项单项式的代换字母因数
-		this->list.at(i).GetFactor().erase(character);
+		//保存该项单项式的数字系数
+		coe_temp = this->list.at(i).GetCoefficient();
 
-		result += ((Polynomial)(this->list.at(i)) * temp);
+		//删除该项单项式
+		this->list.erase(this->list.begin() + i);
+
+		*this += (Polynomial)(Monomial)coe_temp * temp;
 	}
-	*this = result;
 	return true;
 }
 
@@ -460,6 +481,7 @@ Polynomial Polynomial::operator-(Monomial val)
 Polynomial Polynomial::operator*(Monomial val)
 {
 	Polynomial result;
+
 	for (suint64 i = 0; i < this->list.size(); i++)
 	{
 		result.list.push_back(this->list.at(i) * val);
@@ -485,6 +507,7 @@ Polynomial Polynomial::operator/(Monomial val)
 Polynomial Polynomial::operator+(Polynomial val)
 {
 	Polynomial result = *this;
+
 	for (suint64 i = 0; i < val.list.size(); i++)
 	{
 		result = result + val.list.at(i);
@@ -497,12 +520,14 @@ Polynomial Polynomial::operator+(Polynomial val)
 Polynomial Polynomial::operator-(Polynomial val)
 {
 	Polynomial b = val;
+
 	//0 - val
 	for (suint64 i = 0; i < b.list.size(); i++)
 	{
 		b.list.at(i).SetCoefficientA(0 - b.list.at(i).GetCoefficient().a);
 	}
 	Polynomial result = *this + b;
+
 	return result;
 }
 
@@ -533,9 +558,6 @@ Polynomial Polynomial::operator/(Polynomial val)
 		return result;
 	}
 
-	//清空商式的所有项
-	result.list.clear();
-
 	//将被除数和除数最高的单项式的次数的单项式移动到首位
 	this->Move(); val.Move();
 
@@ -548,20 +570,27 @@ Polynomial Polynomial::operator/(Polynomial val)
 		return result;
 	}
 
-	//最初的余式是被除式
-	remainder = *this;
-
-	/*如果该除法运算可进行因式分解
-	条件：多项式a和多项式b互为父多项式（子多项式）并且
+	/*该除法运算可进行因式分解的必要条件
+	条件：多项式a是多项式b的父多项式，并且
 	多项式a的次数大于等于多项式b的次数大于0
 	*/
-	if (IsLetterSetEquality(*this, val) &&
+	if (IsParentPolynomial(*this, val) &&
 		val.GetDegree().GetDegree() > Fraction<sint64>(0, 1) &&
 		this->GetDegree().GetDegree() >= val.GetDegree().GetDegree())
 	{
-		while ( !( !IsLetterSetEquality(remainder, val) ||
+		//最初的余式是被除式
+		remainder = *this;
+
+		//清空商式的所有项
+		result.list.clear();
+
+		/*如果“余式不是除式的子多项式”、“余式的次数小于除式的次数”、
+		“余式等于0”、“商多项式的项数大于等于被除式的项数”
+		其一满足，则因式分解结束，否则可进行因式分解*/
+		while ( !( !IsParentPolynomial(remainder, val) ||
 			remainder.GetDegree().GetDegree() < val.GetDegree().GetDegree() ||
-			(remainder.IsMonomial() && remainder.list.at(0) == Monomial("(0/1)"))
+			(remainder.IsMonomial() && remainder.list.at(0) == Monomial("(0/1)")) ||
+			(result.list.size() >= this->list.size())
 			) )
 		{
 			//余式的最高项的子多项式在除式中的位置（下标）
@@ -570,6 +599,7 @@ Polynomial Polynomial::operator/(Polynomial val)
 			//得到下标
 			for (suint64 i = 0; i < val.list.size(); i++)
 			{
+				//这里的remainder.list.at(0)就是余式的最高项
 				if (IsParentPolynomial(remainder.list.at(0), val.list.at(i)))
 				{
 					location_of_sonPolynomial = i;
@@ -577,12 +607,10 @@ Polynomial Polynomial::operator/(Polynomial val)
 				}
 			}
 
+			//说明除式中不存在余式的最高项的子多项式，无法因式分解
 			if (location_of_sonPolynomial == -1)
 			{
-				if (result.list.size() == 0)
-					result.list.push_back(Monomial());
-
-				return result;
+				goto division_method;
 			}
 
 			//计算商式
@@ -599,7 +627,15 @@ Polynomial Polynomial::operator/(Polynomial val)
 	//一般的两个多项式相除
 	else
 	{
-		//如果“余式为0或者商式的长度大于等于被除式的长度”条件的否定满足则计算
+	division_method:
+
+		//最初的余式是被除式
+		remainder = *this;
+
+		//清空商式的所有项
+		result.list.clear();
+
+		//如果“余式为0或者商式的长度大于等于被除式的长度”条件满足则不能计算，否则能计算
 		while (!((remainder.IsMonomial() && remainder.list.at(0) == Monomial("(0/1)")) ||
 			result.list.size() >= this->list.size()))
 		{
@@ -613,7 +649,8 @@ Polynomial Polynomial::operator/(Polynomial val)
 		}
 	}
 
-	result.DeleteZero();
+	result.DeleteZero(); //bug
+
 	result.Unite_like_terms();
 
 	if (result.list.size() == 0) result.SetValue("(0/1)");

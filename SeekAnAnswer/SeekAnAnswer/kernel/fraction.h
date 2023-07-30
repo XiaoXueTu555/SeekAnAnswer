@@ -75,6 +75,7 @@ public:
 	{
 		this->a = value;
 		this-> b = 1;
+		return *this;
 	}
 public:
 	bool operator==(Fraction<sint64> b)

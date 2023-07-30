@@ -7,12 +7,17 @@
 /*多项式类*/
 class Polynomial
 {
+	/*member variable*/
+public:
+	std::vector<Monomial> list;//多项式
+private:
+	bool error;
+
+	/*member function*/
 public:
 	Polynomial(std::string std_value);
 	Polynomial(Monomial val);
 	Polynomial();
-public:
-	std::vector<Monomial> list;//多项式
 /*标准输入*/
 public:
 	void SetValue(Polynomial value);
@@ -99,8 +104,6 @@ public:
 	static bool IsValid(std::string val); 
 public:
 	bool IsError();
-private:
-	bool error;
 };
 
 /// <summary>

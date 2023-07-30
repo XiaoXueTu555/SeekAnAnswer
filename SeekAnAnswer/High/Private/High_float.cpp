@@ -1,15 +1,16 @@
 ﻿#include <sstream>
 #include <string>
-#include <stdlib.h>
 #include <math.h>
 #include"../Public/High_float.h"
 #include"../Public/High_int.h"
-#include <iostream>
 
 #define High_float_NULL (High_float)0.0
 #define High_int_NULL (High_int)0
 
 #define MAX(a,b) (a > b) ? a : b
+
+//初始化静态成员
+int64_t High_float::precision = PRECISION;
 
 /*构造函数*/
 High_float::High_float()
@@ -18,20 +19,22 @@ High_float::High_float()
 	this->integer = 0;
 	this->decimals = 0;
 	this->decimals_leading_zero = 0;
-	this->precision = PRECISION;
 	return;
 }
 
 High_float::High_float(High_int data)
 {
 	*this = data;
-	this->precision = PRECISION;
 }
 
 High_float::High_float(long double data)
 {
 	*this = data;
-	this->precision = PRECISION;
+}
+
+High_float::High_float(std::string data)
+{
+	*this = data;
 }
 
 /*析构函数*/
@@ -78,7 +81,7 @@ High_float::operator long double()
 /*设置除法的计算精度*/
 void High_float::setprecision(int64_t precision)
 {
-	this->precision = precision;
+	High_float::precision = precision;
 	return;
 }
 
@@ -159,6 +162,42 @@ bool High_float::operator!=(High_float data)
 	return (*this == data) ? false : true;
 }
 
+High_float High_float::operator=(std::string data)
+{
+	if (data.at(0) == '-') this->sign = false;
+	else this->sign = true;
+
+	std::string container; //容器
+	uint64_t i = 0;
+	for (i; i < data.size(); i++)
+	{
+		if (data.at(i) == '.') break;
+		else container.push_back(data.at(i));
+	}
+
+	this->integer = container;
+	container.clear();
+
+	for (i; i < data.size(); i++)
+	{
+		container.push_back(data.at(i));
+	}
+
+	for (uint64_t j = 0; j < container.size(); j++)
+	{
+		if (container.at(0) == '0')
+		{
+			++this->decimals_leading_zero;
+			container.erase(container.begin());
+		}
+		else break;
+	}
+
+	if (container.size() > 0) this->decimals = container;
+
+	return *this;
+}
+
 bool High_float::operator>(High_float data)
 {
 	if (this->sign && !data.sign)
@@ -206,7 +245,6 @@ bool High_float::operator<=(High_float data)
 High_float High_float::operator+(High_float b)
 {
 	High_float result;
-	result.setprecision((this->precision > b.precision) ? this->precision : b.precision);
 	if (*this >= High_float_NULL && b < High_float_NULL)
 	{
 		b.sign = true;
@@ -250,7 +288,6 @@ High_float High_float::operator-(High_float b)
 {
 	High_float result;
 
-	result.setprecision((this->precision > b.precision) ? this->precision : b.precision);
 	if (*this >= High_float_NULL && b < High_float_NULL)
 	{
 		b.sign = true;
@@ -318,7 +355,6 @@ High_float High_float::operator*(High_float b)
 	High_float result;
 	High_int multiplier_a = this->integer;
 	High_int multiplier_b = b.integer;
-	result.setprecision((this->precision > b.precision) ? this->precision : b.precision);
 	multiplier_a.Data().
 		insert(multiplier_a.Data().end(), 
 			this->decimals_leading_zero, 0);
@@ -415,7 +451,6 @@ High_float High_float::operator/(High_float b)
 	dividend_a = *this;
 
 	High_int divisor_b = b.integer;
-	result.setprecision((this->precision > b.precision) ? this->precision : b.precision);
 
 	if (*this == High_float_NULL)
 		return High_float_NULL;
@@ -480,7 +515,7 @@ High_float High_float::operator/(High_float b)
 	}
 
 	//要计算的小数点位数
-	for (int64_t i = 0; i < this->precision - 1; i++)
+	for (int64_t i = 0; i < High_float::precision - 1; i++)
 	{
 		dividend_a *= 10;
 	}

@@ -48,6 +48,12 @@ Monomial::Monomial(Fraction<sint64> coefficient, std::map<sint8, Fraction<sint64
 Fraction<sint64> Monomial::GetDegree() //获得此单项式的次数
 {
 	Fraction<sint64> degree(0, 1);
+
+	/*这里加这一条判断，防止某些情况下，单项式
+	为0，但是字母系数部分却携带信息的情况*/
+	if (this->coefficient == degree)
+		return degree;
+
 	for (std::map<sint8, Fraction<sint64>>::iterator i = this->factor.begin(); i != this->factor.end(); i++)
 	{
 		degree += i->second;
@@ -191,6 +197,12 @@ void Monomial::DelOne()
 		//如果指数部分等于0，则删除该字母项
 		if (i->second.a == 0)
 		{
+			/*在这里说明一下，现代的erase函数删除某一个元素之后，
+			会返回一个指向删除这个元素后的下一个元素的迭代器，我这里
+			使用这个迭代器来遍历删除所有指数部分为0的项，如果你正在尝试
+			将这个库在比较老的编译器下运行，有可能编译器所提供的的erase不支持
+			返回迭代器，你可以尝试用其他的erase函数或者其他的实现方法
+			来替换这个函数的实现*/
 			i = this->factor.erase(i);
 		}
 		else

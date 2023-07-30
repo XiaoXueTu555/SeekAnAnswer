@@ -4,9 +4,12 @@
 template<>
 class Fraction <Polynomial_Exponential_Sum>
 {
+	/*member variable*/
 public:
 	Polynomial_Exponential_Sum a;
 	Polynomial_Exponential_Sum b;
+
+	/*member function*/
 public:
 	std::string Out()
 	{

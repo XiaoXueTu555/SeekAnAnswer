@@ -8,6 +8,7 @@
 #include "../misinttypes/saint.h"
 class Equation
 {
+	/*member variable*/
 public:
 	//未知数的系数
 	std::vector<Polynomial> coefficient_left;
@@ -19,6 +20,8 @@ public:
 	Fraction<Polynomial> root1; //一元一次方程的根
 	//一元二次方程的根
 	std::vector<Fraction<Polynomial_Exponential_Sum>> root2;
+
+	/*member function*/
 public:
 	void SetValue(std::string value); //标准输入
 	void Input(std::string value); //非标准输入
@@ -71,7 +74,7 @@ inline bool IsPrime(sint64 n) {
 class Prime
 {
 public:
-	std::vector<sint64> nk;
+	static std::vector<sint64> nk;
 	sint64 n;
 	suint64 i;
 public:
@@ -79,13 +82,6 @@ public:
 	{ 
 		i = 0;
 		n = 2; 
-		nk.push_back(2);
-		nk.push_back(3);
-		nk.push_back(5);
-		nk.push_back(7);
-		nk.push_back(11);
-		nk.push_back(13);
-		nk.push_back(17);
 	}
 	void Next()
 	{

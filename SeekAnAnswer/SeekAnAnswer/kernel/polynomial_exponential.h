@@ -3,6 +3,7 @@
 #include <vector>
 class Polynomial_Exponential
 {
+	/*member variable*/
 public:
 	//Êý×ÖÏµÊý
 	Fraction<sint64> coefficient;
@@ -12,6 +13,8 @@ public:
 	Fraction<sint64> exponential;
 public:
 	bool error;
+
+	/*member function*/
 public:
 	Polynomial_Exponential();
 	Polynomial_Exponential(Polynomial value);

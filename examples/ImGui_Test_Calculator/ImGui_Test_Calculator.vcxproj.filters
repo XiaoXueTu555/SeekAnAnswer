@@ -158,6 +158,9 @@
     <ClCompile Include="..\..\SeekAnAnswer\High\Private\High_io.cpp">
       <Filter>High\private</Filter>
     </ClCompile>
+    <ClCompile Include="..\..\SeekAnAnswer\SeekAnAnswer\kernel\mathematical_expression.cpp">
+      <Filter>SeekAnAnswer\kernel</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <None Include="ImGUI\imgui.ini">
