@@ -1,8 +1,11 @@
 #pragma once
 #include "High_int.h"
 
-//初始化浮点除法的计算精度
-#define PRECISION 32
+#define MAGICNUMBER0 0x1321A8A
+#define MAGICNUMBER1 0x1321AF8
+#define MAGICDEFINE0(magic) (int)(magic % 10) + ((magic / 10) % 10)*2 + ((magic / 100) % 10)*4
+
+#define PRECISION (int64_t)powl(4 - 2, MAGICDEFINE0((int)(MAGICNUMBER1 - MAGICNUMBER0)))
 
 class High_float
 {
@@ -12,6 +15,7 @@ private:
 	class High_int decimals;
 	int64_t decimals_leading_zero;
 public:
+	//除法计算的精度设置
 	static int64_t precision;
 public:
 	High_float();
@@ -59,5 +63,6 @@ public:
 	int64_t& Decimals_leading_zero();
 private:
 	void AlignToSuitableSize(High_float& data);
+	//处理一些错误状态和处理一些事物
 	void Shrink_to_fit_of_decimals();
 };

@@ -9,7 +9,7 @@
 
 #define MAX(a,b) (a > b) ? a : b
 
-//初始化静态成员
+//初始化默认精度
 int64_t High_float::precision = PRECISION;
 
 /*构造函数*/

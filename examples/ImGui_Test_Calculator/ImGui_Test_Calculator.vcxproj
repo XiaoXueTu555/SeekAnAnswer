@@ -71,13 +71,13 @@
   </ImportGroup>
   <PropertyGroup Label="UserMacros" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
-    <IncludePath>D:\project\vs2019\SeekAnAnswer\examples\ImGui_Test_Calculator\ImGui;D:\project\vs2019\SeekAnAnswer\SeekAnAnswer;$(IncludePath)</IncludePath>
+    <IncludePath>ImGui;..\..\SeekAnAnswer</IncludePath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <IncludePath>D:\project\vs2019\SeekAnAnswer\examples\ImGui_Test_Calculator\ImGui;D:\project\vs2019\SeekAnAnswer\SeekAnAnswer;$(IncludePath)</IncludePath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
-    <IncludePath>D:\project\vs2019\SeekAnAnswer\examples\ImGui_Test_Calculator\ImGui;D:\project\vs2019\SeekAnAnswer\SeekAnAnswer;$(IncludePath)</IncludePath>
+    <IncludePath>ImGui;..\..\SeekAnAnswer</IncludePath>
   </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <ClCompile>
@@ -113,6 +113,8 @@
       <SDLCheck>true</SDLCheck>
       <PreprocessorDefinitions>_DEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
+      <AdditionalIncludeDirectories>
+      </AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>

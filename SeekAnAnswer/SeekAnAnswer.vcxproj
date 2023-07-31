@@ -140,28 +140,34 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClInclude Include="High\Public\High_float.h" />
-    <ClInclude Include="High\Public\High_int.h" />
-    <ClInclude Include="High\Public\High_io.h" />
-    <ClInclude Include="High\Public\High_math.h" />
-    <ClInclude Include="SeekAnAnswer\kernel\equation.h" />
-    <ClInclude Include="SeekAnAnswer\kernel\fraction.h" />
-    <ClInclude Include="SeekAnAnswer\kernel\Fraction_PES.h" />
-    <ClInclude Include="SeekAnAnswer\kernel\monomial.h" />
-    <ClInclude Include="SeekAnAnswer\kernel\polynomial.h" />
-    <ClInclude Include="SeekAnAnswer\kernel\polynomial_exponential.h" />
-    <ClInclude Include="SeekAnAnswer\kernel\polynomial_exponential_sum.h" />
-    <ClInclude Include="SeekAnAnswer\misinttypes\saint.h" />
-  </ItemGroup>
-  <ItemGroup>
     <ClCompile Include="High\Private\High_float.cpp" />
     <ClCompile Include="High\Private\High_int.cpp" />
+    <ClCompile Include="High\Private\High_io.cpp" />
+    <ClCompile Include="High\Private\High_math.cpp" />
+    <ClCompile Include="SeekAnAnswer\kernel\arithmetic_expression.cpp" />
     <ClCompile Include="SeekAnAnswer\kernel\equation.cpp" />
+    <ClCompile Include="SeekAnAnswer\kernel\mathematical_expression.cpp" />
     <ClCompile Include="SeekAnAnswer\kernel\monomial.cpp" />
     <ClCompile Include="SeekAnAnswer\kernel\polynomial.cpp" />
     <ClCompile Include="SeekAnAnswer\kernel\polynomial_exponential.cpp" />
     <ClCompile Include="SeekAnAnswer\kernel\polynomial_exponential_sum.cpp" />
     <ClCompile Include="test.cpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="High\Public\High_float.h" />
+    <ClInclude Include="High\Public\High_int.h" />
+    <ClInclude Include="High\Public\High_io.h" />
+    <ClInclude Include="High\Public\High_math.h" />
+    <ClInclude Include="SeekAnAnswer\kernel\arithmetic_expression.h" />
+    <ClInclude Include="SeekAnAnswer\kernel\equation.h" />
+    <ClInclude Include="SeekAnAnswer\kernel\fraction.h" />
+    <ClInclude Include="SeekAnAnswer\kernel\Fraction_PES.h" />
+    <ClInclude Include="SeekAnAnswer\kernel\mathematical_expression.h" />
+    <ClInclude Include="SeekAnAnswer\kernel\monomial.h" />
+    <ClInclude Include="SeekAnAnswer\kernel\polynomial.h" />
+    <ClInclude Include="SeekAnAnswer\kernel\polynomial_exponential.h" />
+    <ClInclude Include="SeekAnAnswer\kernel\polynomial_exponential_sum.h" />
+    <ClInclude Include="SeekAnAnswer\misinttypes\saint.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
