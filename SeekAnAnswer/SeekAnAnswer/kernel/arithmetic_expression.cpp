@@ -205,12 +205,20 @@ bool Arithmetic_Expression::IsNumber()
 std::string Arithmetic_Expression::Out()
 {
 	std::string result;
+	//无任何操作符，只有一个Polynomial_Exponential结构化简
 	if (this->_operator == 0)
 	{
 		return this->a.Out();
 	}
 
 	result += this->a.Out();
+
+	//如果b为0
+	if (this->b.Out() == "0")
+	{
+		return result;
+	}
+
 	result.push_back('\40');
 	result += this->_operator;
 	result.push_back('\40');
