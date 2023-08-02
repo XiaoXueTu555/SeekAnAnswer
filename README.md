@@ -52,7 +52,8 @@ std::cout << "pol1 + pol2 = (" << pol1.Out() << ") * ("
 		<< pol2.Out() << ") = " << pol3.Out() << std::endl;
 ```
 
-![1690949527493](typora-user-images\1690949527493.png)
+
+![1690949527493](https://github.com/XiaoXueTu555/SeekAnAnswer/assets/83569110/7466ec19-ead8-47b0-92a0-84184eb7e658)
 
 
 
@@ -82,7 +83,8 @@ std::cout << "根的情况：" << std::endl
 	<< equ_Out1 << std::endl << equ_Out2 << std::endl;
 ```
 
-![1690950102603](typora-user-images\1690950102603.png)
+![1690950102603](https://github.com/XiaoXueTu555/SeekAnAnswer/assets/83569110/494b5929-5642-4581-85e5-7303b3914837)
+
 
 事实上 SeekAnAnswer 的使用如同上面的例子一样简单！而且**很多类都有类似的函数与功能，也十分符合直觉与逻辑**，这一点从上面的例子也可以看出。当然，SeekAnAnswer 还有许多的功能来帮助你实现更多的数学运算，或是获取一些必要的数学信息。
 
@@ -114,21 +116,21 @@ SeekAnAnswer 在大部分支持的结构中，支持复合结构的直接输入�
 
 是的，这个项目使用了著名的 Dear ImGui ，同时也是我最喜欢的Gui之一，所以使用这个Gui来进行 SeekAnAnswer 的效果演示
 
-![1690953926354](typora-user-images\1690953926354.png)
+![1690953926354](https://github.com/XiaoXueTu555/SeekAnAnswer/assets/83569110/e60eacaf-7ffa-4b1f-b8ce-7d10f9edb7b7)
 
-![1690953965402](typora-user-images\1690953965402.png)
+![1690953965402](https://github.com/XiaoXueTu555/SeekAnAnswer/assets/83569110/45bfbe25-e314-4591-9fef-0c7fa38e1877)
 
-![1690954073584](typora-user-images\1690954073584.png)
+![1690954073584](https://github.com/XiaoXueTu555/SeekAnAnswer/assets/83569110/cc0ebc16-dec3-49d9-b2ca-d7729e1e832b)
 
-![1690954087552](typora-user-images\1690954087552.png)
+![1690954087552](https://github.com/XiaoXueTu555/SeekAnAnswer/assets/83569110/81ec99f9-9f42-49b8-988d-a3bfac68b07a)
 
-![1690954106673](typora-user-images\1690954106673.png)
+![1690954106673](https://github.com/XiaoXueTu555/SeekAnAnswer/assets/83569110/d1bc7198-662e-4a7d-aeff-351d6af9e044)
 
-![1690954142972](typora-user-images\1690954142972.png)
+![1690954142972](https://github.com/XiaoXueTu555/SeekAnAnswer/assets/83569110/ece8a656-a165-4e0f-877f-4b39ef236431)
 
-![1690954169611](typora-user-images\1690954169611.png)
+![1690954169611](https://github.com/XiaoXueTu555/SeekAnAnswer/assets/83569110/07e2643b-5dbf-4ee9-b12d-99c2ae976a79)
 
-![1690954721141](typora-user-images\1690954721141.png)
+![1690954721141](https://github.com/XiaoXueTu555/SeekAnAnswer/assets/83569110/4c796c99-5331-4ea0-a953-752daa8ce04f)
 
 ### 许可证
 
