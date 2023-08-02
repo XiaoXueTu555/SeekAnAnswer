@@ -99,7 +99,7 @@ int main()
 	/*我觉得经过Fraction和Monomial的例子，你已经聪明的猜到，Polynomial也有类似的
 	安全格式检查，所以不会担心你的输入可能会导致SAA的内存泄漏了（笑）*/
 
-	//计算mon1乘以mon2的值，并将结果保存在mon3中
+	//计算pol1乘以pol2的值，并将结果保存在pol3中
 	Polynomial pol3 = pol1 * pol2;
 
 	//利用Monomial::Out函数（非标准格式输出函数）进行输出
