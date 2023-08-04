@@ -649,3 +649,9 @@ bool Monomial::IsError()
 {
 	return this->error;
 }
+
+sint64 GetLetterSize(Monomial& a)
+{
+	//返回单项式a的字母集合的元素数量
+	return a.GetFactor().size();
+}

@@ -184,19 +184,43 @@ Fraction<sint64> Polynomial::GetTheDegree()
 	return degree;
 }
 
+/*该函数在保证返回最大次数所在单项式的下标之外，
+还保证该函数返回单项式的字母集合元素数量最少*/
 suint64 Polynomial::GetLocationOfDegree()
 {
-	Fraction<sint64> degree(0, 1);
-	suint64 count = 0;
-	for (suint64 i = 0; i < this->list.size(); i++)
+	//取初始次数
+	Fraction<sint64> degree = this->list.at(0).GetDegree();
+
+	//某单项式的字母集合元素个数
+	sint64 element_quantity = GetLetterSize(this->list.at(0));
+
+	//最高次单项式在表里的下标
+	suint64 location = 0;
+
+	Fraction<sint64> temp_degree;
+	for (suint64 i = 1, degree_temp = 0; i < this->list.size(); i++)
 	{
-		if ((this->list.at(i).GetDegree()) > degree)
+		//获取当前单项式的次数
+		temp_degree = this->list.at(i).GetDegree();
+
+		//如果当前单项式次数大于目前已知最大的次数则更新
+		if (temp_degree > degree)
 		{
-			degree = (this->list.at(i)).GetDegree();
-			count = i;
+			degree = temp_degree;
+			element_quantity = GetLetterSize(this->list.at(i));
+			location = i;
+			continue;
+		}
+		//如果次数相等，但是字母集合元素个数更少，则更新
+		else if (temp_degree == degree &&
+			GetLetterSize(this->list.at(i)) < element_quantity)
+		{
+			degree = temp_degree;
+			element_quantity = GetLetterSize(this->list.at(i));
+			location = i;
 		}
 	}
-	return count;
+	return location;
 }
 
 Fraction<sint64> Polynomial::GetDegreeOfMixOfchar(sint8 a)
@@ -792,16 +816,20 @@ std::string Polynomial::Out()
 
 void Polynomial::Move()
 {
-	if (this->list.size() == 0)
+	if (this->list.size() <= 1)
 	{
 		return;
 	}
+
 	std::vector<Monomial> result;
+
+	//按照次数从大到小排序
 	while (this->list.size() != 1)
 	{
 		result.push_back(this->list.at(this->GetLocationOfDegree()));
 		this->list.erase(this->list.begin() + this->GetLocationOfDegree());
 	}
+
 	result.push_back(this->list.at(0));
 
 	for (suint64 i = 0; i < result.size(); i++)

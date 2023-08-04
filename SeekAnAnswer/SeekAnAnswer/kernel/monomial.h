@@ -1,6 +1,7 @@
 #pragma once
 #include <string>
 #include <map>
+#include <set>
 #include "..\misinttypes\saint.h"
 #include "fraction.h"
 /*单项式*/
@@ -73,3 +74,10 @@ public:
 public:
 	bool IsError(); //判断此单项式是否为错误状态
 };
+
+/// <summary>
+/// 获取单项式a的字母集合的元素个数
+/// </summary>
+/// <param name=""></param>
+/// <returns></returns>
+sint64 GetLetterSize(Monomial& a);

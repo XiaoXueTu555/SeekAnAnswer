@@ -62,7 +62,8 @@ public:
 	//求与val多项式的最小公倍数
 	Fraction<sint64> LeastCommonMultiple_of_coe(Polynomial val);
 public:
-	//将最高的单项式的次数的单项式移动到首位
+	/*将最高的单项式的次数的单项式移动到首位，
+	且保证第一项是所有单项式中字母集合的元素最少的单项式*/
 	void Move();
 public:
 	//清空所有单项式
