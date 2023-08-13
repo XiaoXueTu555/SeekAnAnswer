@@ -582,7 +582,8 @@ Polynomial Polynomial::operator/(Polynomial val)
 		return result;
 	}
 
-	//将被除数和除数最高的单项式的次数的单项式移动到首位
+	/*将被除数和除数最高的单项式的次数的单项式移动到首位
+	且首位保证是字母集合元素最少的单项式*/
 	this->Move(); val.Move();
 
 	//被除数与除数相等
@@ -607,6 +608,16 @@ Polynomial Polynomial::operator/(Polynomial val)
 
 		//清空商式的所有项
 		result.list.clear();
+
+		//如果不能进行因式分解算法则进行长除法
+		if (!IsParentPolynomial(remainder, val) ||
+			remainder.GetDegree().GetDegree() < val.GetDegree().GetDegree() ||
+			(remainder.IsMonomial() && remainder.list.at(0) == Monomial("(0/1)")) ||
+			(result.list.size() >= this->list.size())
+			)
+		{
+			goto division_method;
+		}
 
 		/*如果“余式不是除式的子多项式”、“余式的次数小于除式的次数”、
 		“余式等于0”、“商多项式的项数大于等于被除式的项数”
@@ -673,7 +684,11 @@ Polynomial Polynomial::operator/(Polynomial val)
 		}
 	}
 
-	result.DeleteZero(); //bug
+	//防止某些运算提前结束导致长度为0
+	if (result.list.size() == 0)
+		result.Push(Monomial());
+
+	result.DeleteZero();
 
 	result.Unite_like_terms();
 
