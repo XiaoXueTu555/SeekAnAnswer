@@ -17,6 +17,9 @@
 #include "SeekAnAnswer/kernel/equation.h"
 #include "SeekAnAnswer/kernel/arithmetic_expression.h"
 
+/*FileIO 用于实现多语言切换*/
+#include "FileIO/file_io.h"
+
 #pragma comment(lib,"d3d9.lib")
 
 // Data
@@ -29,6 +32,13 @@ bool CreateDeviceD3D(HWND hWnd);
 void CleanupDeviceD3D();
 void ResetDevice();
 LRESULT WINAPI WndProc(HWND hWnd, UINT msg, WPARAM wParam, LPARAM lParam);
+
+// Data
+//语言的文本映射
+TextMap language_text;
+int language = 0;
+
+inline const char* ST(std::string key);
 
 // Main code
 int main(int, char**)
@@ -77,7 +87,7 @@ int main(int, char**)
     //io.Fonts->AddFontDefault();
     //io.Fonts->AddFontFromFileTTF("c:\\Windows\\Fonts\\segoeui.ttf", 18.0f);
     //io.Fonts->AddFontFromFileTTF("DroidSans.ttf", 24.0f);
-    io.Fonts->AddFontFromFileTTF("ImGui/misc/fonts/DroidSans.ttf", 24.0f);
+    io.Fonts->AddFontFromFileTTF("ImGui/misc/fonts/msyh.ttc", 24.0f, NULL, io.Fonts->GetGlyphRangesChineseSimplifiedCommon());
     //io.Fonts->AddFontFromFileTTF("ImGui/misc/fonts/Roboto-Medium.ttf", 16.0f);
     //io.Fonts->AddFontFromFileTTF("ImGui/misc/fonts/Cousine-Regular.ttf", 15.0f);
     //ImFont* font = io.Fonts->AddFontFromFileTTF("c:\\Windows\\Fonts\\ArialUni.ttf", 18.0f, NULL, io.Fonts->GetGlyphRangesJapanese());
@@ -86,9 +96,12 @@ int main(int, char**)
     io.FontGlobalScale = 1.0f;
     io.FontAllowUserScaling = true;
 
+    /*加载语言的key*/
+    language_text.ReadKeyFile("key_list.txt");
 
     // Our state
     bool Show_SeekAnAnswer_test = false;
+    bool Show_Language_window = false;
 
     ImVec4 clear_color = ImVec4(0.45f, 0.55f, 0.60f, 1.00f);
 
@@ -114,13 +127,30 @@ int main(int, char**)
         ImGui_ImplWin32_NewFrame();
         ImGui::NewFrame();
 
+        //说明语言设置已更改
+        if (language != language_text.language)
+        {
+            //根据所设置的语言加载对应的语言文件
+            switch (language_text.language)
+            {
+            /*case 0: 默认是英文，为了节省磁盘与内存空间，语言的key就是英文的，其他的语言
+            文件都由key来映射对应的翻译*/
+            case 1:
+                language_text.ReadLanguageFile("Chinese.txt");
+                break;
+            default:
+                break;
+            }
+            language = language_text.language;
+        }
 
         // 2. Show a simple window that we create ourselves. We use a Begin/End pair to create a named window.
         {
-            ImGui::Begin("Test_Calculator");
+            ImGui::Begin(ST("Test_Calculator"));
 
-            ImGui::Text("Please select the function that you want.");
-            ImGui::Checkbox("SeekAnAnswer_test", &Show_SeekAnAnswer_test);
+            ImGui::Text(ST("Please select the function that you want."));
+            ImGui::Checkbox(ST("SeekAnAnswer_test"), &Show_SeekAnAnswer_test);
+            ImGui::Checkbox(u8"Language / 语言", &Show_Language_window);
 
             ImGui::ColorEdit3("clear color", (float*)&clear_color); // Edit 3 floats representing a color
 
@@ -131,14 +161,14 @@ int main(int, char**)
         //Show a test
         if (Show_SeekAnAnswer_test)
         { 
-            ImGui::Begin("SeekAnAnswer test", &Show_SeekAnAnswer_test);
-            if (ImGui::CollapsingHeader("Explain"))
+            ImGui::Begin(ST("SeekAnAnswer test"), &Show_SeekAnAnswer_test);
+            if (ImGui::CollapsingHeader(ST("Explain")))
             {
-                ImGui::Text("This is a windows that is used to test SeekAnAnswer's functionality.");
-                ImGui::Text("Here,you can easily test each feature of SeekAnAnswer");
+                ImGui::Text(ST("This is a windows that is used to test SeekAnAnswer's functionality."));
+                ImGui::Text(ST("Here,you can easily test each feature of SeekAnAnswer"));
             }
-            ImGui::Text("--TEST--");
-            if (ImGui::CollapsingHeader("Monomial"))
+            ImGui::Text(ST("--TEST--"));
+            if (ImGui::CollapsingHeader(ST("Monomial")))
             {
                 //输入测试
                 static bool Show_Input = false;
@@ -151,17 +181,17 @@ int main(int, char**)
                 //代入功能测试
                 static bool Show_Substitute = false;
 
-                ImGui::Text("This module is used to represent a monomial (ax^n)");
-                ImGui::Checkbox("Input Test", &Show_Input);
-                ImGui::Checkbox("Similar Items Test", &Show_SimilarItems);
-                ImGui::Checkbox("MUL Test", &Show_MUL);
-                ImGui::Checkbox("division Test", &Show_division);
-                ImGui::Checkbox("Substitute Test", &Show_Substitute);
+                ImGui::Text(ST("This module is used to represent a monomial (ax^n)"));
+                ImGui::Checkbox(ST("Input Test"), &Show_Input);
+                ImGui::Checkbox(ST("Similar Items Test"), &Show_SimilarItems);
+                ImGui::Checkbox(ST("MUL Test"), &Show_MUL);
+                ImGui::Checkbox(ST("division Test"), &Show_division);
+                ImGui::Checkbox(ST("Substitute Test"), &Show_Substitute);
 
                 if(Show_Input)
                 {
-                    ImGui::Begin("Test Monomial Input", &Show_Input);
-                    ImGui::Text("--Input--");
+                    ImGui::Begin(ST("Test Monomial Input"), &Show_Input);
+                    ImGui::Text(ST("--Input--"));
 
                     static char SetValueText[128] = "(1/1)a^(1/1)";
                     static char InputText[128] = "a";
@@ -170,7 +200,7 @@ int main(int, char**)
 
                     ImGui::InputText("SetValue", SetValueText, IM_ARRAYSIZE(SetValueText));
                     ImGui::SameLine();
-                    if (ImGui::Button("update1"))
+                    if (ImGui::Button(ST("update1")))
                     {
                         if (result.IsValid((std::string)SetValueText))
                         {
@@ -180,13 +210,13 @@ int main(int, char**)
                         }
                         else
                         {
-                            Out1 = Out2 = "The input is error!";
+                            Out1 = Out2 = ST("The input is error!");
                         }
                     }
 
                     ImGui::InputText("Input", InputText, IM_ARRAYSIZE(InputText));
                     ImGui::SameLine();
-                    if (ImGui::Button("update2"))
+                    if (ImGui::Button(ST("update2")))
                     {
                         if (result.IsValid((std::string)InputText))
                         {
@@ -196,19 +226,19 @@ int main(int, char**)
                         }
                         else
                         {
-                            Out1 = Out2 = "The input is error!";
+                            Out1 = Out2 = ST("The input is error!");
                         }
                     }
 
-                    ImGui::Text("--Out--");
+                    ImGui::Text(ST("--Out--"));
                     ImGui::Text("GetValue: %s", Out1.c_str());
                     ImGui::Text("Out: %s", Out2.c_str());
                     ImGui::End();
                 }
                 if (Show_SimilarItems)
                 {
-                    ImGui::Begin("Test Monomial Similar Items", &Show_SimilarItems);
-                    ImGui::Text("--Input--");
+                    ImGui::Begin(ST("Test Monomial Similar Items"), &Show_SimilarItems);
+                    ImGui::Text(ST("--Input--"));
 
                     static char InputText1[128] = "a";
                     static char InputText2[128] = "b";
@@ -216,23 +246,23 @@ int main(int, char**)
                     static Monomial a;
                     static Monomial b;
 
-                    ImGui::InputText("Input the a", InputText1, IM_ARRAYSIZE(InputText1));
-                    ImGui::InputText("Input the b", InputText2, IM_ARRAYSIZE(InputText2));
-                    if (ImGui::Button("SimilarItems"))
+                    ImGui::InputText(ST("Input the a"), InputText1, IM_ARRAYSIZE(InputText1));
+                    ImGui::InputText(ST("Input the b"), InputText2, IM_ARRAYSIZE(InputText2));
+                    if (ImGui::Button(ST("SimilarItems")))
                     {
                         a.Input(InputText1);
                         b.Input(InputText2);
                         result = (a.SimilarItems(b)) ? "Yes" : "No";
                     }
 
-                    ImGui::Text("--Result--");
+                    ImGui::Text(ST("--Result--"));
                     ImGui::Text("Is Similar items : %s", result.c_str());
                     ImGui::End();
                 }
                 if (Show_MUL)
                 {
-                    ImGui::Begin("Test Monomial MUL", &Show_MUL);
-                    ImGui::Text("--Input--");
+                    ImGui::Begin(ST("Test Monomial MUL"), &Show_MUL);
+                    ImGui::Text(ST("--Input--"));
 
                     static char InputText1[128] = "a";
                     static char InputText2[128] = "b";
@@ -240,24 +270,24 @@ int main(int, char**)
                     static Monomial b;
                     static Monomial result;
 
-                    ImGui::InputText("Input the a", InputText1, IM_ARRAYSIZE(InputText1));
-                    ImGui::InputText("Input the b", InputText2, IM_ARRAYSIZE(InputText2));
-                    if (ImGui::Button("result..."))
+                    ImGui::InputText(ST("Input the a"), InputText1, IM_ARRAYSIZE(InputText1));
+                    ImGui::InputText(ST("Input the b"), InputText2, IM_ARRAYSIZE(InputText2));
+                    if (ImGui::Button(ST("result...")))
                     {
                         a.Input(InputText1);
                         b.Input(InputText2);
                         result = a * b;
                     }
 
-                    ImGui::Text("--Result--");
+                    ImGui::Text(ST("--Result--"));
                     ImGui::Text("GetValue : %s", result.GetValue().c_str());
                     ImGui::Text("Out : %s", result.Out().c_str());
                     ImGui::End();
                 }
                 if (Show_division)
                 {
-                    ImGui::Begin("Test Monomial division", &Show_division);
-                    ImGui::Text("--Input--");
+                    ImGui::Begin(ST("Test Monomial division"), &Show_division);
+                    ImGui::Text(ST("--Input--"));
 
                     static char InputText1[128] = "a";
                     static char InputText2[128] = "b";
@@ -265,23 +295,23 @@ int main(int, char**)
                     static Monomial b;
                     static Monomial result;
 
-                    ImGui::InputText("Input the a", InputText1, IM_ARRAYSIZE(InputText1));
-                    ImGui::InputText("Input the b", InputText2, IM_ARRAYSIZE(InputText2));
-                    if (ImGui::Button("result..."))
+                    ImGui::InputText(ST("Input the a"), InputText1, IM_ARRAYSIZE(InputText1));
+                    ImGui::InputText(ST("Input the b"), InputText2, IM_ARRAYSIZE(InputText2));
+                    if (ImGui::Button(ST("result...")))
                     {
                         a.Input(InputText1);
                         b.Input(InputText2);
                         result = a / b;
                     }
 
-                    ImGui::Text("--Result--");
+                    ImGui::Text(ST("--Result--"));
                     ImGui::Text("GetValue : %s", result.GetValue().c_str());
                     ImGui::Text("Out : %s", result.Out().c_str());
                     ImGui::End();
                 }
                 if (Show_Substitute)
                 {
-                    ImGui::Begin("Monomial Substitute Test", &Show_Substitute);
+                    ImGui::Begin(ST("Monomial Substitute Test"), &Show_Substitute);
                     static char the_monomial_text[128] = "a^2";
                     static char character_text[128] = "a";
                     static char substitute_character[128] = "3b";
@@ -290,16 +320,16 @@ int main(int, char**)
                     static sint8 character = 'a';
                     static std::string Out1 = "please check \"update\" ";
 
-                    ImGui::Text("please input the monomial.");
-                    ImGui::InputText("monomial", the_monomial_text, IM_ARRAYSIZE(the_monomial_text));
+                    ImGui::Text(ST("please input the monomial."));
+                    ImGui::InputText(ST("monomial"), the_monomial_text, IM_ARRAYSIZE(the_monomial_text));
 
-                    ImGui::Text("please input the character.");
-                    ImGui::InputText("character", character_text, IM_ARRAYSIZE(character_text));
+                    ImGui::Text(ST("please input the character."));
+                    ImGui::InputText(ST("character"), character_text, IM_ARRAYSIZE(character_text));
 
-                    ImGui::Text("please input the substitute monomial.");
-                    ImGui::InputText("substitute monomial", substitute_character, IM_ARRAYSIZE(substitute_character));
+                    ImGui::Text(ST("please input the substitute monomial."));
+                    ImGui::InputText(ST("substitute monomial"), substitute_character, IM_ARRAYSIZE(substitute_character));
 
-                    if (ImGui::Button("update"))
+                    if (ImGui::Button(ST("update")))
                     {
 
                         //如果满足单项式的条件
@@ -309,14 +339,14 @@ int main(int, char**)
                         }
                         else
                         {
-                            Out1 = "The input is error!";
+                            Out1 = ST("The input is error!");
                             goto Out_The_Result;
                         }  
 
                         //如果代换字符输入有误，则报错
                         if (((std::string)character_text).size() != 1)
                         {
-                            Out1 = "The input is error!";
+                            Out1 = ST("The input is error!");
                             goto Out_The_Result;
                         }
 
@@ -330,14 +360,14 @@ int main(int, char**)
                         }
                         else
                         {
-                            Out1 = "The input is error!";
+                            Out1 = ST("The input is error!");
                             goto Out_The_Result;
                         }
 
                         //代换字符
                         if (!result.Substitute(character, substitute_monomial))
                         {
-                            Out1 = "The input is error!";
+                            Out1 = ST("The input is error!");
                             goto Out_The_Result;
                         }
                         Out1 = result.Out();
@@ -345,14 +375,14 @@ int main(int, char**)
                     //跳转标签，显示结果
                 Out_The_Result:
 
-                    ImGui::Text("--Out--");
+                    ImGui::Text(ST("--Out--"));
                     ImGui::Text("The result: %s", Out1.c_str());
 
                     ImGui::End();
                 }
 
             }
-            if (ImGui::CollapsingHeader("Polynomial"))
+            if (ImGui::CollapsingHeader(ST("Polynomial")))
             {
                 //输入测试
                 static bool Show_Input = false;
@@ -369,17 +399,17 @@ int main(int, char**)
                 //代换功能测试
                 static bool Show_Substitute = false;
 
-                ImGui::Text("This module is used to represent a Polynomial (ax^n + bx^m +...)");
-                ImGui::Checkbox("Input Test", &Show_Input);
-                ImGui::Checkbox("unite like terms Test", &Show_unite_like_terms);
-                ImGui::Checkbox("MUL Test", &Show_MUL);
-                ImGui::Checkbox("division Test", &Show_division);
-                ImGui::Checkbox("Substitute Test", &Show_Substitute);
+                ImGui::Text(ST("This module is used to represent a Polynomial (ax^n + bx^m +...)"));
+                ImGui::Checkbox(ST("Input Test"), &Show_Input);
+                ImGui::Checkbox(ST("unite like terms Test"), &Show_unite_like_terms);
+                ImGui::Checkbox(ST("MUL Test"), &Show_MUL);
+                ImGui::Checkbox(ST("division Test"), &Show_division);
+                ImGui::Checkbox(ST("Substitute Test"), &Show_Substitute);
 
                 if (Show_Input)
                 {
-                    ImGui::Begin("Test Polynomial Input", &Show_Input);
-                    ImGui::Text("--Input--");
+                    ImGui::Begin(ST("Test Polynomial Input"), &Show_Input);
+                    ImGui::Text(ST("--Input--"));
 
                     static char SetValueText[128] = "(1/1)a^(1/1)";
                     static char InputText[128] = "a";
@@ -388,7 +418,7 @@ int main(int, char**)
 
                     ImGui::InputText("SetValue", SetValueText, IM_ARRAYSIZE(SetValueText));
                     ImGui::SameLine();
-                    if (ImGui::Button("update1"))
+                    if (ImGui::Button(ST("update1")))
                     {
                         if (result.IsValid((std::string)SetValueText))
                         {
@@ -398,13 +428,13 @@ int main(int, char**)
                         }
                         else
                         {
-                            Out1 = Out2 = "The input is error!";
+                            Out1 = Out2 = ST("The input is error!");
                         }
                     }
 
                     ImGui::InputText("Input", InputText, IM_ARRAYSIZE(InputText));
                     ImGui::SameLine();
-                    if (ImGui::Button("update2"))
+                    if (ImGui::Button(ST("update2")))
                     {
                         if (result.IsValid((std::string)InputText))
                         {
@@ -414,38 +444,38 @@ int main(int, char**)
                         }
                         else
                         {
-                            Out1 = Out2 = "The input is error!";
+                            Out1 = Out2 = ST("The input is error!");
                         }
                     }
 
-                    ImGui::Text("--Out--");
+                    ImGui::Text(ST("--Out--"));
                     ImGui::Text("GetValue: %s", Out1.c_str());
                     ImGui::Text("Out: %s", Out2.c_str());
                     ImGui::End();
                 }
                 if (Show_unite_like_terms)
                 {
-                    ImGui::Begin("Test Polynomial Show_unite_like_terms", &Show_unite_like_terms);
-                    ImGui::Text("--Input--");
+                    ImGui::Begin(ST("Test Polynomial unite_like_terms"), &Show_unite_like_terms);
+                    ImGui::Text(ST("--Input--"));
 
                     static char InputText1[128] = "a";
                     static Polynomial a;
 
-                    ImGui::InputText("Input the a", InputText1, IM_ARRAYSIZE(InputText1));
-                    if (ImGui::Button("unite like terms"))
+                    ImGui::InputText(ST("Input the a"), InputText1, IM_ARRAYSIZE(InputText1));
+                    if (ImGui::Button(ST("unite like terms")))
                     {
                         a.Input(InputText1);
                         a.Unite_like_terms();
                     }
 
-                    ImGui::Text("--Result--");
+                    ImGui::Text(ST("--Result--"));
                     ImGui::Text("result : %s", a.Out().c_str());
                     ImGui::End();
                 }
                 if (Show_add)
                 {
-                    ImGui::Begin("Test Polynomial add", &Show_add);
-                    ImGui::Text("--Input--");
+                    ImGui::Begin(ST("Test Polynomial add"), &Show_add);
+                    ImGui::Text(ST("--Input--"));
 
                     static char InputText1[128] = "a";
                     static char InputText2[128] = "b";
@@ -453,24 +483,24 @@ int main(int, char**)
                     static Polynomial b;
                     static Polynomial result;
 
-                    ImGui::InputText("Input the a", InputText1, IM_ARRAYSIZE(InputText1));
-                    ImGui::InputText("Input the b", InputText2, IM_ARRAYSIZE(InputText2));
-                    if (ImGui::Button("result..."))
+                    ImGui::InputText(ST("Input the a"), InputText1, IM_ARRAYSIZE(InputText1));
+                    ImGui::InputText(ST("Input the b"), InputText2, IM_ARRAYSIZE(InputText2));
+                    if (ImGui::Button(ST("result...")))
                     {
                         a.Input(InputText1);
                         b.Input(InputText2);
                         result = a + b;
                     }
 
-                    ImGui::Text("--Result--");
+                    ImGui::Text(ST("--Result--"));
                     ImGui::Text("GetValue : %s", result.GetValue().c_str());
                     ImGui::Text("Out : %s", result.Out().c_str());
                     ImGui::End();
                 }
                 if (Show_subtraction)
                 {
-                    ImGui::Begin("Test Polynomial subtraction", &Show_subtraction);
-                    ImGui::Text("--Input--");
+                    ImGui::Begin(ST("Test Polynomial subtraction"), &Show_subtraction);
+                    ImGui::Text(ST("--Input--"));
 
                     static char InputText1[128] = "a";
                     static char InputText2[128] = "b";
@@ -478,24 +508,24 @@ int main(int, char**)
                     static Polynomial b;
                     static Polynomial result;
 
-                    ImGui::InputText("Input the a", InputText1, IM_ARRAYSIZE(InputText1));
-                    ImGui::InputText("Input the b", InputText2, IM_ARRAYSIZE(InputText2));
-                    if (ImGui::Button("result..."))
+                    ImGui::InputText(ST("Input the a"), InputText1, IM_ARRAYSIZE(InputText1));
+                    ImGui::InputText(ST("Input the b"), InputText2, IM_ARRAYSIZE(InputText2));
+                    if (ImGui::Button(ST("result...")))
                     {
                         a.Input(InputText1);
                         b.Input(InputText2);
                         result = a - b;
                     }
 
-                    ImGui::Text("--Result--");
+                    ImGui::Text(ST("--Result--"));
                     ImGui::Text("GetValue : %s", result.GetValue().c_str());
                     ImGui::Text("Out : %s", result.Out().c_str());
                     ImGui::End();
                 }
                 if (Show_MUL)
                 {
-                    ImGui::Begin("Test Polynomial MUL", &Show_MUL);
-                    ImGui::Text("--Input--");
+                    ImGui::Begin(ST("Test Polynomial MUL"), &Show_MUL);
+                    ImGui::Text(ST("--Input--"));
 
                     static char InputText1[128] = "a";
                     static char InputText2[128] = "b";
@@ -503,24 +533,24 @@ int main(int, char**)
                     static Polynomial b;
                     static Polynomial result;
 
-                    ImGui::InputText("Input the a", InputText1, IM_ARRAYSIZE(InputText1));
-                    ImGui::InputText("Input the b", InputText2, IM_ARRAYSIZE(InputText2));
-                    if (ImGui::Button("result..."))
+                    ImGui::InputText(ST("Input the a"), InputText1, IM_ARRAYSIZE(InputText1));
+                    ImGui::InputText(ST("Input the b"), InputText2, IM_ARRAYSIZE(InputText2));
+                    if (ImGui::Button(ST("result...")))
                     {
                         a.Input(InputText1);
                         b.Input(InputText2);
                         result = a * b;
                     }
 
-                    ImGui::Text("--Result--");
+                    ImGui::Text(ST("--Result--"));
                     ImGui::Text("GetValue : %s", result.GetValue().c_str());
                     ImGui::Text("Out : %s", result.Out().c_str());
                     ImGui::End();
                 }
                 if (Show_division)
                 {
-                    ImGui::Begin("Test Polynomial division", &Show_division);
-                    ImGui::Text("--Input--");
+                    ImGui::Begin(ST("Test Polynomial division"), &Show_division);
+                    ImGui::Text(ST("--Input--"));
 
                     static char InputText1[128] = "a";
                     static char InputText2[128] = "b";
@@ -528,23 +558,23 @@ int main(int, char**)
                     static Polynomial b;
                     static Polynomial result;
 
-                    ImGui::InputText("Input the a", InputText1, IM_ARRAYSIZE(InputText1));
-                    ImGui::InputText("Input the b", InputText2, IM_ARRAYSIZE(InputText2));
-                    if (ImGui::Button("result..."))
+                    ImGui::InputText(ST("Input the a"), InputText1, IM_ARRAYSIZE(InputText1));
+                    ImGui::InputText(ST("Input the b"), InputText2, IM_ARRAYSIZE(InputText2));
+                    if (ImGui::Button(ST("result...")))
                     {
                         a.Input(InputText1);
                         b.Input(InputText2);
                         result = a / b;
                     }
 
-                    ImGui::Text("--Result--");
+                    ImGui::Text(ST("--Result--"));
                     ImGui::Text("GetValue : %s", result.GetValue().c_str());
                     ImGui::Text("Out : %s", result.Out().c_str());
                     ImGui::End();
                 }
                 if (Show_Substitute)
                 {
-                    ImGui::Begin("Polynomial Substitute Test", &Show_Substitute);
+                    ImGui::Begin(ST("Polynomial Substitute Test"), &Show_Substitute);
                     static char the_polynomial_text[128] = "x^2";
                     static char character_text[128] = "x";
                     static char substitute_character[128] = "a + b";
@@ -553,16 +583,16 @@ int main(int, char**)
                     static sint8 character = 'x';
                     static std::string Out1 = "please check \"update\" ";
 
-                    ImGui::Text("please input the polynomial.");
-                    ImGui::InputText("polynomial", the_polynomial_text, IM_ARRAYSIZE(the_polynomial_text));
+                    ImGui::Text(ST("please input the polynomial."));
+                    ImGui::InputText(ST("polynomial"), the_polynomial_text, IM_ARRAYSIZE(the_polynomial_text));
 
-                    ImGui::Text("please input the character.");
-                    ImGui::InputText("character", character_text, IM_ARRAYSIZE(character_text));
+                    ImGui::Text(ST("please input the character."));
+                    ImGui::InputText(ST("character"), character_text, IM_ARRAYSIZE(character_text));
 
-                    ImGui::Text("please input the substitute polynomial.");
-                    ImGui::InputText("substitute polynomial", substitute_character, IM_ARRAYSIZE(substitute_character));
+                    ImGui::Text(ST("please input the substitute polynomial."));
+                    ImGui::InputText(ST("substitute polynomial"), substitute_character, IM_ARRAYSIZE(substitute_character));
 
-                    if (ImGui::Button("update"))
+                    if (ImGui::Button(ST("update")))
                     {
 
                         //如果满足多项式的条件
@@ -572,7 +602,7 @@ int main(int, char**)
                         }
                         else
                         {
-                            Out1 = "The input is error!";
+                            Out1 = ST("The input is error!");
                             goto Polynomial_Out_The_Result;
                         }
 
@@ -608,27 +638,27 @@ int main(int, char**)
                     //跳转标签，显示结果
                 Polynomial_Out_The_Result:
 
-                    ImGui::Text("--Out--");
+                    ImGui::Text(ST("--Out--"));
                     ImGui::Text("The result: %s", Out1.c_str());
 
                     ImGui::End();
                 }
 
             }
-            if (ImGui::CollapsingHeader("Equation"))
+            if (ImGui::CollapsingHeader(ST("Equation")))
             {
                 //输入测试
                 static bool Show_Input = false;
                 static bool Show_Solution_equation = false;
 
-                ImGui::Text("This module is used to represent a Equation");
-                ImGui::Checkbox("Input Test", &Show_Input);
-                ImGui::Checkbox("Solution equation Test", &Show_Solution_equation);
+                ImGui::Text(ST("This module is used to represent a Equation"));
+                ImGui::Checkbox(ST("Input Test"), &Show_Input);
+                ImGui::Checkbox(ST("Solution equation Test"), &Show_Solution_equation);
 
                 if (Show_Input)
                 {
-                    ImGui::Begin("Test Equation Input", &Show_Input);
-                    ImGui::Text("--Input--");
+                    ImGui::Begin(ST("Test Equation Input"), &Show_Input);
+                    ImGui::Text(ST("--Input--"));
 
                     static char SetValueText[128] = "((1/1)a^(1/1))*X^(1/1)=((1/1))*X^(0/1)";
                     static char InputText[128] = "aX = 1";
@@ -637,7 +667,7 @@ int main(int, char**)
 
                     ImGui::InputText("SetValue", SetValueText, IM_ARRAYSIZE(SetValueText));
                     ImGui::SameLine();
-                    if (ImGui::Button("update1"))
+                    if (ImGui::Button(ST("update1")))
                     {
                         if (result.IsValid((std::string)SetValueText))
                         {
@@ -648,13 +678,13 @@ int main(int, char**)
                         }
                         else
                         {
-                            Out1 = Out2 = "the input is error!";
+                            Out1 = Out2 = ST("the input is error!");
                         }
                     }
 
                     ImGui::InputText("Input", InputText, IM_ARRAYSIZE(InputText));
                     ImGui::SameLine();
-                    if (ImGui::Button("update2"))
+                    if (ImGui::Button(ST("update2")))
                     {
                         if (result.IsValid((std::string)InputText))
                         {
@@ -665,19 +695,19 @@ int main(int, char**)
                         }
                         else
                         {
-                            Out1 = Out2 = "the input is error!";
+                            Out1 = Out2 = ST("the input is error!");
                         }
                     }
 
-                    ImGui::Text("--Out--");
+                    ImGui::Text(ST("--Out--"));
                     ImGui::Text("GetValue: %s", Out1.c_str());
                     ImGui::Text("Out: %s", Out2.c_str());
                     ImGui::End();
                 }
                 if (Show_Solution_equation)
                 {
-                    ImGui::Begin("Test solution equation ", &Show_Solution_equation);
-                    ImGui::Text("--Input--");
+                    ImGui::Begin(ST("Test solution equation"), &Show_Solution_equation);
+                    ImGui::Text(ST("--Input--"));
 
                     static char InputText1[128] = "aX^2 + bX + c = 0";
                     static std::string result_text1;
@@ -687,8 +717,8 @@ int main(int, char**)
                     Fraction<Polynomial> result1;
                     std::vector<Fraction<Polynomial_Exponential_Sum>> result2;
 
-                    ImGui::InputText("Input the Equation", InputText1, IM_ARRAYSIZE(InputText1));
-                    if (ImGui::Button("result..."))
+                    ImGui::InputText(ST("Input the Equation"), InputText1, IM_ARRAYSIZE(InputText1));
+                    if (ImGui::Button(ST("result...")))
                     {
                         //如果方程输入有效则赋值
                         if (a.IsValid(InputText1))
@@ -698,14 +728,14 @@ int main(int, char**)
                         //如果方程输入无效
                         else
                         {
-                            result_text1 = result_text2 = "The input is error!";
+                            result_text1 = result_text2 = ST("The input is error!");
                             goto out; //跳转到显示错误结果
                         }
                         if (a.GetTheHighestDegreeTermOfTheUnknown() == Fraction<sint64>(1, 1))
                         {
                             a.linear_equation_with_one_unknown();
                             result_text1 = Out(a.root1);
-                            result_text2 = "There is only one result to this equation";
+                            result_text2 = ST("There is only one result to this equation");
                         }
                         else if (a.GetTheHighestDegreeTermOfTheUnknown() == Fraction<sint64>(2, 1))
                         {
@@ -720,7 +750,7 @@ int main(int, char**)
                                 }
                                 else
                                 {
-                                    result_text1 = result_text2 = "This equation has no real roots";
+                                    result_text1 = result_text2 = ST("This equation has no real roots");
                                 }
                             }
                             else
@@ -733,35 +763,35 @@ int main(int, char**)
                         else
                         {
                             result_text1 = result_text2 =
-                                "This equation cannot be solved using the SeekAnAnswer module";
+                                ST("This equation cannot be solved using the SeekAnAnswer module");
                         }
                     }
 
                     out:
-                    ImGui::Text("--Result--");
+                    ImGui::Text(ST("--Result--"));
                     ImGui::Text("result 1 = %s", result_text1.c_str());
                     ImGui::Text("result 2 = %s", result_text2.c_str());
                     ImGui::End();
                 }
 
             }
-            if (ImGui::CollapsingHeader("Arithmetic"))
+            if (ImGui::CollapsingHeader(ST("Arithmetic")))
             {
                 static bool show_arithmetic = false;
-                ImGui::Text("This module is used to calculate expression");
-                ImGui::Checkbox("arithmetic test", &show_arithmetic);
+                ImGui::Text(ST("This module is used to calculate expression"));
+                ImGui::Checkbox(ST("Arithmetic test"), &show_arithmetic);
 
                 if (show_arithmetic)
                 {
-                    ImGui::Begin("Arithmetic test", &show_arithmetic);
-                    ImGui::Text("Please input your expression");
+                    ImGui::Begin(ST("Arithmetic test"), &show_arithmetic);
+                    ImGui::Text(ST("Please input your expression"));
 
                     static char InputText[128] = "(-1*2^(1/2)) + (2*2^(1/2))";
                     static std::string expression_out1, expression_out2;
                     Arithmetic_Expression expression;
 
-                    ImGui::InputText("input expression", InputText, IM_ARRAYSIZE(InputText));
-                    if (ImGui::Button("result..."))
+                    ImGui::InputText(ST("input expression"), InputText, IM_ARRAYSIZE(InputText));
+                    if (ImGui::Button(ST("result...")))
                     {
                         if (expression.IsValid((std::string)InputText))
                         {
@@ -772,14 +802,26 @@ int main(int, char**)
                         }
                         else
                         {
-                            expression_out1 = expression_out2 = "The input is error!";
+                            expression_out1 = expression_out2 = ST("The input is error!");
                         }
                     }
                     ImGui::Text("result = %s", expression_out1.c_str());
-                    ImGui::Text("approximate result = %s", expression_out2.c_str());
+                    ImGui::Text(((std::string)(char*)ST((std::string)"approximate result") + (std::string)" = %s").c_str(), expression_out2.c_str());
                     ImGui::End();
                 }
             }
+            ImGui::End();
+        }
+
+        //Show language
+        if (Show_Language_window)
+        {
+            ImGui::Begin(u8"Language / 语言", &Show_Language_window);
+            ImGui::Text(u8"Please select your language / 请选择你的语言");
+
+            const char* items[] = { u8"English", u8"简体中文"};
+            ImGui::Combo(u8"Language / 语言", &language_text.language, items, IM_ARRAYSIZE(items));
+
             ImGui::End();
         }
 
@@ -884,4 +926,9 @@ LRESULT WINAPI WndProc(HWND hWnd, UINT msg, WPARAM wParam, LPARAM lParam)
         return 0;
     }
     return ::DefWindowProc(hWnd, msg, wParam, lParam);
+}
+
+inline const char* ST(std::string key)
+{
+    return language_text.ShowText(key);
 }

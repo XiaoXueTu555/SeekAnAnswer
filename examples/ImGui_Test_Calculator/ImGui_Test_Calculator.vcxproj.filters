@@ -34,6 +34,12 @@
     <Filter Include="ImGui">
       <UniqueIdentifier>{5b21266d-8e75-4124-9825-0fff33375bd4}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Language">
+      <UniqueIdentifier>{32dd7d44-9c83-4b12-b9c6-1134d5f4862b}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Language\FileIO">
+      <UniqueIdentifier>{d46e9a7f-f420-45a7-a362-f6fe47f13d01}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\..\SeekAnAnswer\High\Public\High_float.h">
@@ -102,6 +108,9 @@
     <ClInclude Include="..\..\SeekAnAnswer\SeekAnAnswer\kernel\arithmetic_expression.h">
       <Filter>SeekAnAnswer\kernel</Filter>
     </ClInclude>
+    <ClInclude Include="FileIO\file_io.h">
+      <Filter>Language\FileIO</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\..\SeekAnAnswer\High\Private\High_float.cpp">
@@ -160,6 +169,9 @@
     </ClCompile>
     <ClCompile Include="..\..\SeekAnAnswer\SeekAnAnswer\kernel\mathematical_expression.cpp">
       <Filter>SeekAnAnswer\kernel</Filter>
+    </ClCompile>
+    <ClCompile Include="FileIO\file_io.cpp">
+      <Filter>Language\FileIO</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

@@ -1,0 +1,121 @@
+#Show_Test_Calculator
+Test_Calculator = 测试计算器
+Please select the function that you want. = 请选择你想要的功能
+SeekAnAnswer_test = SeekAnAnswer测试
+
+#Show_SeekAnAnswer_test
+SeekAnAnswer test = SeekAnAnswer测试
+
+#Explain
+Explain = 说明
+This is a windows that is used to test SeekAnAnswer's functionality. = 这是一个被用于测试SeekAnAnswer功能性的窗口
+Here,you can easily test each feature of SeekAnAnswer = 在这里，你能简单的测试SeekAnAnswer的每一个模块功能的特性
+
+#--Test--
+--TEST-- = --测试--
+
+#Monomial
+Monomial = 单项式
+
+#function's title
+This module is used to represent a monomial (ax^n) = 这个模块表示一个单项式(ax^n)
+Input Test = 输入测试
+Similar Items Test = 同类项判断测试
+MUL Test = 乘法测试
+division Test = 除法测试
+Substitute Test = 换元测试
+
+#Show_Input
+Test Monomial Input = 测试单项式输入
+--Input-- = --输入--
+The input is error! = 输入有误！
+update = 更新
+update1 = 更新1
+update2 = 更新2
+--Out-- = --输出--
+The result: = 结果:
+
+#Show_SimilarItems
+Test Monomial Similar Items = 判断同类项测试
+Input the a = 输入a
+Input the b = 输入b
+SimilarItems = 判断
+Yes = 是
+No = 否
+--Result-- = --结果--
+Is Similar items : = 是否为同类项？
+
+#Show_MUL
+Test Monomial MUL = 单项式乘法测试
+result... = 计算
+
+#Show_division
+Test Monomial division = 单项式除法测试
+
+#Show_Substitute
+Monomial Substitute Test = 单项式换元测试
+please input the monomial. = 请输入单项式的值
+please input the character. = 请输入单项式中所含的字符
+please input the substitute monomial. = 请输入换元单项式
+monomial = 单项式
+character = 字符
+substitute monomial = 换元单项式
+
+#Polynomial
+Polynomial = 多项式
+This module is used to represent a Polynomial (ax^n + bx^m +...) = 这个模块表示一个多项式 (ax^n + bx^m +...)
+
+#Show_Input
+Test Polynomial Input = 多项式输入测试
+
+#Show_unite_like_terms
+unite like terms Test = 合并同类项测试
+Test Polynomial unite_like_terms = 多项式合并同类项测试
+unite like terms = 合并同类项
+
+#Show_add
+Test Polynomial add = 多项式加法测试
+
+#Show_subtraction
+Test Polynomial subtraction = 多项式减法测试
+
+#Show_MUL
+Test Polynomial MUL = 多项式乘法测试
+
+#Show_division
+Test Polynomial division = 多项式除法（因式分解）测试
+
+#Show_Substitute
+Polynomial Substitute Test = 多项式换元测试
+please input the polynomial. = 请输入多项式
+please input the substitute polynomial. = 请输入换元多项式
+substitute polynomial = 换元多项式
+polynomial = 多项式
+
+#Equation
+Equation = 方程
+This module is used to represent a Equation = 这个模块表示一个等式（方程式）
+Solution equation Test = 解方程测试
+
+#Show_Input
+Test Equation Input = 方程输入测试
+
+#Show_Solution_equation
+Test solution equation = 解方程测试
+Input the Equation = 输入这个方程
+There is only one result to this equation = 这个方程只有一个实数解
+This equation has no real roots = 这个方程没有实数解
+This equation cannot be solved using the SeekAnAnswer module = 这个方程无法使用SeekAnAnswer求解。
+
+#Arithmetic
+Arithmetic = 算数表达式
+This module is used to calculate expression = 这个模块被用于计算表达式
+Arithmetic test = 算数表达式测试
+Please input your expression = 请输入你想要计算的表达式
+input expression = 输入表达式
+approximate result = 近似值
+
+
+
+
+

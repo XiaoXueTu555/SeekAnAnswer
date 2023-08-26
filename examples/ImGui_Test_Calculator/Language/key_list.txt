@@ -1,0 +1,121 @@
+#Show_Test_Calculator
+Test_Calculator
+Please select the function that you want.
+SeekAnAnswer_test
+
+#Show_SeekAnAnswer_test
+SeekAnAnswer test
+
+#Explain
+Explain
+This is a windows that is used to test SeekAnAnswer's functionality.
+Here,you can easily test each feature of SeekAnAnswer
+
+#--Test--
+--TEST--
+
+#Monomial
+Monomial
+
+#function's title
+This module is used to represent a monomial (ax^n)
+Input Test
+Similar Items Test
+MUL Test
+division Test
+Substitute Test
+
+#Show_Input
+Test Monomial Input
+--Input--
+The input is error!
+update
+update1
+update2
+--Out--
+The result: 
+
+#Show_SimilarItems
+Test Monomial Similar Items
+Input the a
+Input the b
+SimilarItems
+Yes
+No
+--Result--
+Is Similar items :
+
+#Show_MUL
+Test Monomial MUL
+result...
+
+#Show_division
+Test Monomial division
+
+#Show_Substitute
+Monomial Substitute Test
+please input the monomial.
+please input the character. 
+please input the substitute monomial.
+monomial
+character
+substitute monomial
+
+#Polynomial
+Polynomial
+This module is used to represent a Polynomial (ax^n + bx^m +...)
+
+#Show_Input
+Test Polynomial Input
+
+#Show_unite_like_terms
+unite like terms Test
+Test Polynomial unite_like_terms
+unite like terms
+
+#Show_add
+Test Polynomial add
+
+#Show_subtraction
+Test Polynomial subtraction
+
+#Show_MUL
+Test Polynomial MUL
+
+#Show_division
+Test Polynomial division
+
+#Show_Substitute
+Polynomial Substitute Test
+please input the polynomial.
+please input the substitute polynomial.
+substitute polynomial
+polynomial
+
+#Equation
+Equation
+This module is used to represent a Equation
+Solution equation Test
+
+#Show_Input
+Test Equation Input
+
+#Show_Solution_equation
+Test solution equation
+Input the Equation
+There is only one result to this equation
+This equation has no real roots
+This equation cannot be solved using the SeekAnAnswer module
+
+#Arithmetic
+Arithmetic
+This module is used to calculate expression
+Arithmetic test
+Please input your expression
+input expression
+approximate result
+
+
+
+
+
