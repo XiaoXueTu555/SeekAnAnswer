@@ -104,8 +104,9 @@ bool TextMap::ReadLanguageFile(std::string file_name)
 	}
 #endif // FILE_IO_INI
 
-
 	//读取完毕
+	file.close();
+
 	return true;
 }
 
@@ -140,6 +141,8 @@ bool TextMap::ReadKeyFile(std::string file_name)
 	}
 
 	//读取完毕
+	file.close();
+
 	return true;
 }
 
