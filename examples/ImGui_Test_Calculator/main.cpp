@@ -231,8 +231,20 @@ int main(int, char**)
                     }
 
                     ImGui::Text(ST("--Out--"));
-                    ImGui::Text("GetValue: %s", Out1.c_str());
+
+                    ImGui::Text("GetValue: %s", Out1.c_str()); 
+                    ImGui::SameLine(); 
+                    if (ImGui::SmallButton("copy1"))
+                    {
+                        ImGui::SetClipboardText(Out1.c_str());
+                    }
+
                     ImGui::Text("Out: %s", Out2.c_str());
+                    ImGui::SameLine();
+                    if (ImGui::SmallButton("copy2"))
+                    {
+                        ImGui::SetClipboardText(Out2.c_str());
+                    }
                     ImGui::End();
                 }
                 if (Show_SimilarItems)
@@ -257,6 +269,13 @@ int main(int, char**)
 
                     ImGui::Text(ST("--Result--"));
                     ImGui::Text("Is Similar items : %s", result.c_str());
+
+                    ImGui::SameLine();
+                    if (ImGui::SmallButton("copy"))
+                    {
+                        ImGui::SetClipboardText(result.c_str());
+                    }
+
                     ImGui::End();
                 }
                 if (Show_MUL)
@@ -281,7 +300,19 @@ int main(int, char**)
 
                     ImGui::Text(ST("--Result--"));
                     ImGui::Text("GetValue : %s", result.GetValue().c_str());
+                    ImGui::SameLine();
+                    if (ImGui::SmallButton("copy1"))
+                    {
+                        ImGui::SetClipboardText(result.GetValue().c_str());
+                    }
+
                     ImGui::Text("Out : %s", result.Out().c_str());
+                    ImGui::SameLine();
+                    if (ImGui::SmallButton("copy2"))
+                    {
+                        ImGui::SetClipboardText(result.Out().c_str());
+                    }
+
                     ImGui::End();
                 }
                 if (Show_division)
@@ -304,9 +335,21 @@ int main(int, char**)
                         result = a / b;
                     }
 
-                    ImGui::Text(ST("--Result--"));
-                    ImGui::Text("GetValue : %s", result.GetValue().c_str());
-                    ImGui::Text("Out : %s", result.Out().c_str());
+                    ImGui::Text(ST("--Out--"));
+
+                    ImGui::Text("GetValue: %s", result.GetValue().c_str());
+                    ImGui::SameLine();
+                    if (ImGui::SmallButton("copy1"))
+                    {
+                        ImGui::SetClipboardText(result.GetValue().c_str());
+                    }
+
+                    ImGui::Text("Out: %s", result.Out().c_str());
+                    ImGui::SameLine();
+                    if (ImGui::SmallButton("copy2"))
+                    {
+                        ImGui::SetClipboardText(result.Out().c_str());
+                    }
                     ImGui::End();
                 }
                 if (Show_Substitute)
@@ -377,6 +420,11 @@ int main(int, char**)
 
                     ImGui::Text(ST("--Out--"));
                     ImGui::Text("The result: %s", Out1.c_str());
+                    ImGui::SameLine();
+                    if (ImGui::SmallButton("copy"))
+                    {
+                        ImGui::SetClipboardText(Out1.c_str());
+                    }
 
                     ImGui::End();
                 }
@@ -449,8 +497,20 @@ int main(int, char**)
                     }
 
                     ImGui::Text(ST("--Out--"));
+
                     ImGui::Text("GetValue: %s", Out1.c_str());
+                    ImGui::SameLine();
+                    if (ImGui::SmallButton("copy1"))
+                    {
+                        ImGui::SetClipboardText(Out1.c_str());
+                    }
+
                     ImGui::Text("Out: %s", Out2.c_str());
+                    ImGui::SameLine();
+                    if (ImGui::SmallButton("copy2"))
+                    {
+                        ImGui::SetClipboardText(Out2.c_str());
+                    }
                     ImGui::End();
                 }
                 if (Show_unite_like_terms)
@@ -470,6 +530,12 @@ int main(int, char**)
 
                     ImGui::Text(ST("--Result--"));
                     ImGui::Text("result : %s", a.Out().c_str());
+                    ImGui::SameLine();
+                    if (ImGui::SmallButton("copy1"))
+                    {
+                        ImGui::SetClipboardText(a.Out().c_str());
+                    }
+
                     ImGui::End();
                 }
                 if (Show_add)
@@ -492,9 +558,21 @@ int main(int, char**)
                         result = a + b;
                     }
 
-                    ImGui::Text(ST("--Result--"));
-                    ImGui::Text("GetValue : %s", result.GetValue().c_str());
-                    ImGui::Text("Out : %s", result.Out().c_str());
+                    ImGui::Text(ST("--Out--"));
+
+                    ImGui::Text("GetValue: %s", result.GetValue().c_str());
+                    ImGui::SameLine();
+                    if (ImGui::SmallButton("copy1"))
+                    {
+                        ImGui::SetClipboardText(result.GetValue().c_str());
+                    }
+
+                    ImGui::Text("Out: %s", result.Out().c_str());
+                    ImGui::SameLine();
+                    if (ImGui::SmallButton("copy2"))
+                    {
+                        ImGui::SetClipboardText(result.Out().c_str());
+                    }
                     ImGui::End();
                 }
                 if (Show_subtraction)
@@ -517,9 +595,21 @@ int main(int, char**)
                         result = a - b;
                     }
 
-                    ImGui::Text(ST("--Result--"));
-                    ImGui::Text("GetValue : %s", result.GetValue().c_str());
-                    ImGui::Text("Out : %s", result.Out().c_str());
+                    ImGui::Text(ST("--Out--"));
+
+                    ImGui::Text("GetValue: %s", result.GetValue().c_str());
+                    ImGui::SameLine();
+                    if (ImGui::SmallButton("copy1"))
+                    {
+                        ImGui::SetClipboardText(result.GetValue().c_str());
+                    }
+
+                    ImGui::Text("Out: %s", result.Out().c_str());
+                    ImGui::SameLine();
+                    if (ImGui::SmallButton("copy2"))
+                    {
+                        ImGui::SetClipboardText(result.Out().c_str());
+                    }
                     ImGui::End();
                 }
                 if (Show_MUL)
@@ -542,9 +632,21 @@ int main(int, char**)
                         result = a * b;
                     }
 
-                    ImGui::Text(ST("--Result--"));
-                    ImGui::Text("GetValue : %s", result.GetValue().c_str());
-                    ImGui::Text("Out : %s", result.Out().c_str());
+                    ImGui::Text(ST("--Out--"));
+
+                    ImGui::Text("GetValue: %s", result.GetValue().c_str());
+                    ImGui::SameLine();
+                    if (ImGui::SmallButton("copy1"))
+                    {
+                        ImGui::SetClipboardText(result.GetValue().c_str());
+                    }
+
+                    ImGui::Text("Out: %s", result.Out().c_str());
+                    ImGui::SameLine();
+                    if (ImGui::SmallButton("copy2"))
+                    {
+                        ImGui::SetClipboardText(result.Out().c_str());
+                    }
                     ImGui::End();
                 }
                 if (Show_division)
@@ -567,9 +669,21 @@ int main(int, char**)
                         result = a / b;
                     }
 
-                    ImGui::Text(ST("--Result--"));
-                    ImGui::Text("GetValue : %s", result.GetValue().c_str());
-                    ImGui::Text("Out : %s", result.Out().c_str());
+                    ImGui::Text(ST("--Out--"));
+
+                    ImGui::Text("GetValue: %s", result.GetValue().c_str());
+                    ImGui::SameLine();
+                    if (ImGui::SmallButton("copy1"))
+                    {
+                        ImGui::SetClipboardText(result.GetValue().c_str());
+                    }
+
+                    ImGui::Text("Out: %s", result.Out().c_str());
+                    ImGui::SameLine();
+                    if (ImGui::SmallButton("copy2"))
+                    {
+                        ImGui::SetClipboardText(result.Out().c_str());
+                    }
                     ImGui::End();
                 }
                 if (Show_Substitute)
@@ -640,6 +754,11 @@ int main(int, char**)
 
                     ImGui::Text(ST("--Out--"));
                     ImGui::Text("The result: %s", Out1.c_str());
+                    ImGui::SameLine();
+                    if (ImGui::SmallButton("copy1"))
+                    {
+                        ImGui::SetClipboardText(Out1.c_str());
+                    }
 
                     ImGui::End();
                 }
@@ -700,8 +819,21 @@ int main(int, char**)
                     }
 
                     ImGui::Text(ST("--Out--"));
+
                     ImGui::Text("GetValue: %s", Out1.c_str());
+                    ImGui::SameLine();
+                    if (ImGui::SmallButton("copy1"))
+                    {
+                        ImGui::SetClipboardText(Out1.c_str());
+                    }
+
                     ImGui::Text("Out: %s", Out2.c_str());
+                    ImGui::SameLine();
+                    if (ImGui::SmallButton("copy2"))
+                    {
+                        ImGui::SetClipboardText(Out2.c_str());
+                    }
+
                     ImGui::End();
                 }
                 if (Show_Solution_equation)
@@ -770,7 +902,19 @@ int main(int, char**)
                     out:
                     ImGui::Text(ST("--Result--"));
                     ImGui::Text("result 1 = %s", result_text1.c_str());
+                    ImGui::SameLine();
+                    if (ImGui::SmallButton("copy1"))
+                    {
+                        ImGui::SetClipboardText(result_text1.c_str());
+                    }
+
                     ImGui::Text("result 2 = %s", result_text2.c_str());
+                    ImGui::SameLine();
+                    if (ImGui::SmallButton("copy2"))
+                    {
+                        ImGui::SetClipboardText(result_text2.c_str());
+                    }
+
                     ImGui::End();
                 }
 
@@ -805,8 +949,23 @@ int main(int, char**)
                             expression_out1 = expression_out2 = ST("The input is error!");
                         }
                     }
+
+                    ImGui::Text(ST("--Result--"));
+
                     ImGui::Text("result = %s", expression_out1.c_str());
+                    ImGui::SameLine();
+                    if (ImGui::SmallButton("copy1"))
+                    {
+                        ImGui::SetClipboardText(expression_out1.c_str());
+                    }
+
                     ImGui::Text(((std::string)(char*)ST((std::string)"approximate result") + (std::string)" = %s").c_str(), expression_out2.c_str());
+                    ImGui::SameLine();
+                    if (ImGui::SmallButton("copy2"))
+                    {
+                        ImGui::SetClipboardText(expression_out2.c_str());
+                    }
+
                     ImGui::End();
                 }
             }
