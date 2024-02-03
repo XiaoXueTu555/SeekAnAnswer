@@ -5,6 +5,7 @@
 #include "polynomial_exponential_sum.h"
 #include "fraction.h"
 #include "Fraction_PES.h"
+#include "rational_function.h"
 #include "../misinttypes/saint.h"
 class Equation
 {
@@ -20,6 +21,9 @@ public:
 	Fraction<Polynomial> root1; //一元一次方程的根
 	//一元二次方程的根
 	std::vector<Fraction<Polynomial_Exponential_Sum>> root2;
+
+public:
+	Equation() = default;
 
 	/*member function*/
 public:

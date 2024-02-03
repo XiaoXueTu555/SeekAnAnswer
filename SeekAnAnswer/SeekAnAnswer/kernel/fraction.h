@@ -11,6 +11,17 @@ public:
 	T a; //·Ö×Ó
 	T b; //·ÖÄ¸
 public:
+	Fraction(T a, T b)
+	{
+		this->a = a;
+		this->b = b;
+	}
+public:
+	void SetValue(T a, T b)
+	{
+		this->a = a;
+		this->b = b;
+	}
 	Fraction<T> operator=(Fraction<T> b)
 	{
 		this->a = b.a;
@@ -386,3 +397,5 @@ public:
 		return value;
 	}
 };
+
+typedef Fraction <sint64> Rational_number;

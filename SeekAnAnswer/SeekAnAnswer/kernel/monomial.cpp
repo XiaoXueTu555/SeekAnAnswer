@@ -66,6 +66,17 @@ Fraction<sint64> Monomial::GetCoefficient() //获得此单项式的系数
 	return this->coefficient;
 }
 
+std::set<sint8> Monomial::GetMonomialSetFactor()
+{
+	std::set<sint8> D;
+	//取得a的所有字母
+	for (FACTOR i = this->GetFactor().begin(); i != this->GetFactor().end(); i++)
+	{
+		D.insert(i->first);
+	}
+	return D;
+}
+
 std::map<sint8, Fraction<sint64>>& Monomial::GetFactor() //获得此单项式的字母因数
 {
 	return this->factor;
@@ -654,4 +665,24 @@ sint64 GetLetterSize(Monomial& a)
 {
 	//返回单项式a的字母集合的元素数量
 	return a.GetFactor().size();
+}
+
+std::set<sint8> CommonFactor(Monomial a, Monomial b)
+{
+	std::set<sint8> D;
+	std::set<sint8> E;
+
+	//取得a的所有字母
+	for (FACTOR i = a.GetFactor().begin(); i != a.GetFactor().end(); i++)
+	{
+		D.insert(i->first);
+	}
+
+	//取得b的所有字母
+	for (FACTOR i = b.GetFactor().begin(); i != b.GetFactor().end(); i++)
+	{
+		E.insert(i->first);
+	}
+
+	return S_set_intersection(D, E);
 }

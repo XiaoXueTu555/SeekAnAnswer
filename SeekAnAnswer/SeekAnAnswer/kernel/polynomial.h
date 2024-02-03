@@ -3,6 +3,7 @@
 #include <map>
 #include <set>
 #include "monomial.h" //单项式
+#include "seek_math.h"
 
 /*多项式类*/
 class Polynomial
@@ -56,6 +57,10 @@ public:
 	suint64 GetLocationOfDegree();
 	//返回特定字符的最小次数
 	Fraction<sint64> GetDegreeOfMixOfchar(sint8 a);
+
+private:
+	//求所有单项式的公共字母集合
+	std::set<sint8> CommonFactor();
 public:
 	//求与val多项式的公因式
 	Monomial CommonFactor(Polynomial val);

@@ -16,6 +16,7 @@
 #include "SeekAnAnswer/kernel/polynomial_exponential_sum.h"
 #include "SeekAnAnswer/kernel/equation.h"
 #include "SeekAnAnswer/kernel/arithmetic_expression.h"
+#include "SeekAnAnswer/kernel/rational_function.h"
 
 /*FileIO 用于实现多语言切换*/
 #include "FileIO/file_io.h"

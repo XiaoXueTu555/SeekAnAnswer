@@ -151,6 +151,7 @@
     <ClCompile Include="SeekAnAnswer\kernel\polynomial.cpp" />
     <ClCompile Include="SeekAnAnswer\kernel\polynomial_exponential.cpp" />
     <ClCompile Include="SeekAnAnswer\kernel\polynomial_exponential_sum.cpp" />
+    <ClCompile Include="SeekAnAnswer\kernel\seek_math.cpp" />
     <ClCompile Include="test.cpp" />
   </ItemGroup>
   <ItemGroup>
@@ -167,6 +168,8 @@
     <ClInclude Include="SeekAnAnswer\kernel\polynomial.h" />
     <ClInclude Include="SeekAnAnswer\kernel\polynomial_exponential.h" />
     <ClInclude Include="SeekAnAnswer\kernel\polynomial_exponential_sum.h" />
+    <ClInclude Include="SeekAnAnswer\kernel\rational_function.h" />
+    <ClInclude Include="SeekAnAnswer\kernel\seek_math.h" />
     <ClInclude Include="SeekAnAnswer\misinttypes\saint.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />

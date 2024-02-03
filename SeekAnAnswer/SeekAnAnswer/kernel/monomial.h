@@ -4,6 +4,7 @@
 #include <set>
 #include "..\misinttypes\saint.h"
 #include "fraction.h"
+#include "seek_math.h"
 /*单项式*/
 class Monomial
 {
@@ -26,6 +27,7 @@ public: //构造函数
 public:
 	Fraction<sint64> GetDegree(); //获得此单项式的次数
 	Fraction<sint64> GetCoefficient(); //获得此单项式的系数
+	std::set<sint8> GetMonomialSetFactor(); //获得次单项式的字母集合
 	std::map<sint8, Fraction<sint64>>& GetFactor(); //获得此单项式的字母因数
 public:
 	void SetCoefficient(sint64 a, sint64 b); //设置系数
@@ -81,3 +83,6 @@ public:
 /// <param name=""></param>
 /// <returns></returns>
 sint64 GetLetterSize(Monomial& a);
+
+//计算两个单项式的字母集合的交集
+std::set<sint8> CommonFactor(Monomial a, Monomial b);

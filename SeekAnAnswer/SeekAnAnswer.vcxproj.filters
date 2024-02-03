@@ -33,9 +33,6 @@
     </Filter>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="test.cpp">
-      <Filter>源文件</Filter>
-    </ClCompile>
     <ClCompile Include="High\Private\High_float.cpp">
       <Filter>High\private</Filter>
     </ClCompile>
@@ -49,9 +46,6 @@
       <Filter>High\private</Filter>
     </ClCompile>
     <ClCompile Include="SeekAnAnswer\kernel\arithmetic_expression.cpp">
-      <Filter>SeekAnAnswer\kernel</Filter>
-    </ClCompile>
-    <ClCompile Include="SeekAnAnswer\kernel\equation.cpp">
       <Filter>SeekAnAnswer\kernel</Filter>
     </ClCompile>
     <ClCompile Include="SeekAnAnswer\kernel\mathematical_expression.cpp">
@@ -68,6 +62,15 @@
     </ClCompile>
     <ClCompile Include="SeekAnAnswer\kernel\polynomial_exponential_sum.cpp">
       <Filter>SeekAnAnswer\kernel</Filter>
+    </ClCompile>
+    <ClCompile Include="test.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="SeekAnAnswer\kernel\equation.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="SeekAnAnswer\kernel\seek_math.cpp">
+      <Filter>源文件</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -87,9 +90,6 @@
       <Filter>SeekAnAnswer\misinttypes</Filter>
     </ClInclude>
     <ClInclude Include="SeekAnAnswer\kernel\arithmetic_expression.h">
-      <Filter>SeekAnAnswer\kernel</Filter>
-    </ClInclude>
-    <ClInclude Include="SeekAnAnswer\kernel\equation.h">
       <Filter>SeekAnAnswer\kernel</Filter>
     </ClInclude>
     <ClInclude Include="SeekAnAnswer\kernel\fraction.h">
@@ -112,6 +112,15 @@
     </ClInclude>
     <ClInclude Include="SeekAnAnswer\kernel\polynomial_exponential_sum.h">
       <Filter>SeekAnAnswer\kernel</Filter>
+    </ClInclude>
+    <ClInclude Include="SeekAnAnswer\kernel\equation.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="SeekAnAnswer\kernel\rational_function.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="SeekAnAnswer\kernel\seek_math.h">
+      <Filter>头文件</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

@@ -111,6 +111,12 @@
     <ClInclude Include="FileIO\file_io.h">
       <Filter>Language\FileIO</Filter>
     </ClInclude>
+    <ClInclude Include="..\..\SeekAnAnswer\SeekAnAnswer\kernel\rational_function.h">
+      <Filter>SeekAnAnswer\kernel</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\SeekAnAnswer\SeekAnAnswer\kernel\seek_math.h">
+      <Filter>SeekAnAnswer\kernel</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\..\SeekAnAnswer\High\Private\High_float.cpp">
@@ -172,6 +178,9 @@
     </ClCompile>
     <ClCompile Include="FileIO\file_io.cpp">
       <Filter>Language\FileIO</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\SeekAnAnswer\SeekAnAnswer\kernel\seek_math.cpp">
+      <Filter>SeekAnAnswer\kernel</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

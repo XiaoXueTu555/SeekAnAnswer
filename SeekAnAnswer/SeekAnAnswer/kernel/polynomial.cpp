@@ -5,17 +5,6 @@
 //字母因数的迭代器
 typedef std::map<sint8, Fraction<sint64>>::iterator FACTOR;
 
-std::set<sint8> S_set_intersection(std::set<sint8> a, std::set<sint8> b)
-{
-	std::set<sint8> intersection;
-	for (std::set<sint8>::iterator i = a.begin(); i != a.end(); i++)
-	{
-		if (b.find(*i) != b.end())
-			intersection.insert(*i);
-	}
-	return intersection;
-}
-
 Polynomial::Polynomial(std::string std_value)
 {
 	this->SetValue(std_value);
@@ -137,11 +126,14 @@ void Polynomial::DeleteZero()
 		return;
 	}
 
+	//本来是可以不用goto的，关键用其他方法，这个GS的IDE 报警告
+retry:
 	for (suint64 i = 0; i < this->list.size(); i++)
 	{
 		if (this->list.at(i).GetCoefficient().a == 0)
 		{
 			this->list.erase(this->list.begin() + i);
+			goto retry;
 		}
 	}
 
@@ -242,6 +234,20 @@ Fraction<sint64> Polynomial::GetDegreeOfMixOfchar(sint8 a)
 	return degree;
 }
 
+std::set<sint8> Polynomial::CommonFactor()
+{
+	std::set<sint8> D = this->list.at(0).GetMonomialSetFactor(); //公共字母
+	std::set<sint8> E; //当前单项式字母
+
+	for (suint64 i = 1; i < this->list.size(); i++)
+	{
+		E = this->list.at(i).GetMonomialSetFactor();
+		D = S_set_intersection(D, E);
+	}
+
+	return D;
+}
+
 Monomial Polynomial::CommonFactor(Polynomial val)
 {
 	Monomial common_factor;
@@ -260,77 +266,17 @@ Monomial Polynomial::CommonFactor(Polynomial val)
 
 	common_factor.SetCoefficient(common_number, 1);
 
-	std::set<sint8> a_set_intersection;
-	std::set<sint8> last_set; //上一个单项式的字母集合
-	std::set<sint8> set; //这个单项式的字母集合
-	std::set<sint8> set_intersection; //相邻两个单项式的交集
+	std::set<sint8> set; //两个多项式的公因式的字母集合
+	std::set<sint8> D; //a多项式的公共字母集合
+	std::set<sint8> E; //b多项式的公共字母集合
 
-	//获取初始的集合，否则下面求交集时结果始终为空集
-	for (FACTOR j = this->list.at(0).GetFactor().begin(); j != this->list.at(0).GetFactor().end(); j++)
-	{	
-		set.insert(j->first);
-	}
+	D = this->CommonFactor();
+	E = val.CommonFactor();
 
-	//遍历多项式a，获取字母集合
-	for (suint64 i = 0; i < this->list.size(); i++)
-	{
-		//获取单项式的字母集合
-		for (FACTOR j = this->list.at(i).GetFactor().begin(); j != this->list.at(i).GetFactor().end(); j++)
-		{
-			if (i % 2 == 0) last_set.insert(j->first);
-			else
-			{
-				set.insert(j->first);
-			}
-		}
-
-		if (i % 2 == 1)
-		{
-			set_intersection = S_set_intersection(
-				S_set_intersection(last_set, set),
-				set_intersection
-			);
-
-			last_set.clear();
-		}
-	}
-	a_set_intersection = set_intersection;
-
-	last_set.clear(); set.clear(); set_intersection.clear(); //初始化
-
-	//获取初始的集合，否则下面求交集时结果始终为空集
-	for (FACTOR j = val.list.at(0).GetFactor().begin(); j != val.list.at(0).GetFactor().end(); j++)
-	{
-		set.insert(j->first);
-	}
-
-	//遍历多项式a，获取字母集合
-	for (suint64 i = 0; i < val.list.size(); i++)
-	{
-		//获取单项式的字母集合
-		for (FACTOR j = val.list.at(i).GetFactor().begin(); j != val.list.at(i).GetFactor().end(); j++)
-		{
-			if (i % 2 == 0) last_set.insert(j->first);
-			else
-			{
-				set.insert(j->first);
-			}
-		}
-
-		if (i % 2 == 1)
-		{
-			set_intersection = S_set_intersection(
-				S_set_intersection(last_set, set),
-				set_intersection
-			);
-
-			last_set.clear();
-		}
-	}
 	//计算两个多项式的字母交集
-	set_intersection = S_set_intersection(a_set_intersection, set_intersection);
+	set = S_set_intersection(D, E);
 
-	for (std::set<sint8>::iterator it = set_intersection.begin(); it != set_intersection.end(); it++)
+	for (std::set<sint8>::iterator it = set.begin(); it != set.end(); it++)
 	{
 		common_factor.Push(*it, //添加一个字母因数，次数为两个多项式间最小的次数
 			(this->GetDegreeOfMixOfchar(*it) < val.GetDegreeOfMixOfchar(*it)
@@ -551,7 +497,7 @@ Polynomial Polynomial::operator-(Polynomial val)
 		b.list.at(i).SetCoefficientA(0 - b.list.at(i).GetCoefficient().a);
 	}
 	Polynomial result = *this + b;
-
+	result.DeleteZero();
 	return result;
 }
 
