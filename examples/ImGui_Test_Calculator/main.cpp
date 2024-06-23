@@ -631,6 +631,7 @@ int main(int, char**)
                         a.Input(InputText1);
                         b.Input(InputText2);
                         result = a * b;
+                        result.AscendingPermutation();
                     }
 
                     ImGui::Text(ST("--Out--"));

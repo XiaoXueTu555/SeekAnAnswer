@@ -70,6 +70,9 @@ public:
 	/*将最高的单项式的次数的单项式移动到首位，
 	且保证第一项是所有单项式中字母集合的元素最少的单项式*/
 	void Move();
+
+	//按照升幂排列
+	void AscendingPermutation();
 public:
 	//清空所有单项式
 	void Clear();

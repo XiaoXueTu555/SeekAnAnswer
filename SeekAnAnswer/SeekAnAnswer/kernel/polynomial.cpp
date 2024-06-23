@@ -335,14 +335,18 @@ bool Polynomial::Substitute(sint8 character, Polynomial val)
 	sint64 exponent = 0;
 
 	Fraction<sint64> coe_temp; //保存代换字符所在单项式的系数
+	Polynomial result;
 
 	//遍历所有单项式
 	for (suint64 i = 0; i < this->list.size(); i++)
 	{
 		//如果该项不含代换字符
-		if (this->list.at(i).GetFactor().find(character) 
+		if (this->list.at(i).GetFactor().find(character)
 			== this->list.at(i).GetFactor().end())
+		{
+			result += this->list.at(i);
 			continue;
+		}
 
 		//获取该项代换字符的次数，这里减去1是为了下面减少一次乘法运算
 		exponent = this->list.at(i).GetFactor().find(character)->second.a - 1;
@@ -357,11 +361,9 @@ bool Polynomial::Substitute(sint8 character, Polynomial val)
 		//保存该项单项式的数字系数
 		coe_temp = this->list.at(i).GetCoefficient();
 
-		//删除该项单项式
-		this->list.erase(this->list.begin() + i);
-
-		*this += (Polynomial)(Monomial)coe_temp * temp;
+		result += (Polynomial)(Monomial)coe_temp * temp;
 	}
+	*this = result;
 	return true;
 }
 
@@ -804,6 +806,27 @@ void Polynomial::Move()
 
 	this->list = result;
 	return;
+}
+
+void Polynomial::AscendingPermutation()
+{
+	Monomial temp;
+
+	//冒泡排序
+	for (int n = 0; n < this->list.size() - 1; n++)
+	{
+		//该循环保证排序好一个大次数单项式
+		for (int i = 0; i < this->list.size() - 1; i++)
+		{
+			//如果前一个单项式的次数大于后一个单项式的次数，则交换两者
+			if (this->list.at(i).GetDegree() > this->list.at(i + 1).GetDegree())
+			{
+				temp = this->list.at(i + 1);
+				this->list.at(i + 1) = this->list.at(i);
+				this->list.at(i) = temp;
+			}
+		}
+	}
 }
 
 bool IsParentPolynomial(Polynomial a, Polynomial b)
